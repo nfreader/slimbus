@@ -24,7 +24,7 @@ if(getenv('DEBUG')){
 
 // Instantiate the app
 $settings = require __DIR__ . '/src/settings.php';
-$settings['statbus'] = require __DIR__ . '/src/conf/statbus.php';
+$settings['statbus'] = require __DIR__ . '/src/conf/Statbus.php';
 $app = new \Slim\App($settings);
 
 // Set up dependencies
