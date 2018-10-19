@@ -1,0 +1,5 @@
+<nav class="nav nav-tabs mb-5">
+  {% for n, u in nav %}
+    <a class="nav-item nav-link{% if u == app.currentURL %} active {% endif %}" href="{{u}}">{{n}}</a>
+  {% endfor %}
+</nav>

@@ -1,0 +1,15 @@
+<nav aria-label="breadcrumb" role="navigation">
+  <ol class="breadcrumb">
+    {% for n, u in nav %}
+      {% if loop.last %}
+        <li class="breadcrumb-item active">
+          {{n|raw}}
+        </li>
+        {% else %}
+        <li class="breadcrumb-item">
+          <a href="{{u}}">{{n|raw}}</a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ol>
+</nav>

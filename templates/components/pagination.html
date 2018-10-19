@@ -1,0 +1,45 @@
+{#
+    Parameters:
+      * nbPages (int): number of pages
+      * currentPage (int): current pages
+      * url (string): route name & query (string): route parameter
+        ex: list/page-5?q=myFilter (5 = page and query = myFilter)
+#}
+{% if '?' in url %}
+    {% set param = '&' %}
+{% else %}
+    {% set param = '?' %}
+{% endif %}
+{% spaceless %}
+{% if nbPages > 1 %}
+
+    {# Number of page around current page+1 #}
+    {% set nearbyPagesLimit = 4 %}
+
+    <div>
+        <ul class="pagination">
+            {% if currentPage != 1 %}
+            <li class="page-item">
+                <a class="page-link" href="{{url}}">First</a>
+            </li>
+            {% endif %}
+            {% for i in 1..nbPages %}
+                {% if 0 == (currentPage - nearbyPagesLimit) - loop.index %} {# dot before #}
+                {% elseif 0 == (currentPage + nearbyPagesLimit) - loop.index %} {# dot after #}
+                {% elseif 0 < (currentPage - nearbyPagesLimit) - loop.index %} {# hide all before #}
+                {% elseif 0 > (currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
+                {% else %}
+                    <li {% if currentPage == loop.index  %} class="page-item active" {% else %} class="page-item" {% endif %}>
+                        <a class="page-link" href="{{url}}{{param}}page={{loop.index}}">{{ loop.index }}</a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if currentPage != nbPages %}
+            <li class="page-item">
+                <a class="page-link" href="{{url}}{{param}}page={{nbPages}}">Last</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}
+{% endspaceless %}
