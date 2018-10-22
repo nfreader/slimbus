@@ -23,8 +23,7 @@ class DeathController {
     $this->view = $this->container->get('view');
     $this->DB = $this->container->get('DB');
     $this->router = $this->container->get('router');
-
-    $this->deathModel = new Death();
+    $this->deathModel = new Death($this->container->get('settings')['statbus']);
 
     $this->pages = ceil($this->DB->cell("SELECT count(tbl_death.id) FROM tbl_death") / $this->per_page);
 
