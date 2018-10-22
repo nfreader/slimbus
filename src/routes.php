@@ -6,6 +6,8 @@ use Slim\Http\Response;
 // Routes
 // 
 
+  $app->get('/', \Statbus\Controllers\RoundController::class . ':index')->setName('round.index');
+
 $app->get('/home', \Statbus\HomeController::class . ':home');
 
 //Rounds
