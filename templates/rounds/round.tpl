@@ -1,4 +1,5 @@
-{% extends "index.tpl"%}
+{% extends "base/index.html"%}
+{% block pagetitle %}Round #{{round.id}}{% endblock %}
 {% block content %}
 {% if round.data.nuclear_challenge_mode %}
 <div class="alert alert-danger">

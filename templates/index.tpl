@@ -1,13 +1,6 @@
-{% include ('base/header.html') %}
+{% extends ('base/index.html') %}
     {% block content %}
-      <h1>Welcome to {{app.name}}<br>
-        {% if user.ckey %}<small>
-          <div id="poly" class="engradio">
-            [Poly] &ldquo;{{app._poly}}&rdquo;
-            <img src="{{app.url}}icons/mob/animal/parrot_sit.png" height="64" width="64"  alt="And now a word from Poly" />
-          </div>
-      </small>{% endif %}
-    </h1>
+      <h1>Welcome to {{statbus.app_name}}!</h1>
       <hr>
       <div class="row">
         <div class="col">
@@ -16,7 +9,7 @@
               <small class="text-muted">Cataloging</small>
             </h3>
             <h2 class="display-4 mb-0">{{numbers.deaths}}</h2>
-            <h3><small class="text-muted">Total <a href="{{app.url}}death.php">Deaths</a></small></h3>
+            <h3><small class="text-muted">Total <a href="{{path_for('death.index')}}">Deaths</a></small></h3>
           </div>
         </div>
         <div class="col">
@@ -25,7 +18,7 @@
               <small class="text-muted">With Data From</small>
             </h3>
             <h2 class="display-4 mb-0">{{numbers.rounds}}</h2>
-            <h3><small class="text-muted">Total <a href="{{app.url}}round.php">Rounds</a></small></h3>
+            <h3><small class="text-muted">Total <a href="{{path_for('round.index')}}">Rounds</a></small></h3>
           </div>
         </div>
         <div class="col">
@@ -51,6 +44,3 @@
         </div>
       </div>
     {% endblock %}
-  </div>
-</main>
-{% include ('base/footer.html') %}

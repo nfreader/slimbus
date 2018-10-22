@@ -4,8 +4,7 @@
   {% else %}
     <div class="container" id="navcontainer">
   {% endif %}
-    <a class="navbar-brand" href="{{ app.url }}"> {{ app.name|raw }} </a>
-
+    <a class="navbar-brand" href="{{path_for('statbus')}}"> {{ statbus.app_name }} </a>
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
@@ -14,7 +13,13 @@
             Rounds
           </a>
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item">
+          <a class="nav-link" href="{{path_for('death.index')}}">
+            <i class="fas fa-user-times"></i>
+            Deaths
+          </a>
+        </li>
+        <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="" role="button" aria-haspopup="true" aria-expanded="farlse">
             <i class="fas fa-table"></i></i> Data</a>
           <div class="dropdown-menu">
@@ -59,8 +64,8 @@
             <a class="dropdown-item" href="{{app.url}}extra.php?myrounds"><i class="fas  fa-location-arrow"></i> My Rounds</a>
             <a class="dropdown-item" href="{{app.url}}extra.php?news"><i class="fas fa-newspaper"></i> Newscasters</a>
           </div>
-        </li>
-        {% if user.ckey and user.level >= 2 %}
+        </li> -->
+        <!-- {% if user.ckey and user.level >= 2 %}
         <li class="nav-item dropdown">
           <a class="nav-link text-danger dropdown-toggle" data-toggle="dropdown" href="{{ app.url }}tgdb" role="button" aria-haspopup="true" aria-expanded="farlse">
             <i class="fas  fa-shield-alt"></i> TGDB</a>
@@ -71,7 +76,7 @@
             <a class="dropdown-item" href="{{app.url}}tgdb/info.php?admins">Admin Connections</a>
           </div>
         </li>
-        {% endif %}
+        {% endif %} -->
     </div>
     {% if user.level >= 2 %}
       <form class="form-inline">

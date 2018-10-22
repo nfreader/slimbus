@@ -1,4 +1,5 @@
-{% extends "index.tpl"%}
+{% extends "base/index.html"%}
+{% block pagetitle %}Death Listing{% endblock %}
 {% block content %}
 <div class="row">
   <div class="col">

@@ -1,4 +1,5 @@
-{% extends "index.tpl"%}
+{% extends "base/index.html"%}
+{% block pagetitle %}Round Index{% endblock %}
 {% block content %}
 <div class="row">
   <div class="col">
@@ -37,3 +38,4 @@
   </table>
   {% include 'components/pagination.html' with vars %}
 {% endblock %}
+

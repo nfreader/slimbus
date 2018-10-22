@@ -1,4 +1,5 @@
-{% extends "index.tpl"%}
+{% extends "base/index.html"%}
+{% block pagetitle %}Last Words{% endblock %}
 {% block content %}
 <h2>Last Words</h2>
 <hr>

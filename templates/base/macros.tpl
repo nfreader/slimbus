@@ -1,3 +1,0 @@
-{% macro breadcrumb(links) %}
-
-{% endmacro %}

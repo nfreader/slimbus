@@ -10,6 +10,12 @@
   {% else %}
     <li class="list-group-item" data-toggle="tooltip" title="Unsuccessful shuttle call">
   {% endif %}
+  {{data}}
+  </li>
+  {% else %}
+  <li class="list-group-item list-group-item-success" data-toggle="tooltip" title="Successful shuttle call">
+    {{stat.data}}
   </li>
 {% endfor %}
+</ul>
 

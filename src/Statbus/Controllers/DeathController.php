@@ -4,24 +4,13 @@ namespace Statbus\Controllers;
 
 use Psr\Container\ContainerInterface;
 use Statbus\Models\Death as Death;
+use Statbus\Controllers\Controller as Controller;
 
-
-class DeathController {
-  protected $container;
-  protected $view;
-  protected $DB;
-  protected $router;
-
-  public $page = 1;
-  public $pages = 0;
-  public $per_page = 60;
-
-  public $breadcrumbs = [];
+class DeathController Extends Controller{
 
   public function __construct(ContainerInterface $container) {
-    $this->container = $container;
-    $this->view = $this->container->get('view');
-    $this->DB = $this->container->get('DB');
+    parent::__construct($container);
+
     $this->router = $this->container->get('router');
     $this->deathModel = new Death($this->container->get('settings')['statbus']);
 

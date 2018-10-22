@@ -1,10 +1,11 @@
-{% extends "index.tpl"%}
+{% extends "base/index.html"%}
+{% block pagetitle %}{{stat.key_name}} - Round #{{round.id}}{% endblock %}
 {% block content %}
 <h2><code>{{stat.key_name}}</code><small>
   {% if stat.aggregate %}
     across {{stat.round_count}} rounds<br>between {{stat.earliest}} and {{stat.latest}}
   {% else %}
-    <a href="{{app.url}}round.php?round={{stat.round_id}}">
+    <a href="{{path_for('round.single',{'id': stat.round_id})}}">
       <i class="far fa-circle"></i> {{stat.round_id}}
     </a>
   {% endif %}
@@ -26,11 +27,10 @@
 {% else %}
   <div class="alert alert-info">This stat type doesn't have a view yet.</div>
 {% endif %}
-
-<h3 class="mt-2">Technical Data</h3>
 <hr>
-{% if not stat.aggregate %}
+<h3 class="mt-2">Technical Data</h3>
 
+{% if not stat.aggregate %}
 <dl class="row">
   <dt class="col-sm-3">Stat ID</dt>
   <dd class="col-sm-9">{{stat.id}}</dd>

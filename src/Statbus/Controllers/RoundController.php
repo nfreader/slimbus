@@ -3,33 +3,19 @@
 namespace Statbus\Controllers;
 
 use Psr\Container\ContainerInterface;
+use Statbus\Controllers\Controller as Controller;
 use Statbus\Models\Round as Round;
 use Statbus\Controllers\StatController as StatController;
 
-class RoundController {
-  protected $container;
-  protected $view;
-  protected $DB;
-  protected $router;
-  protected $settings;
-
-  public $page = 1;
-  public $pages = 0;
-  public $per_page = 60;
-
-  public $breadcrumbs = [];
-
+class RoundController Extends Controller {
+  
   public function __construct(ContainerInterface $container) {
-    $this->container = $container;
-    $this->view = $this->container->get('view');
-    $this->DB = $this->container->get('DB');
-    $this->router = $this->container->get('router');
+    parent::__construct($container);
     $this->pages = ceil($this->DB->cell("SELECT count(tbl_round.id) FROM tbl_round") / $this->per_page);
 
     $this->roundModel = new Round($this->container->get('settings')['statbus']);
 
     $this->breadcrumbs['Rounds'] = $this->router->pathFor('round.index');
-
   }
 
   public function index($request, $response, $args) {

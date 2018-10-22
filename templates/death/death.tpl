@@ -1,4 +1,5 @@
-{% extends "index.tpl"%}
+{% extends "base/index.html"%}
+{% block pagetitle %}Death #{{death.id}}{% endblock %}
 {% block content %}
 <h2>
   <small class='text-muted'><i class='fas fa-user-times'></i> {{death.id}}</small> {{ckey(death.name, death.byondkey)}}

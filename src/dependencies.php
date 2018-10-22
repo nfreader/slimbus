@@ -3,41 +3,48 @@
 
 $container = $app->getContainer();
 
+//Inject Statbus settings because the default app instantiator doesn't work(?!)
 $settings = $container->get('settings');
-$settings->replace(['statbus' =>require __DIR__ . '/../src/conf/Statbus.php']);
+$settings->replace(['statbus' => require __DIR__ . '/../src/conf/Statbus.php']);
 
 // Register component on container
 $container['view'] = function ($container) {
-    $settings = $container->get('settings')['twig'];
-    $view = new \Slim\Views\Twig($settings['template_path'], [
-        'debug' => $settings['twig_debug'],
-        'cache' => $settings['template_cache']
-    ]);
+  $settings = $container->get('settings')['twig'];
+  $view = new \Slim\Views\Twig($settings['template_path'], [
+      'debug' => $settings['twig_debug'],
+      'cache' => $settings['template_cache']
+  ]);
 
-    // Instantiate and add Slim specific extension
-    $basePath = rtrim(str_ireplace('index.php', '', $container->get('request')->getUri()->getBasePath()), '/');
-    $view->addExtension(new Slim\Views\TwigExtension($container->get('router'), $basePath));
-    $view->addExtension(new \Twig_Extension_Debug());
-    $twigTimestampFilter = new \Twig_Filter('timestamp', function ($string) {
-      $string = date('Y-m-d H:i:s', strtotime($string));
-      $return = "<span class='timestamp'>";
-      $return.= "<time datetime='$string' title='$string' ";
-      $return.= "data-toggle='tooltip'>$string</time></span>";
-      return $return;
-    });
-    $view->getEnvironment()->addFilter($twigTimestampFilter);
+  // Instantiate and add Slim specific extension
+  $basePath = rtrim(str_ireplace('index.php', '', $container->get('request')->getUri()->getBasePath()), '/');
+  $view->addExtension(new Slim\Views\TwigExtension($container->get('router'), $basePath));
+  $view->addExtension(new \Twig_Extension_Debug());
 
-    $twigCkeyLink = new \Twig_Function('ckey', function ($name, $ckey) {
-      $return = "<a href='#'>$name<small class='text-muted'>/$ckey</small></a>";
-      return $return;
-    }, array('is_safe' => array('html')));
-    $view->getEnvironment()->addFunction($twigCkeyLink);
-    return $view;
+  //Fancy timestamp filter
+  $twigTimestampFilter = new \Twig_Filter('timestamp', function ($string) {
+    $string = date('Y-m-d H:i:s', strtotime($string));
+    $return = "<span class='timestamp'>";
+    $return.= "<time datetime='$string' title='$string' ";
+    $return.= "data-toggle='tooltip'>$string</time></span>";
+    return $return;
+  });
+  $view->getEnvironment()->addFilter($twigTimestampFilter);
+
+  //And ckey links to tgdb
+  //TODO: Remove link if current user isn't authorized to access tgdb
+  $twigCkeyLink = new \Twig_Function('ckey', function ($name, $ckey) {
+    $return = "<a href='#'>$name<small class='text-muted'>/$ckey</small></a>";
+    return $return;
+  }, array('is_safe' => array('html')));
+  $view->getEnvironment()->addFunction($twigCkeyLink);
+
+  $view->getEnvironment()->addGlobal('statbus', $container->get('settings')['statbus']);
+  return $view;
 };
 
 // DB
 $container['DB'] = function ($c) {
-    $settings = $c->get('settings')['database']['primary'];
-    return (new Statbus\Controllers\DBController($settings))->db;
+  $settings = $c->get('settings')['database']['primary'];
+  return (new Statbus\Controllers\DBController($settings))->db;
 };
 

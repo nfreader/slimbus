@@ -1,6 +1,7 @@
 <?php
 return [
-  'chumbis'        => true,
+  'app_name'       => 'Statbus',
+  'UA'             => getenv('UA') ?: null,
   'wide'           => false,
   'remote_log_src' => 'https://tgstation13.org/parsed-logs/',
   'github'         => 'tgstation/tgstation',

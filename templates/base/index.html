@@ -1,28 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
-  <title>{{ app.name }} {% block title %} {% endblock %}</title>
-  {% if app.ogdata %}
-    {% for k, v in app.ogdata %}
-    <meta property="og:{{k}}" content="{{v}}" />
-    {% endfor %}
-  {% endif %}
-  <script>
-    function unpack(rows, key) {
-      return rows.map(function(row) { return row[key]; });
-    }
-  </script>
-  {% if app.constants.UA %}
+  <title>{{statbus.app_name}} {% block pagetitle %}{% endblock %}</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  {% if statbus.UA %}
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-    ga('create', '{{app.constants.UA}}', 'auto');
+    ga('create', '{{statbus.UA}}', 'auto');
     ga('send', 'pageview');
 
   </script>
@@ -274,29 +264,87 @@
   }
   </style>
 </head>
-<body class="{{app.bodyClass}}">
+<body>
   {% block nav %} {{ include('base/nav.tpl') }} {% endblock %}
-  <div class="container" id="messages">
-    {% for m in app.messages %}
-      {{ include ('html/alert.tpl') }}
-    {% endfor %}
-  </div>
   <main role="main">
-  {% if wide is defined and wide %}
-    <div class="container-fluid position-relative" id="container">
-  {% else %}
-    <div class="container position-relative" id="container">
-  {% endif %}
-  {% if breadcrumbs is defined %}
-    {% set nav = breadcrumbs %}
-    {% include('components/breadcrumbs.html') with nav %}
-  {% endif %}
-  {% if app.subnav %}
-    {% set nav = app.subnav %}
-    {% include('components/subnav.html') with nav %}
-  {% endif %}
-
-  {% if app.pageTitle %}
-    <h1>{{app.pageTitle}}</h1>
-    <hr>
-  {% endif %}
+    <div class="container{% if wide is defined and wide %}-fluid{% endif %} position-relative" id="container">
+      {% if breadcrumbs is defined %}
+        {% set nav = breadcrumbs %}
+        {% include('components/breadcrumbs.html') with nav %}
+      {% endif %}
+      {% block content %} {% endblock %}
+    </div>
+  </main>
+  <footer>
+    <div class="container{% if wide is defined and wide %}-fluid{% endif %} position-relative" id="container">
+      <hr>
+      <div class="row">
+        <div class="col">
+          <p class="text-muted">All times are UTC</p>
+          <p class="text-muted">Data presented here should be treated as preliminary and non-operational</p>
+        </div>
+        <div class="col">
+          <samp class="text-muted" id="clock">{{app.currentDate}}</samp>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.17.7/js/jquery.tablesorter.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js" integrity="sha256-2/3+Q1kMYR8MDaqFPNBgmLgiqWJjySkg1wqLx/iE5Zo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone-with-data.min.js" integrity="sha256-FJZOELgwnfQRdG8KZUSWCYgucECDf4w5kfQdQSGbVpI=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@0.3.18/marked.min.js"></script>
+  <script>
+    function unpack(rows, key) {
+      return rows.map(function(row) { return row[key]; });
+    }
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+      $('.sort').tablesorter();
+    });
+    moment.locale('en');
+    moment.tz.setDefault("Universal");
+    $('time').each(function(){
+      timestring = $(this).attr('datetime');
+      var mom = moment(timestring);
+      var now = moment();
+      $(this).text(mom.from(now));
+    });
+    setInterval(function() {
+      var clock = document.querySelector('#clock');
+      var date = new Date();
+      var month = ('0'+(date.getUTCMonth()+1)).slice(-2);
+      var days = ('0'+date.getUTCDate()+'').slice(-2);
+      var seconds = ('0'+date.getUTCSeconds()+'').slice(-2);
+      var minutes = ('0'+date.getUTCMinutes()+'').slice(-2);
+      var hours = ('0'+date.getUTCHours()+'').slice(-2);
+      var year = date.getUTCFullYear();
+      clock.textContent = hours+':'+minutes+':'+seconds+' '+days+'.'+month+'.'+year;
+    }, 1000);
+    md = document.querySelectorAll(".md");
+    md.forEach(function(m){
+      txt = m.innerHTML;
+      m.innerHTML = marked(txt);
+    });
+    $('#parseLogs').click(function(e){
+      e.preventDefault();
+      console.log('Dispatching log parser script...');
+      $(this).toggleClass('disabled')
+      $(this).text('Parsing, please wait...')
+      $.ajax({
+        'url': $(this).attr('href')
+      }).done(function(e){
+        console.log(e);
+        var html = "<a href='"+window.location.href+"' class='btn btn-success'>Click to view</a>";
+        $(html).insertAfter('#parseLogs');
+        $('#parseLogs').hide();
+      })
+    })
+  </script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+  {% block js %}
+  {% endblock %}
+</body>
+</html>
