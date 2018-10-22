@@ -6,8 +6,8 @@ class Death {
 
   private $settings;
 
-  public function __construct(){
-    $this->settings = include(__DIR__ . '/../../conf/statbus.php');
+  public function __construct(array $settings){
+    $this->settings = $settings;
   }
 
   public function parseDeath(&$death) {
