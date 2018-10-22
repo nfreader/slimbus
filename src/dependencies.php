@@ -3,6 +3,9 @@
 
 $container = $app->getContainer();
 
+$settings = $container->get('settings');
+$settings->replace(['statbus' =>require __DIR__ . '/../src/conf/Statbus.php']);
+
 // Register component on container
 $container['view'] = function ($container) {
     $settings = $container->get('settings')['twig'];

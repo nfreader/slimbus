@@ -11,6 +11,7 @@ class RoundController {
   protected $view;
   protected $DB;
   protected $router;
+  protected $settings;
 
   public $page = 1;
   public $pages = 0;
@@ -24,9 +25,11 @@ class RoundController {
     $this->DB = $this->container->get('DB');
     $this->router = $this->container->get('router');
     $this->pages = ceil($this->DB->cell("SELECT count(tbl_round.id) FROM tbl_round") / $this->per_page);
-    $this->roundModel = new Round();
+    $this->settings = $this->container->get('settings')['statbus'];
+    $this->roundModel = new Round($this->container->get('settings')['statbus']);
 
     $this->breadcrumbs['Rounds'] = $this->router->pathFor('round.index');
+
   }
 
   public function index($request, $response, $args) {
