@@ -87,8 +87,8 @@
       {% spaceless %}
       {% if user.ckey %}
         <a href="{{app.url}}me.php">{{user.label|raw}}</a>
-      {% elseif 'REMOTE' == app.constants.AUTH_MODE %}
-      <a href="{{app.url}}auth.php">
+      {% else %}
+      <a href="{{path_for('auth')}}">
         <span class="badge badge-secondary ml-2">Authenticate</span>
       </a>
       {% endif %}

@@ -2,9 +2,38 @@
 return [
   'app_name'       => 'Statbus',
   'UA'             => getenv('UA') ?: null,
-  'wide'           => false,
   'remote_log_src' => 'https://tgstation13.org/parsed-logs/',
   'github'         => 'tgstation/tgstation',
+  'auth'           => [
+    'remote_auth'  => 'https://tgstation13.org/phpBB/',
+    'oauth_start'  => 'oauth_create_session.php',
+    'token_url'    => 'oauth.php',
+    'auth_session' => 'oauth_get_session_info.php'
+  ],
+  'perm_flags'     => [
+    'BUILDMODE'   => (1<<0),
+    'ADMIN'       => (1<<1),
+    'BAN'         => (1<<2),
+    'FUN'         => (1<<3),
+    'SERVER'      => (1<<4),
+    'DEBUG'       => (1<<5),
+    'POSSESS'     => (1<<6),
+    'PERMISSIONS' => (1<<7),
+    'STEALTH'     => (1<<8),
+    'POLL'        => (1<<9),
+    'VAREDIT'     => (1<<10),
+    'SOUNDS'      => (1<<11),
+    'SPAWN'       => (1<<12),
+    'AUTOLOGIN'   => (1<<13),
+    'DBRANKS'     => (1<<14)
+  ],
+  'ranks' => [
+    'GameAdmin' => [
+      'backColor' => '#9570c0',
+      'foreColor' => '#FFF',
+      'icon'      => 'asterisk'
+    ],
+  ],
   'servers'        => [
     [
       'address'=>'game.tgstation13.org',

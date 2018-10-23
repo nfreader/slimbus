@@ -7,6 +7,18 @@ $container = $app->getContainer();
 $settings = $container->get('settings');
 $settings->replace(['statbus' => require __DIR__ . '/../src/conf/Statbus.php']);
 
+// DB
+$container['DB'] = function ($c) {
+  $settings = $c->get('settings')['database']['primary'];
+  return (new Statbus\Controllers\DBController($settings))->db;
+};
+
+// User
+$container['user'] = function ($container) {
+  $user = (new Statbus\Controllers\UserController($container));
+  return $user;
+};
+
 // Register component on container
 $container['view'] = function ($container) {
   $settings = $container->get('settings')['twig'];
@@ -38,13 +50,11 @@ $container['view'] = function ($container) {
   }, array('is_safe' => array('html')));
   $view->getEnvironment()->addFunction($twigCkeyLink);
 
+  //Global statbus settings
   $view->getEnvironment()->addGlobal('statbus', $container->get('settings')['statbus']);
+  // $user = $container->get('user')->fetchUser();
+  // $view->getEnvironment()->addGlobal('user',$user);
   return $view;
 };
 
-// DB
-$container['DB'] = function ($c) {
-  $settings = $c->get('settings')['database']['primary'];
-  return (new Statbus\Controllers\DBController($settings))->db;
-};
 

@@ -8,8 +8,25 @@ use Slim\Http\Response;
 //Index URL
 $app->get('/', \Statbus\Controllers\StatbusController::class . ':index')->setName('statbus');
 
+//Auth
+$app->group('', function () {
+
+  //Confirmation screen
+  $this->get('/auth', \Statbus\Controllers\AuthController::class . ':auth')->setName('auth');
+
+  //Redirect
+  $this->get('/auth_redirect', \Statbus\Controllers\AuthController::class . ':auth_redirect')->setName('auth_redirect');
+
+  //Return URL
+  $this->get('/auth_return', \Statbus\Controllers\AuthController::class . ':auth_return')->setName('auth_return');
+
+  //Return URL
+  $this->get('/logout', \Statbus\Controllers\AuthController::class . ':logout')->setName('logout');
+});
+
 //Rounds
 $app->group('', function () {
+
   //Index
   $this->get('/rounds[/page/{page}]', \Statbus\Controllers\RoundController::class . ':index')->setName('round.index');
   
@@ -19,6 +36,7 @@ $app->group('', function () {
 
 //Deaths
 $app->group('', function () {
+
   //Index
   $this->get('/deaths[/page/{page}]', \Statbus\Controllers\DeathController::class . ':index')->setName('death.index');
 
@@ -31,3 +49,14 @@ $app->group('', function () {
   //Single death view
   $this->get('/deaths/{id:[0-9]+}', \Statbus\Controllers\DeathController::class . ':single')->setName('death.single');
 });
+
+//TGDB
+$container = $app->getContainer();
+$app->group('', function () {
+
+  //Index
+  $this->get('/tgdb', function($request, $response, $args) {
+    return $this->view->render($response, 'tgdb/index.tpl');
+  })->setName('tgdb');
+
+})->add(new \Statbus\Middleware\UserGuard($container));

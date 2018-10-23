@@ -23,6 +23,8 @@ class Controller {
     $this->view = $this->container->get('view');
     $this->DB = $this->container->get('DB');
     $this->router = $this->container->get('router');
+    $this->request = $this->container->get('request');
+    $this->response = $this->container->get('response');
     }
 }
 
