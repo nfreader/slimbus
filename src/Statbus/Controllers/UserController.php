@@ -59,26 +59,13 @@ class UserController Extends Controller {
       $this->user->rank = 'Player';
       return;
     }
-
     $perms = $this->container->get('settings')['statbus']['perm_flags'];
     foreach($perms as $p => $b){
       if ($this->user->rank->flags & $b){
         $this->user->rank->permissions[] = $p;
       }
     }
-
-
-    // $this->user->perms = new \stdclass;
-    // $this->user->perms->flags = $this->user->rank->flags;
-    // $this->user->perms->exclude_flags = $this->user->rank->exclude_flags;
-    // $this->user->perms->can_edit_flags = $this->user->rank->can_edit_flags;
-    // $this->user->perms->permissions = [];
-    // foreach($this->user->perms->flags as $k => $v){
-    //   if($tmp->perms->flags & $v){
-    //     $tmp->perms->permissions[] = $k;
-    //   }
-    // }
-
+    $this->canAccessTGDB();
   }
 
   public function fetchUser(){
@@ -87,7 +74,21 @@ class UserController Extends Controller {
   
   public function canAccessTGDB(){
     if(empty($this->user->ckey)) return false;
-    if(in_array('BAN', $this->user->rank->permissions)) return true;
+    if(in_array('BAN', $this->user->rank->permissions)) {
+      $this->user->canAccessTGDB = true;
+      return true;
+    }
     return false;
+  }
+
+   public function me($request, $response, $args) {
+    $roleData = json_encode($this->DB->run("SELECT job, minutes
+      FROM tbl_role_time
+      WHERE ckey = ?
+      AND tbl_role_time.job IN ('Assistant','Scientist','Shaft Miner','Station Engineer','Cyborg','Medical Doctor','Security Officer','Roboticist','Cargo Technician','Botanist','Chemist','AI','Cook','Atmospheric Technician','Janitor','Clown','Captain','Bartender','Head of Personnel','Quartermaster','Chaplain','Geneticist','Chief Engineer','Research Director','Mime','Lawyer','Detective','Chief Medical Officer','Head of Security','Virologist','Librarian','Warden')
+      ORDER BY job ASC", $this->user->ckey));
+    return $this->view->render($response, 'me/index.tpl',[
+      'roleData' => $roleData
+    ]);
   }
 }

@@ -24,6 +24,13 @@ $app->group('', function () {
   $this->get('/logout', \Statbus\Controllers\AuthController::class . ':logout')->setName('logout');
 });
 
+//Me
+$app->group('', function () {
+
+  //Index
+  $this->get('/me', \Statbus\Controllers\UserController::class . ':me')->setName('me');
+});
+
 //Rounds
 $app->group('', function () {
 

@@ -11,7 +11,7 @@ class UserGuard {
   }
 
   public function __invoke($request, $response, $next) {
-    if(!$this->user->canAccessTGDB()){
+    if(!$this->user->canAccessTGDB()) {
       die("You do not have permission to access this page");
     }
     $response = $next($request, $response);
