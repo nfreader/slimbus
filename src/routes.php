@@ -57,6 +57,17 @@ $app->group('', function () {
   $this->get('/deaths/{id:[0-9]+}', \Statbus\Controllers\DeathController::class . ':single')->setName('death.single');
 });
 
+//Info pages
+$app->group('', function () {
+
+  //Admin Activity
+  $this->get('/info/admins', \Statbus\Controllers\StatbusController::class . ':DoAdminsPlay')->setName('admin_connections');
+
+  //Admin Activity
+  $this->get('/info/adminlogs[/page/{page}]', \Statbus\Controllers\StatbusController::class . ':adminLogs')->setName('admin_logs');
+
+});
+
 //TGDB
 $container = $app->getContainer();
 $app->group('', function () {

@@ -262,6 +262,9 @@
   .leaflet-map {
     height: 512px;
   }
+  .nw {
+    white-space: nowrap;
+  }
   </style>
 </head>
 <body>
@@ -271,6 +274,11 @@
       {% if breadcrumbs is defined %}
         {% set nav = breadcrumbs %}
         {% include('components/breadcrumbs.html') with nav %}
+      {% endif %}
+      {% if classified is defined and classified %}
+      <div class="alert alert-warning">
+        Information in TGDB should be considered <strong>TLP:://AMBER</strong>, unless otherwise noted.
+      </div>
       {% endif %}
       {% block content %} {% endblock %}
     </div>

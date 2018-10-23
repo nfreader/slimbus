@@ -19,7 +19,9 @@ class RoundController Extends Controller {
   }
 
   public function index($request, $response, $args) {
-    if(isset($args['page'])) $this->page = $args['page'];
+    if(isset($args['page'])) {
+      $this->page = filter_var($args['page'], FILTER_VALIDATE_INT);
+    }
     $rounds = $this->DB->run("SELECT tbl_round.id,
       tbl_round.initialize_datetime,
       tbl_round.start_datetime,

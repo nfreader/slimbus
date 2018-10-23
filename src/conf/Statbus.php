@@ -28,10 +28,60 @@ return [
     'DBRANKS'     => (1<<14)
   ],
   'ranks' => [
+    'Coder' => [
+      'backColor' => '#090',
+      'foreColor' => '#FFF',
+      'icon'      => 'code'
+    ],
+    'Codermin' => [
+      'backColor' => '#090',
+      'foreColor' => '#FFF',
+      'icon'      => 'code'
+    ],
+    'Debugger' => [
+      'backColor' => '#090',
+      'foreColor' => '#FFF',
+      'icon'      => 'spider'
+    ],
+    'TrialAdmin' => [
+      'backColor' => '#9570c0',
+      'foreColor' => '#FFF',
+      'icon'      => 'gavel'
+    ],
     'GameAdmin' => [
       'backColor' => '#9570c0',
       'foreColor' => '#FFF',
       'icon'      => 'asterisk'
+    ],
+    'Barista' => [
+      'backColor' => '#6b4711',
+      'foreColor' => '#FFF',
+      'icon'      => 'coffee'
+    ],
+    'AdminTrainer' => [
+      'backColor' => '#9570c0',
+      'foreColor' => '#FFF',
+      'icon'      => 'asterisk'
+    ],
+    'GameMaster' => [
+      'backColor' => '#9570c0',
+      'foreColor' => '#FFF',
+      'icon'      => 'dungeon'
+    ],
+    'HeadAdmin' => [
+      'backColor' => '#A00',
+      'foreColor' => '#FFF',
+      'icon'      => 'star'
+    ],
+    'HeadCoder' => [
+      'backColor' => '#090',
+      'foreColor' => '#FFF',
+      'icon'      => 'star'
+    ],
+    'Host' => [
+      'backColor' => '#A00',
+      'foreColor' => '#FFF',
+      'icon'      => 'server'
     ],
   ],
   'servers'        => [

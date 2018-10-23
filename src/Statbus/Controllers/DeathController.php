@@ -22,7 +22,9 @@ class DeathController Extends Controller{
   }
 
   public function index($request, $response, $args) {
-    if(isset($args['page'])) $this->page = $args['page'];
+    if(isset($args['page'])) {
+      $this->page = filter_var($args['page'], FILTER_VALIDATE_INT);
+    }
     $deaths = $this->DB->run("SELECT 
         tbl_death.id,
         tbl_death.pod,
@@ -65,8 +67,13 @@ class DeathController Extends Controller{
   }
 
   public function DeathsForRound($request, $response, $args) {
-    $this->pages = ceil($this->DB->cell("SELECT count(tbl_death.id) FROM tbl_death WHERE tbl_death.round_id = ?", $args['round']) / $this->per_page);
-    if(isset($args['page'])) $this->page = $args['page'];
+    if(isset($args['round'])) {
+      $round = filter_var($args['round'], FILTER_VALIDATE_INT);
+    }
+    if(isset($args['page'])) {
+      $this->page = filter_var($args['page'], FILTER_VALIDATE_INT);
+    }
+    $this->pages = ceil($this->DB->cell("SELECT count(tbl_death.id) FROM tbl_death WHERE tbl_death.round_id = ?", $round) / $this->per_page);
     $deaths = $this->DB->run("SELECT 
         tbl_death.id,
         tbl_death.pod,
@@ -98,7 +105,7 @@ class DeathController Extends Controller{
         AND tbl_death.round_id = ?
         ORDER BY tbl_death.tod DESC
         LIMIT ?,?", 
-          $args['round'],
+          $round,
           ($this->page * $this->per_page) - $this->per_page,
           $this->per_page
         );

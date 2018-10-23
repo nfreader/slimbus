@@ -19,6 +19,12 @@
             Deaths
           </a>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="" role="button" aria-haspopup="true" aria-expanded="farlse"><i class="fas fa-info-circle"></i> Info</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{{path_for('admin_connections')}}"><i class="fas fa-user-clock"></i>Admin Activity</a>
+          </div>
+        </li>
         {% if user.canAccessTGDB %}
         <li class="nav-item">
           <a class="nav-link text-danger" href="{{path_for('tgdb')}}">
