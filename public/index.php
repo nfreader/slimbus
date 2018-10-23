@@ -61,9 +61,6 @@ $app = new \Slim\App($settings);
 // Set up dependencies
 require __DIR__ . '/../src/dependencies.php';
 
-// Register middleware
-require __DIR__ . '/../src/middleware.php';
-
 // Remove trailing slashes
 require __DIR__ . '/../src/trailingSlash.php';
 

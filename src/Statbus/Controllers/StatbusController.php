@@ -92,7 +92,7 @@ class StatbusController extends Controller {
       L.operation,
       L.target,
       L.log,
-      A.rank as adminrank
+      IF(A.rank IS NULL, 'Player', A.rank) as adminrank
       FROM tbl_admin_log as L
       LEFT JOIN tbl_admin as A ON L.adminckey = A.ckey
       ORDER BY L.datetime DESC
