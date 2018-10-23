@@ -4,8 +4,8 @@ namespace Statbus\Controllers;
 
 use Psr\Container\ContainerInterface;
 use Statbus\Controllers\Controller as Controller;
-use Statbus\Models\Death as Death;
 use Statbus\Models\Player as Player;
+use Statbus\Controllers\MessageController as MessageController;
 
 class StatbusController extends Controller {
 
@@ -137,6 +137,15 @@ class StatbusController extends Controller {
       'logs'   => $logs,
       'info'   => $this,
       'wide'   => true
+    ]);
+  }
+
+  public function tgdbIndex() {
+    //This method exists solely to scaffold the tgdb index page
+    $memos = (new MessageController($this->container))->getAdminMemos();
+
+    return $this->view->render($this->response, 'tgdb/index.tpl',[
+      'memos' => $memos
     ]);
   }
 }

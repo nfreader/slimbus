@@ -1,7 +1,7 @@
 <tr class="table-{{round.class}}">
   <td>
       <a href="{{path_for('round.single',{'id': round.id})}}">
-        <i class="far fa-circle"></i> {{round.id}}
+        <i class="fas fa-circle"></i> {{round.id}}
       </a>
   </td>
   <td>
@@ -16,3 +16,19 @@
   <td>{{round.end_datetime}}</td>
   <td>{{round.server}}</td>
 </tr>
+
+case 'high':
+
+break;
+
+case 'medium':
+
+break;
+
+case 'minor':
+
+break;
+
+case 'none':
+
+break;

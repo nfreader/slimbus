@@ -12,7 +12,8 @@
         "vlucas/phpdotenv": "^2.5",
         "paragonie/easydb": "@dev",
         "slim/twig-view": "^2.4",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "erusev/parsedown": "^1.7"
     },
     "autoload": {
         "psr-4": {

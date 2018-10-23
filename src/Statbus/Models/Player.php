@@ -14,12 +14,14 @@ class Player {
 
     if(is_string($player->rank)) {
       $rank = $player->rank;
-    } else {
+    } elseif (is_object($player->rank)) {
       $rank = $player->rank->rank;
+    } else {
+      $rank = 'Player';
     }
 
     $player->design = [
-      'icon' => null,
+      'icon' => 'user',
       'backColor' => '#FFF',
       'foreColor' => '#000'
     ];

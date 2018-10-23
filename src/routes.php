@@ -73,8 +73,13 @@ $container = $app->getContainer();
 $app->group('', function () {
 
   //Index
-  $this->get('/tgdb', function($request, $response, $args) {
-    return $this->view->render($response, 'tgdb/index.tpl');
-  })->setName('tgdb');
+  $this->get('/tgdb', \Statbus\Controllers\StatbusController::class . ':tgdbIndex')->setName('tgdb');
+
+  //Message Index
+  $this->get('/tgdb/messages[/page/{page}]', \Statbus\Controllers\MessageController::class . ':listing')->setName('message.index');
+
+  //Single Message View
+  $this->get('/tgdb/messages/{id:[0-9]+}', \Statbus\Controllers\MessageController::class . ':single')->setName('message.single');
+
 
 })->add(new \Statbus\Middleware\UserGuard($container));
