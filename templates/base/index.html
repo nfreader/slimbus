@@ -265,6 +265,66 @@
   .nw {
     white-space: nowrap;
   }
+  .tlp {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    border-left: none;
+    font-size: .85rem;
+    font-weight: bold;
+    padding: 1px 4px;
+    position: relative;
+  }
+
+  .tlp:before{
+    font-size: .75rem;
+    padding: 2px 4px;
+    margin: 0 4px 0 -4px;
+    border-radius: 4px 0 0 4px;
+  }
+
+  .tlp-green {
+    border-color: green;
+  }
+  .tlp-green:before {
+    content: 'TLP://GREEN';
+    background: green;
+    color: white;
+  }
+
+  .tlp-amber {
+    border-color: #ff9800;
+  }
+  .tlp-amber:before {
+    content: 'TLP://AMBER';
+    background: #ff9800;
+    color: white;
+  }
+
+  .tlp-red {
+    border-color: red;
+  }
+  .tlp-red:before {
+    content: 'TLP://RED';
+    background: red;
+    color: white;
+  }
+/*  .tlp-red:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: red;
+    content: 'TLP://RED - HOVER TO VIEW';
+    font-size: .6rem;
+    color: white;
+    padding: 2px 4px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .tlp-red:hover:after {
+    display: none;
+  }*/
   </style>
 </head>
 <body>
