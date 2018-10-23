@@ -16,19 +16,3 @@
   <td>{{round.end_datetime}}</td>
   <td>{{round.server}}</td>
 </tr>
-
-case 'high':
-
-break;
-
-case 'medium':
-
-break;
-
-case 'minor':
-
-break;
-
-case 'none':
-
-break;
