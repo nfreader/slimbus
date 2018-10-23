@@ -5,7 +5,7 @@ return [
   'remote_log_src' => 'https://tgstation13.org/parsed-logs/',
   'github'         => 'tgstation/tgstation',
   'auth'           => [
-    'remote_auth'  => 'https://tgstation13.org/phpBB/',
+    'remote_auth'  => getenv('REMOTE_AUTH') ?: false,
     'oauth_start'  => 'oauth_create_session.php',
     'token_url'    => 'oauth.php',
     'auth_session' => 'oauth_get_session_info.php'

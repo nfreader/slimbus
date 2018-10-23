@@ -44,7 +44,7 @@
       {% spaceless %}
       {% if user.ckey %}
         <a href="{{path_for('me')}}">{{user.label|raw}}</a>
-      {% else %}
+      {% elseif statbus.auth.remote_auth %}
       <a href="{{path_for('auth')}}">
         <span class="badge badge-secondary ml-2">Authenticate</span>
       </a>

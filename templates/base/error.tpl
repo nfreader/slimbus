@@ -1,15 +1,15 @@
-{% extends "index.tpl"%}
+{% extends "base/index.html"%}
 
 {% block content %}
 
 <div class="jumbotron">
-  <h1 class="display-3">{{app.error.code}}</h1>
-  <p class="lead">{{app.error.message|raw}}</p>
+  <h1 class="display-3">{{code}}</h1>
+  <p class="lead">{{message}}</p>
   <p class="lead">
-    {% if app.error.link %}
-    <a class="btn btn-primary btn-lg" href="{{app.error.link}}" role="button">{{app.error.linkText}}</a>
+    {% if link %}
+    <a class="btn btn-primary btn-lg" href="{{link}}" role="button">{{linkText}}</a>
     {% endif %}
-    <a class="btn btn-primary btn-lg" href="{{app.url}}" role="button">Go Home</a>
+    <a class="btn btn-primary btn-lg" href="{{path_for('statbus')}}" role="button">Go Home</a>
   </p>
 </div>
 

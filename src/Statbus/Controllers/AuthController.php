@@ -19,19 +19,25 @@ class AuthController Extends Controller{
 
     $this->settings = $container->get('settings')['statbus']['auth'];
 
-    $this->remote = $this->settings['remote_auth'];
-    $this->AuthUrl = $this->remote."oauth_create_session.php";
-    $this->TokenUrl = $this->remote."oauth.php";
-    $this->AuthSessionUrl = $this->remote."oauth_get_session_info.php";
-    $this->return_uri = $this->request->getUri()->getBaseUrl().$this->router->pathFor('auth_return');
-
-    if(isset($_SESSION['site_private_token'])){
-      $this->site_private_token = $_SESSION['site_private_token'];
+    if(!$this->settings['remote_auth']) {
+      return $this->view->render($this->response, 'base/error.tpl', [
+        'message' => "Authentication not supported",
+        'code'    => 501,
+      ]);
     } else {
-      $this->site_private_token = $this->generateToken(TRUE);
-      $_SESSION['site_private_token'] = $this->site_private_token;
-    }
+      $this->remote = $this->settings['remote_auth'];
+      $this->AuthUrl = $this->remote."oauth_create_session.php";
+      $this->TokenUrl = $this->remote."oauth.php";
+      $this->AuthSessionUrl = $this->remote."oauth_get_session_info.php";
+      $this->return_uri = $this->request->getUri()->getBaseUrl().$this->router->pathFor('auth_return');
 
+      if(isset($_SESSION['site_private_token'])){
+        $this->site_private_token = $_SESSION['site_private_token'];
+      } else {
+        $this->site_private_token = $this->generateToken(TRUE);
+        $_SESSION['site_private_token'] = $this->site_private_token;
+      }
+    }
   }
 
   public function generateToken(bool $secure=TRUE){
@@ -40,6 +46,9 @@ class AuthController Extends Controller{
   }
 
   public function auth($request, $response, $args) {
+    if(!$this->settings['remote_auth']) {
+      return false;
+    }
     $client = new \GuzzleHttp\Client();
     $res = $client->request('GET', $this->AuthUrl, [
       'query' => [
