@@ -20,7 +20,7 @@ Between your first connection {{user.firstseen|timestamp|raw}} and your most rec
     <div id="roletime">
 
     </div>
-    <p>(Tracked over all time)</p>
+    <p>(Tracked over time since around July of 2017)</p>
   </div>
 </div>
 
@@ -30,7 +30,7 @@ Between your first connection {{user.firstseen|timestamp|raw}} and your most rec
 </div>
 <hr>
   <p class="lead">I'm not sure who you are. Can you please authenticate with the remote website for me?</p>
-  <a href="{{app.url}}auth.php" class="btn btn-success btn-lg btn-block">Authenticate</a>
+  <a href="{{path_for('auth')}}" class="btn btn-success btn-lg btn-block">Authenticate</a>
 {% endif %}
 
 {% endblock %}
