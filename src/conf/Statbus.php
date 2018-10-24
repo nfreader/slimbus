@@ -2,7 +2,7 @@
 return [
   'app_name'       => 'Statbus',
   'UA'             => getenv('UA') ?: null,
-  'remote_log_src' => 'https://tgstation13.org/parsed-logs/',
+  'remote_log_src' => getenv('REMOTE_LOGS') ?: null,
   'github'         => 'tgstation/tgstation',
   'auth'           => [
     'remote_auth'  => getenv('REMOTE_AUTH') ?: false,

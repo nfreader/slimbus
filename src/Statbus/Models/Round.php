@@ -55,7 +55,7 @@ class Round {
 
     //Remote Log Links
     $round->logs = FALSE;
-    $logs = isset($this->settings['remote_log_src']) ? $this->settings['remote_log_src'] : false;
+    $logs = isset($this->settings['remote_log_src']) ? $this->settings['remote_log_src'] : FALSE;
     if($logs){
       $server = strtolower($round->server);
       $date = new \DateTime($round->start_datetime);
