@@ -22,7 +22,7 @@ class Player {
 
     $player->design = [
       'icon' => 'user',
-      'backColor' => '#FFF',
+      'backColor' => '#eee',
       'foreColor' => '#000'
     ];
 

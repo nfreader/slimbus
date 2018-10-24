@@ -71,11 +71,49 @@ class PlayerController Extends Controller {
       LIMIT 0,5;", $ckey);
   }
 
+  public function getIPs($key, $value){
+    $ips = $this->DB->run("SELECT count(id) as connections, ip
+      FROM tbl_connection_log
+      WHERE $key = ? GROUP BY ip;", $value);
+    foreach($ips as &$ip){
+      $ip->real = long2ip($ip->ip);
+    }
+    return $ips;
+  }
+
+  public function getCIDs($key, $value){
+    return $this->DB->run("SELECT count(id) as connections, computerid
+      FROM tbl_connection_log
+      WHERE $key = ? GROUP BY computerid;", $value);
+  }
+
+  public function findAlts($ckey){
+    $alts = $this->DB->run("SELECT
+      I.ckey AS ip_alts,
+      C.ckey AS cid_alts
+      FROM ss13player AS P
+      LEFT JOIN ss13connection_log AS I ON I.ip = P.ip AND I.ckey != P.ckey
+      LEFT JOIN ss13connection_log AS C ON C.computerid = P.computerid AND P.ckey != C.ckey
+      WHERE P.ckey = ?
+      GROUP BY ip_alts, cid_alts;", $ckey);
+    foreach ($alts as $a){
+      $return['ip_alts'][] = $a->ip_alts;
+      $return['cid_alts'][] = $a->cid_alts;
+    }
+    $return['ip_alts'] = array_filter(array_unique($return['ip_alts']));
+    $return['cid_alts'] = array_filter(array_unique($return['cid_alts']));
+    $return['alts'] = count($return['ip_alts']) + count($return['cid_alts']);
+    return $return;
+  }
+
   public function gatherAdditionalData(&$player){
     $player->role_time = $this->getRoleData($player->ckey);
     $player->messages = (new MessageController($this->container))->getMessagesForCkey($player->ckey, TRUE);
     $player->names = $this->getNamesFromDeaths($player->ckey);
     $player->standing = (new BanController($this->container))->getPlayerStanding($player->ckey);
+    $player->ips = $this->getIPs('ckey', $player->ckey);
+    $player->cids = $this->getCIDs('ckey', $player->ckey);
+    $player->alts = $this->findAlts($player->ckey);
     return $player;
   }
 }

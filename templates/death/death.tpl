@@ -96,7 +96,7 @@
       <div class="card-body">
         <blockquote class="blockquote text-right">
           <p class="mb-0">{{death.last_words}}</p>
-          <footer class="blockquote-footer">{{macros.ckey(death.name, death.byondkey)}}, {{death.last_line}}</footer>
+          <footer class="blockquote-footer">{{ckey(death.name, death.byondkey)}}, {{death.last_line}}</footer>
         </blockquote>
     </div>
   </div>
