@@ -81,5 +81,9 @@ $app->group('', function () {
   //Single Message View
   $this->get('/tgdb/messages/{id:[0-9]+}', \Statbus\Controllers\MessageController::class . ':single')->setName('message.single');
 
+  //Single Player View
+  $this->get('/tgdb/player/{ckey:[a-z0-9]+}', \Statbus\Controllers\PlayerController::class . ':getPlayer')->setName('player.single');
+
+
 
 })->add(new \Statbus\Middleware\UserGuard($container));

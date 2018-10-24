@@ -36,6 +36,8 @@ class Player {
     $player->label.= "<i class='fas fa-".$player->design['icon']."'></i> ";
     $player->label.= "$player->ckey</span>";
 
+    $player->ip_real = long2ip($player->ip);
+
     return $player;
   }
 }
