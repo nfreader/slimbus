@@ -96,7 +96,7 @@ class MessageController extends Controller {
     ]);
   }
 
-  public function getMessagesForCkey($ckey, $secret = FALSE){
+  public function getMessagesForCkey($ckey){
     $messages = $this->DB->run("SELECT
       M.id,
       M.type,
@@ -121,9 +121,8 @@ class MessageController extends Controller {
       WHERE M.deleted = 0
       AND (M.expire_timestamp > NOW() OR M.expire_timestamp IS NULL)
       AND M.targetckey = ?
-      AND M.SECRET = ?
       ORDER BY M.timestamp DESC
-      LIMIT 0, $this->per_page", $ckey, $secret);
+      LIMIT 0, $this->per_page", $ckey);
     foreach ($messages as $m) {
       $m = $this->messageModel->parseMessage($m);
       $m->admin = new \stdclass;
