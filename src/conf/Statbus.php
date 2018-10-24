@@ -29,27 +29,27 @@ return [
   ],
   'ranks' => [
     'Coder' => [
-      'backColor' => '#090',
+      'backColor' => '#31b626',
       'foreColor' => '#FFF',
       'icon'      => 'code'
     ],
     'Codermin' => [
-      'backColor' => '#090',
+      'backColor' => '#31b626',
       'foreColor' => '#FFF',
       'icon'      => 'code'
     ],
     'Debugger' => [
-      'backColor' => '#090',
+      'backColor' => '#31b626',
       'foreColor' => '#FFF',
       'icon'      => 'spider'
     ],
     'TrialAdmin' => [
-      'backColor' => '#9570c0',
+      'backColor' => '#d05995',
       'foreColor' => '#FFF',
       'icon'      => 'gavel'
     ],
     'GameAdmin' => [
-      'backColor' => '#9570c0',
+      'backColor' => '#9b59b6',
       'foreColor' => '#FFF',
       'icon'      => 'asterisk'
     ],
@@ -64,17 +64,17 @@ return [
       'icon'      => 'asterisk'
     ],
     'GameMaster' => [
-      'backColor' => '#9570c0',
-      'foreColor' => '#FFF',
+      'backColor' => '#d9b733',
+      'foreColor' => '#000',
       'icon'      => 'dungeon'
     ],
     'HeadAdmin' => [
-      'backColor' => '#A00',
-      'foreColor' => '#FFF',
+      'backColor' => '#ffa500',
+      'foreColor' => '#000',
       'icon'      => 'star'
     ],
     'HeadCoder' => [
-      'backColor' => '#090',
+      'backColor' => '#31b626',
       'foreColor' => '#FFF',
       'icon'      => 'star'
     ],
