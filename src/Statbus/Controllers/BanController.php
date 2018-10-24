@@ -21,7 +21,7 @@ class BanController extends Controller {
       FROM ss13ban
       WHERE ckey = ?
       AND (ss13ban.expiration_time > NOW()
-      OR ss13ban.unbanned IS NOT NULL)
+      OR ss13ban.unbanned != 1)
       ORDER BY bantype, id DESC;", $ckey);
     if(!$bans){
       $standing->class = 'success';
