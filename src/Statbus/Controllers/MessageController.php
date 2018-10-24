@@ -120,9 +120,10 @@ class MessageController extends Controller {
       LEFT JOIN tbl_admin AS E ON M.lasteditor = E.ckey
       WHERE M.deleted = 0
       AND (M.expire_timestamp > NOW() OR M.expire_timestamp IS NULL)
+      AND M.targetckey = ?
       AND M.SECRET = ?
       ORDER BY M.timestamp DESC
-      LIMIT 0, $this->per_page", $secret);
+      LIMIT 0, $this->per_page", $ckey, $secret);
     foreach ($messages as $m) {
       $m = $this->messageModel->parseMessage($m);
       $m->admin = new \stdclass;
