@@ -70,9 +70,6 @@ class Round {
     }
 
     $round->map_url = str_replace(' ', '', $round->map);
-    // foreach ($round as $k => $v){
-    //   $this->$k = $v;
-    // }
     return $round;
   }
 

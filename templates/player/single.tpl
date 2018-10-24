@@ -1,7 +1,7 @@
 {% extends "index.tpl"%}
 {% block content%}
 <h2>{{player.label|raw}}
-  <small class="text-muted"><a href="http://www.byond.com/members/{{player.ckey}}" target="_blank" rel="noopener noreferrer"><i class="fars fa-external-link-alt"></i> Byond</a> | <a href="https://tgstation13.org/tgdb/playerdetails.php?ckey={{player.ckey}}" target="_blank" rel="noopener noreferrer"><i class="fars fa-external-link-alt"></i> tgdb</a></small>
+  <small class="text-muted"><a href="http://www.byond.com/members/{{player.ckey}}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> Byond</a> | <a href="https://tgstation13.org/tgdb/playerdetails.php?ckey={{player.ckey}}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> tgdb</a></small>
 </h2>
 <hr>
 <div class="row">
@@ -23,8 +23,8 @@
   </div>
   <div class="col">
     <ul class="list-group">
-      <li class="list-group-item list-group-item-{{player.standingClass}}">
-        <strong>Account Standing</strong> {{player.standing}}
+      <li class="list-group-item list-group-item-{{player.standing.class}}">
+        <strong>Account Standing</strong> {{player.standing.text}} <a href="#">#{{player.standing.id}}</a>
       </li>
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <strong>IPs seen</strong> <span class='badge badge-pill badge-primary'>{{player.ips|length}}</span>
@@ -32,11 +32,6 @@
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <strong>ComputerIDs seen</strong> <span class='badge badge-pill badge-primary'>{{player.cids|length}}</span>
       </li>
-      {% if user.level >= 3 %}
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <strong>Watermark</strong><div style='position: relative;'>{{player.adminbarcode|raw}}</div>
-      </li>
-      {% endif %}
     </ul>
   </div>
   <div class="col">
@@ -71,7 +66,7 @@
       </div>
       <ul class="list-group list-group-flush collapse" id="iplist">
       {% for ip in player.ips %}
-        {% include 'tgdb/player/html/iplinks.html' %}
+        <!-- {% include 'tgdb/player/html/iplinks.html' %} -->
       {% endfor %}
       </ul>
     </div>
@@ -83,8 +78,34 @@
       </div>
       <ul class="list-group list-group-flush collapse" id="cidlist">
       {% for cid in player.cids %}
-        {% include 'tgdb/player/html/cidlinks.html' %}
+        <!-- {% include 'tgdb/player/html/cidlinks.html' %} -->
       {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="col">
+    <div class="card">
+      <div class="card-header" data-target="#namelist" data-toggle="collapse">
+        Character Names ({{player.names|length}})
+      </div>
+      <ul class="list-group list-group-flush collapse" id="namelist">
+        <table class="table table-sm">
+          <thead>
+            <th>Name</th>
+            <th>Times Seen</th>
+          </thead>
+          <tbody>
+            {% for name in player.names %}
+            <tr>
+              <td>{{name.name}}</td>
+              <td>{{name.times}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <p>
+        <small class="text-muted">Times being the number of times this ckey has died while playing as this character name. Only the top five results are shown.</small>
+        </p>
       </ul>
     </div>
   </div>
@@ -109,10 +130,11 @@
     <div class="card-body" id="msglist">
   {% endif %}
     {% for message in player.messages %}
-      {% include 'tgdb/notes/html/message_view.html' %}
+      {% include 'messages/html/single.html' %}
     {% endfor %}
   </div>
 </div>
+
 {% endblock %}
 {% block js %}
 <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>

@@ -60,8 +60,22 @@ class PlayerController Extends Controller {
       ORDER BY job ASC", $ckey));
   }
 
+  public function getNamesFromDeaths($ckey) {
+    return $this->DB->run("SELECT DISTINCT(`name`),
+      count(id) AS times
+      FROM ss13death
+      WHERE byondkey = ?
+      GROUP BY `name`
+      HAVING times > 1
+      ORDER BY times DESC
+      LIMIT 0,5;", $ckey);
+  }
+
   public function gatherAdditionalData(&$player){
     $player->role_time = $this->getRoleData($player->ckey);
+    $player->messages = (new MessageController($this->container))->getMessagesForCkey($player->ckey, TRUE);
+    $player->names = $this->getNamesFromDeaths($player->ckey);
+    $player->standing = (new BanController($this->container))->getPlayerStanding($player->ckey);
     return $player;
   }
 }

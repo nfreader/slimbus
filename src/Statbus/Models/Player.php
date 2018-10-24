@@ -10,7 +10,7 @@ class Player {
     $this->settings = $settings;
   }
 
-  public function parsePlayer(&$player) {
+  public function parsePlayer(&$player, $extended=false) {
 
     if(is_string($player->rank)) {
       $rank = $player->rank;
@@ -36,7 +36,7 @@ class Player {
     $player->label.= "<i class='fas fa-".$player->design['icon']."'></i> ";
     $player->label.= "$player->ckey</span>";
 
-    $player->ip_real = long2ip($player->ip);
+    @$player->ip_real = long2ip($player->ip);
 
     return $player;
   }

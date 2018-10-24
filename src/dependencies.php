@@ -42,14 +42,6 @@ $container['view'] = function ($container) {
   });
   $view->getEnvironment()->addFilter($twigTimestampFilter);
 
-  //And ckey links to tgdb
-  //TODO: Remove link if current user isn't authorized to access tgdb
-  $twigCkeyLink = new \Twig_Function('ckey', function ($name, $ckey) {
-    $return = "<a href='#'>$name<small class='text-muted'>/$ckey</small></a>";
-    return $return;
-  }, array('is_safe' => array('html')));
-  $view->getEnvironment()->addFunction($twigCkeyLink);
-
   //Global statbus settings
   $view->getEnvironment()->addGlobal('statbus', $container->get('settings')['statbus']);
   // $user = $container->get('user')->fetchUser();

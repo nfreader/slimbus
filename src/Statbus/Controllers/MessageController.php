@@ -96,6 +96,53 @@ class MessageController extends Controller {
     ]);
   }
 
+  public function getMessagesForCkey($ckey, $secret = FALSE){
+    $messages = $this->DB->run("SELECT
+      M.id,
+      M.type,
+      M.adminckey,
+      M.targetckey,
+      M.text,
+      M.timestamp,
+      M.server,
+      M.round_id AS round,
+      M.server_port AS port,
+      M.lasteditor,
+      M.severity,
+      M.expire_timestamp AS expire,
+      M.secret,
+      A.rank as adminrank,
+      T.rank as targetrank,
+      E.rank as editorrank
+      FROM tbl_messages AS M
+      LEFT JOIN tbl_admin AS A ON M.adminckey = A.ckey
+      LEFT JOIN tbl_admin AS T ON M.targetckey = T.ckey
+      LEFT JOIN tbl_admin AS E ON M.lasteditor = E.ckey
+      WHERE M.deleted = 0
+      AND (M.expire_timestamp > NOW() OR M.expire_timestamp IS NULL)
+      AND M.SECRET = ?
+      ORDER BY M.timestamp DESC
+      LIMIT 0, $this->per_page", $secret);
+    foreach ($messages as $m) {
+      $m = $this->messageModel->parseMessage($m);
+      $m->admin = new \stdclass;
+      $m->admin->ckey = $m->adminckey;
+      $m->admin->rank = $m->adminrank;
+      $m->admin = $this->pm->parsePlayer($m->admin);
+
+      $m->target = new \stdclass;
+      $m->target->ckey = $m->targetckey;
+      $m->target->rank = $m->targetrank;
+      $m->target = $this->pm->parsePlayer($m->target);
+
+      $m->editor = new \stdclass;
+      $m->editor->ckey = $m->lasteditor;
+      $m->editor->rank = $m->editorrank;
+      $m->editor = $this->pm->parsePlayer($m->editor);
+    }
+    return $messages;
+  }
+
   public function single($request, $response, $args){
     $id = filter_var($args['id'], FILTER_VALIDATE_INT);
     $message = $this->DB->row("SELECT

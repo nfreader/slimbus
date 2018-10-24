@@ -1,8 +1,9 @@
 {% extends "base/index.html"%}
+{% import('components/macros.tpl') as macros %}
 {% block pagetitle %}Death #{{death.id}}{% endblock %}
 {% block content %}
 <h2>
-  <small class='text-muted'><i class='fas fa-user-times'></i> {{death.id}}</small> {{ckey(death.name, death.byondkey)}}
+  <small class='text-muted'><i class='fas fa-user-times'></i> {{death.id}}</small> {{macros.ckey(death.name, death.byondkey)}}
 </h2>
 <hr>
 
@@ -12,7 +13,7 @@
     <div class="card mb-4">
       <h3 class="card-header bg-danger text-white">Murder Suspect</h3>
       <div class="card-body h4">
-        {{ckey(death.laname, death.lakey)}}
+        {{macros.ckey(death.laname, death.lakey)}}
       </div>
     </div>
   </div>
@@ -95,7 +96,7 @@
       <div class="card-body">
         <blockquote class="blockquote text-right">
           <p class="mb-0">{{death.last_words}}</p>
-          <footer class="blockquote-footer">{{ckey(death.name, death.byondkey)}}, {{death.last_line}}</footer>
+          <footer class="blockquote-footer">{{macros.ckey(death.name, death.byondkey)}}, {{death.last_line}}</footer>
         </blockquote>
     </div>
   </div>

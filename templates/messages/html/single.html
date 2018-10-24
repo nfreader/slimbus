@@ -1,6 +1,8 @@
 <div class="card {{message.type}} mb-4">
   <div class="card-header {{message.class}} d-flex justify-content-between">
-    <span class="message-title"><i class="fas fa-{{message.icon}}"></i> {{message.type}} <a href="{{path_for('message.single', {'id': message.id})}}" class="{{message.class}}">#{{message.id}}</a> {% if 'Memo' != message.type %} for {{message.target.label|raw}} {% endif %} by {{message.admin.label|raw}}</span>
+    <span class="message-title"><i class="fas fa-{{message.icon}}"></i> {{message.type}} <a href="{{path_for('message.single', {'id': message.id})}}" class="{{message.class}}">#{{message.id}}</a> 
+    {% if 'Memo' != message.type %} for <a href="{{path_for('player.single',{'ckey': message.target.ckey})}}">{{message.target.label|raw}}</a>
+    {% endif %} by {{message.admin.label|raw}}</span>
     <span class="message-timestamp">Posted {{message.timestamp|timestamp|raw}}</span>
   </div>
   <div class="card-body">{{message.text|raw}}</div>
@@ -12,7 +14,13 @@
     </span>
     {% endif %}
     <span>{% if message.expire %}Expires: {{message.expire|timestamp|raw}} {% endif %}</span>
-    <span>{% if message.secret %} <span class="tlp tlp-red">Do not disclose to non-admins</span> {% endif %}</span>
+    <span>
+      {% if 'Note' == message.type %}
+        {% if message.secret %}
+          <span class="tlp tlp-red">Do not disclose to non-admins</span>
+        {% endif %}
+      {% endif %}
+    </span>
     <span>{% if message.lasteditor %}Last edited by {{message.editor.label|raw}} {% endif %}</span>
   </div>
 </div>
