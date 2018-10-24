@@ -15,13 +15,14 @@ class BanController extends Controller {
     $standing = new \stdclass;
     $standing->ban_list = [];
 
-    $bans = $this->DB->run("SELECT
-      bantype,
+    $bans = $this->DB->run("SELECT bantype,
       id
       FROM ss13ban
       WHERE ckey = ?
       AND (ss13ban.expiration_time > NOW()
-      OR ss13ban.unbanned != 1)
+      OR ss13ban.unbanned != 1
+      OR (ss13ban.duration = -1
+      AND ss13ban.unbanned IS NULL))
       ORDER BY bantype, id DESC;", $ckey);
     if(!$bans){
       $standing->class = 'success';

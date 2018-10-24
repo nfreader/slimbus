@@ -24,7 +24,7 @@
   <div class="col">
     <ul class="list-group">
       <li class="list-group-item list-group-item-{{player.standing.class}}">
-        <strong>Account Standing</strong> {{player.standing.text}} <a href="#">#{{player.standing.id}}</a>
+        <strong>Account Standing</strong> {{player.standing.text}} {% if player.standing.id %} <a href="#">#{{player.standing.id}}</a> {% endif %}
       </li>
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <strong>IPs seen</strong> <span class='badge badge-pill badge-primary'>{{player.ips|length}}</span>
