@@ -13,7 +13,7 @@
   </div>
   <div class="col">
     <p class="text-muted text-right">Showing rounds between {{round.firstListing}} UTC and {{round.lastListing}} UTC<br>
-      <a href="{{app.url}}round.php?names">Some famous Nanotrasen Space Stations</a>
+      <a href="{{path_for('round.stations')}}">Some famous Nanotrasen Space Stations</a>
     </p>
   </div>
 </div>

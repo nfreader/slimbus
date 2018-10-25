@@ -121,4 +121,11 @@ class RoundController Extends Controller {
       'breadcrumbs' => $this->breadcrumbs
     ]);
   }
+
+  public function stationNames($request, $response, $args){
+    $names = $this->DB->run("SELECT station_name, id FROM tbl_round WHERE station_name IS NOT NULL ORDER BY RAND() DESC LIMIT 0, 1000;");
+    return $this->view->render($response, 'rounds/stationnames.tpl',[
+      'names'       => $names,
+    ]);
+  }
 }
