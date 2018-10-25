@@ -12,6 +12,12 @@ if (PHP_SAPI == 'cli-server') {
 ini_set('session.gc_maxlifetime', 432000);
 ini_set('session.cookie_lifetime', 432000);
 
+$secure = true;
+if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') {
+  $secure = false;
+}
+session_set_cookie_params(432000,'/',parse_url($_SERVER['REQUEST_URI'],PHP_URL_HOST),$secure, TRUE);
+
 require __DIR__ . '/../vendor/autoload.php';
 
 $dotenv = new Dotenv\Dotenv(__DIR__.'/..');
