@@ -22,8 +22,8 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="" role="button" aria-haspopup="true" aria-expanded="farlse"><i class="fas fa-info-circle"></i> Info</a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="{{path_for('admin_connections')}}"><i class="fas fa-user-clock"></i>Admin Activity</a>
-            <a class="dropdown-item" href="{{path_for('admin_logs')}}"><i class="fas fa-user-times"></i>Admin Rank Activity</a>
+            <a class="dropdown-item" href="{{path_for('admin_connections')}}"><i class="fas fa-user-clock"></i> Admin Activity</a>
+            <a class="dropdown-item" href="{{path_for('admin_logs')}}"><i class="fas fa-user-times"></i> Admin Rank Activity</a>
           </div>
         </li>
         {% if user.canAccessTGDB %}
@@ -35,7 +35,7 @@
         </li>
         {% endif %}
     </div>
-    {% if user.level >= 2 %}
+    {% if user.canAccessTGDB %}
       <form class="form-inline">
           <input class="form-control mr-sm-2 form-control-sm" type="search" placeholder="ckey" aria-label="Search" id="tgdbsearch">
         </form>
@@ -49,7 +49,7 @@
         <span class="badge badge-secondary ml-2">Authenticate</span>
       </a>
       {% endif %}
-      {% if app.constants.DEBUG %}
+      {% if settings.debug %}
         <span class="badge badge-danger ml-2 px-2">
           <span class="text-light">DEBUG MODE</span>
         </span>

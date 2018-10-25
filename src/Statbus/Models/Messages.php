@@ -42,28 +42,28 @@ class Messages {
 
     }
 
+    if(isset($message->severity)){
+      switch ($message->severity) {
+        case 'high':
+          $message->severity_class = 'danger';
+        break;
 
-    switch ($message->severity) {
-      case 'high':
-        $message->severity_class = 'danger';
-      break;
+        case 'medium':
+          $message->severity_class = 'warning';
+        break;
 
-      case 'medium':
-        $message->severity_class = 'warning';
-      break;
+        case 'minor':
+          $message->severity_class = 'info';
+        break;
 
-      case 'minor':
-        $message->severity_class = 'info';
-      break;
-
-      default:
-      case 'none':
-        $message->severity_class = 'success';
-        $message->severity = "None";
-      break;
+        default:
+        case 'none':
+          $message->severity_class = 'success';
+          $message->severity = "None";
+        break;
+      }
+      $message->severity = ucwords($message->severity);
     }
-
-    $message->severity = ucwords($message->severity);
 
     $message->type = ucwords($message->type);
 

@@ -36,6 +36,9 @@ $app->group('', function () {
 
   //Index
   $this->get('/rounds[/page/{page}]', \Statbus\Controllers\RoundController::class . ':index')->setName('round.index');
+
+  //Index
+  $this->get('/rounds/stations', \Statbus\Controllers\RoundController::class . ':stationNames')->setName('round.stations');
   
   //Single - Also handles single stat views!
   $this->get('/rounds/{id:[0-9]+}[/{stat}]', \Statbus\Controllers\RoundController::class . ':single')->setName('round.single');

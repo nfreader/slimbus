@@ -18,6 +18,7 @@ class Player {
       $rank = $player->rank->rank;
     } else {
       $rank = 'Player';
+      $player->rank = 'Player';
     }
 
     $player->design = [

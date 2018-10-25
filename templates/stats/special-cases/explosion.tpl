@@ -5,7 +5,7 @@
 <table class="table table-sm table-bordered sort">
   <thead>
     <tr>
-      <th>Devestation</th>
+      <th>Devastation</th>
       <th>Heavy</th>
       <th>Light</th>
       <th>Flash</th>
