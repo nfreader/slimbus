@@ -90,10 +90,38 @@ class AuthController Extends Controller{
     foreach($res as $k => $v){
       $_SESSION['sb'][$k] = $v;
     }
-    return $this->view->render($response, 'auth/return.tpl');
+    if(isset($_SESSION['return_uri'])) {
+      $return_uri = $_SESSION['return_uri'];
+    } else {
+      $return_uri = false;
+    }
+    return $this->view->render($response, 'auth/return.tpl',[
+      'return_uri' => $return_uri
+    ]);
   }
 
-   public function logout($request, $response, $args) {
+  public function doubleCheckRemote() {
+    if ($_SESSION['canary'] < time() - 300) {
+      $client = new \GuzzleHttp\Client();
+      $res = $client->request('GET', $this->AuthSessionUrl, [
+        'query'=> [
+          'site_private_token'    => $this->site_private_token,
+          'session_private_token' => $this->session_private_token,
+        ]
+      ]);
+      $res = json_decode($res->getBody());
+      if('OK' != $res->status){
+        session_unset();
+        session_destroy();
+        session_start();
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
+  public function logout($request, $response, $args) {
     $_SESSION = '';
     session_destroy();
     $this->user = null;

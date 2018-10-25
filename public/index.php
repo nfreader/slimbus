@@ -9,6 +9,8 @@ if (PHP_SAPI == 'cli-server') {
     }
 }
 
+ini_set('session.gc_maxlifetime', 432000);
+ini_set('session.cookie_lifetime', 432000);
 
 require __DIR__ . '/../vendor/autoload.php';
 

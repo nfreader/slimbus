@@ -57,9 +57,14 @@ class UserController Extends Controller {
   public function fetchUser(){
     return $this->user;
   }
+
+  public function getCkey(){
+    return $this->user->ckey;
+  }
   
   public function canAccessTGDB(){
     if(empty($this->user->ckey)) return false;
+    if(is_string($this->user->rank) && 'Player' === $this->user->rank) return false;
     if(in_array('BAN', $this->user->rank->permissions)) {
       $this->user->canAccessTGDB = true;
       return true;
