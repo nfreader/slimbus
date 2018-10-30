@@ -6,6 +6,7 @@ use Psr\Container\ContainerInterface;
 use Statbus\Controllers\Controller as Controller;
 use Statbus\Models\Round as Round;
 use Statbus\Controllers\StatController as StatController;
+use Statbus\Controllers\DeathController as DeathContorller;
 
 class RoundController Extends Controller {
   
@@ -63,42 +64,12 @@ class RoundController Extends Controller {
   }
 
   public function single($request, $response, $args) {
-    $round = $this->DB->row("SELECT tbl_round.id,
-      tbl_round.initialize_datetime,
-      tbl_round.start_datetime,
-      tbl_round.shutdown_datetime,
-      tbl_round.end_datetime,
-      tbl_round.server_port AS port,
-      tbl_round.commit_hash,
-      tbl_round.game_mode AS mode,
-      tbl_round.game_mode_result AS result,
-      tbl_round.end_state,
-      tbl_round.shuttle_name AS shuttle,
-      tbl_round.map_name AS map,
-      tbl_round.station_name,
-      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.initialize_datetime, tbl_round.shutdown_datetime)) AS duration,
-      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.start_datetime, tbl_round.end_datetime)) AS round_duration,
-      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.initialize_datetime, tbl_round.start_datetime)) AS init_time,
-      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.end_datetime, tbl_round.shutdown_datetime)) AS shutdown_time,
-      MAX(next.id) AS next,
-      MAX(prev.id) AS prev,
-      COUNT(D.id) AS deaths
-      FROM tbl_round
-      LEFT JOIN tbl_round AS next ON next.id = tbl_round.id + 1
-      LEFT JOIN tbl_round AS prev ON prev.id = tbl_round.id - 1 
-      LEFT JOIN tbl_death AS D ON D.round_id = tbl_round.id
-      WHERE tbl_round.id = ?
-      AND tbl_round.shutdown_datetime IS NOT NULL", $args['id']);
+    $round = $this->getRound($args['id']);
     if(!$round->id) {
       return $this->view->render($response, 'base/error.tpl',[
         'round' => $round,
       ]);
     }
-
-    $round = $this->roundModel->parseRound($round);
-
-    $this->breadcrumbs[$round->id] = $this->router->pathFor('round.single',['id'=>$round->id]);
-
     if(isset($args['stat'])){
       return $this->stat($round, $args['stat'], $response);
     }
@@ -127,5 +98,53 @@ class RoundController Extends Controller {
     return $this->view->render($response, 'rounds/stationnames.tpl',[
       'names'       => $names,
     ]);
+  }
+
+  public function mapView($request, $response, $args){
+    $round = $this->getRound($args['id']);
+    $deaths = (new DeathController($this->container))->deathMap($round->id);
+    $this->breadcrumbs['Map'] = $this->router->pathFor('round.map',[
+      'id'   =>$round->id,
+    ]);
+    return $this->view->render($response, 'rounds/map.tpl',[
+      'round'       => $round,
+      'breadcrumbs' => $this->breadcrumbs,
+      'deaths'      => $deaths,
+      'wide'        => true
+    ]);
+  }
+
+
+  public function getRound($id){
+    $id = filter_var($id, FILTER_VALIDATE_INT);
+    $round = $this->DB->row("SELECT tbl_round.id,
+      tbl_round.initialize_datetime,
+      tbl_round.start_datetime,
+      tbl_round.shutdown_datetime,
+      tbl_round.end_datetime,
+      tbl_round.server_port AS port,
+      tbl_round.commit_hash,
+      tbl_round.game_mode AS mode,
+      tbl_round.game_mode_result AS result,
+      tbl_round.end_state,
+      tbl_round.shuttle_name AS shuttle,
+      tbl_round.map_name AS map,
+      tbl_round.station_name,
+      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.initialize_datetime, tbl_round.shutdown_datetime)) AS duration,
+      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.start_datetime, tbl_round.end_datetime)) AS round_duration,
+      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.initialize_datetime, tbl_round.start_datetime)) AS init_time,
+      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.end_datetime, tbl_round.shutdown_datetime)) AS shutdown_time,
+      MAX(next.id) AS next,
+      MAX(prev.id) AS prev,
+      COUNT(D.id) AS deaths
+      FROM tbl_round
+      LEFT JOIN tbl_round AS next ON next.id = tbl_round.id + 1
+      LEFT JOIN tbl_round AS prev ON prev.id = tbl_round.id - 1 
+      LEFT JOIN tbl_death AS D ON D.round_id = tbl_round.id
+      WHERE tbl_round.id = ?
+      AND tbl_round.shutdown_datetime IS NOT NULL", $id);
+    $round = $this->roundModel->parseRound($round);
+    $this->breadcrumbs[$round->id] = $this->router->pathFor('round.single',['id'=>$round->id]);
+    return $round;
   }
 }

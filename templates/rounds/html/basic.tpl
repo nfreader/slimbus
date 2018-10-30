@@ -39,6 +39,7 @@
       <th class="align-middle text-right">Deaths</th>
       <td class="align-middle">
         <a class="btn btn-primary btn-sm" href="{{path_for('death.round',{'round': round.id})}}">{{round.deaths}}</a>
+        <a href="{{path_for('round.map',{'id': round.id})}}" class="btn btn-primary btn-sm">Map</a>  
       </td>
     </tr>
     <tr>

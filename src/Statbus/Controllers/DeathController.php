@@ -180,4 +180,27 @@ class DeathController Extends Controller{
       'breadcrumbs' => $this->breadcrumbs
     ]);
   }
+
+  public function deathMap($round){
+    $deaths = $this->DB->run("SELECT 
+        tbl_death.id,
+        tbl_death.pod,
+        tbl_death.x_coord AS x,
+        tbl_death.y_coord AS y,
+        tbl_death.tod,
+        tbl_death.job,
+        tbl_death.special,
+        tbl_death.name,
+        tbl_death.byondkey,
+        tbl_death.laname,
+        tbl_death.lakey,
+        tbl_death.suicide
+        FROM tbl_death
+        LEFT JOIN tbl_round ON tbl_round.id = tbl_death.round_id
+        WHERE tbl_round.end_datetime IS NOT NULL
+        AND tbl_death.z_coord = 2
+        AND tbl_death.round_id = ?
+        ORDER BY tbl_death.tod DESC", $round);
+    return json_encode($deaths);
+  }
 }

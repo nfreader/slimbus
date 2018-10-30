@@ -371,6 +371,17 @@
     function unpack(rows, key) {
       return rows.map(function(row) { return row[key]; });
     }
+    function formatDate (date) {
+        return date.getHours()+ ":" +date.getMinutes()+":"+date.getSeconds();
+    }
+
+    function timestamp(str){
+        return new Date(str).getTime();   
+    }
+
+    function date2unix(date){
+      return parseInt((new Date(date).getTime() / 100).toFixed(0))
+    }
     $(function () {
       $('[data-toggle="tooltip"]').tooltip();
       $('.sort').tablesorter();
