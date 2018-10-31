@@ -13,8 +13,14 @@ class StatController {
     $this->DB = $db;
   }
 
-  public function getRoundStat($round, $stat) {
+  public function getRoundStat($round, $stat, $json = false) {
     $stat = $this->DB->row("SELECT * FROM tbl_feedback WHERE round_id = ? AND key_name = ?", $round, $stat);
+    if(!$stat){
+      return false;
+    }
+    if($json) {
+      return $stat->json;
+    }
     return (new Stat())->parseStat($stat);
   }
 

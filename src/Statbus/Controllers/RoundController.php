@@ -103,6 +103,7 @@ class RoundController Extends Controller {
   public function mapView($request, $response, $args){
     $round = $this->getRound($args['id']);
     $deaths = (new DeathController($this->container))->deathMap($round->id);
+    $explosions = (new StatController($this->DB))->getRoundStat($round->id, 'explosion', TRUE);
     $this->breadcrumbs['Map'] = $this->router->pathFor('round.map',[
       'id'   =>$round->id,
     ]);
@@ -110,6 +111,7 @@ class RoundController Extends Controller {
       'round'       => $round,
       'breadcrumbs' => $this->breadcrumbs,
       'deaths'      => $deaths,
+      'explosions'  => $explosions,
       'wide'        => true
     ]);
   }

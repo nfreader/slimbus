@@ -382,6 +382,12 @@
     function date2unix(date){
       return parseInt((new Date(date).getTime() / 100).toFixed(0))
     }
+    function tg2leaf(x,y){
+      lat = (y-255)
+      lng = (x*1)
+      return [lat, lng]
+    }
+
     $(function () {
       $('[data-toggle="tooltip"]').tooltip();
       $('.sort').tablesorter();

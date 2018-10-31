@@ -1,6 +1,7 @@
 {% extends "base/index.html"%}
 {% block pagetitle %}Map Data - Round #{{round.id}}{% endblock %}
 {% block content %}
+
 <div class="leaflet-map" id="map"></div>
 
 {% endblock %}
@@ -20,12 +21,6 @@ var map = L.map("map", {
   crs: L.CRS.Simple,
 }).setView([-128,128], 2);
 L.control.zoom({position: "topleft"}).addTo(map);
-
-function tg2leaf(x,y){
-  lat = (y-255)
-  lng = (x*1)
-  return [lat, lng]
-}
 
 var roundstart = timestamp('{{round.start_datetime}}');
 var roundend = timestamp('{{round.end_datetime}}');
@@ -52,7 +47,44 @@ for (var d in deaths) {
     corpse.options.time = deaths[d].tod
     corpse.addTo(corpses);
 }
-L.control.layers().addOverlay(corpses,"Deaths").addTo(map);
+// L.control.layers().addOverlay(corpses,"Deaths").addTo(map);
+
+var explosions = {{explosions|raw}}.data;
+var exps = L.layerGroup();
+for (var e in explosions){
+  if (explosions[e].z == "2") {
+    if(explosions[e].flash > 0){
+      var flashCircle = L.circle(tg2leaf(explosions[e].x-.5,explosions[e].y-.5), {
+          color: 'white',
+          radius: +explosions[e].flash+.5
+      }).bindPopup("Flash Range: " + explosions[e].flash + " from explosion at " + explosions[e].area).addTo(exps);
+    }
+    if(explosions[e].light > 0){
+      var lightCircle = L.circle(tg2leaf(explosions[e].x-.5,explosions[e].y-.5), {
+          color: 'yellow',
+          radius: +explosions[e].light+.5
+      }).bindPopup("Light Damage Range: " + explosions[e].light + " from explosion at " + explosions[e].area).addTo(exps);
+    }
+    if(explosions[e].heavy > 0){
+      var heavyCircle = L.circle(tg2leaf(explosions[e].x-.5,explosions[e].y-.5), {
+          color: 'orange',
+          radius: +explosions[e].heavy+.5
+      }).bindPopup("Heavy Damage Range: " + explosions[e].heavy + " from explosion at " + explosions[e].area).addTo(exps);
+    }
+    if(explosions[e].dev > 0){
+      var devCircle = L.circle(tg2leaf(explosions[e].x-.5,explosions[e].y-.5), {
+          color: 'red',
+          radius: +explosions[e].dev+.5
+      }).bindPopup("Devestation Range: " + explosions[e].dev + " from explosion at " + explosions[e].area).addTo(exps);
+    }
+  }
+}
+// L.control.layers().addOverlay(exps,"Explosions").addTo(map);
+
+L.control.layers()
+.addOverlay(corpses,"Deaths")
+.addOverlay(exps,"Explosions")
+.addTo(map);
 
 </script>
 {% endblock %}
