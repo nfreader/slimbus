@@ -44,9 +44,9 @@ var deaths = {{deaths|raw}};
 for (var d in deaths) {
   var corpse = L.polygon([
           tg2leaf(deaths[d].x,   deaths[d].y),
-          tg2leaf(deaths[d].x+1,   deaths[d].y),
-          tg2leaf(deaths[d].x+1,   deaths[d].y+1),
-          tg2leaf(deaths[d].x,   deaths[d].y+1)
+          tg2leaf(deaths[d].x-1,   deaths[d].y),
+          tg2leaf(deaths[d].x-1,   deaths[d].y-1),
+          tg2leaf(deaths[d].x,   deaths[d].y-1)
         ], {color: 'red'})
     .bindPopup(deaths[d].name + " at " + deaths[d].pod)
     corpse.options.time = deaths[d].tod
