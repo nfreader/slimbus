@@ -1,6 +1,6 @@
 <?php
 return [
-  'app_name'       => 'Statbus',
+  'app_name'       => getenv('APP') ?: 'Statbus',
   'UA'             => getenv('UA') ?: null,
   'remote_log_src' => getenv('REMOTE_LOGS') ?: null,
   'github'         => getenv('GITHUB') ?: null
