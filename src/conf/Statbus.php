@@ -3,7 +3,7 @@ return [
   'app_name'       => getenv('APP') ?: 'Statbus',
   'UA'             => getenv('UA') ?: null,
   'remote_log_src' => getenv('REMOTE_LOGS') ?: null,
-  'github'         => getenv('GITHUB') ?: null
+  'github'         => getenv('GITHUB') ?: null,
   'auth'           => [
     'remote_auth'  => getenv('REMOTE_AUTH') ?: false,
     'oauth_start'  => 'oauth_create_session.php',
