@@ -1,3 +1,4 @@
 /vendor/
 .env
 /tmp/
+composer.lock

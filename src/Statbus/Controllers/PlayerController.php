@@ -4,7 +4,7 @@ namespace Statbus\Controllers;
 use Psr\Container\ContainerInterface;
 use Statbus\Controllers\Controller as Controller;
 use Statbus\Models\Player as Player;
-// use GuzzleHtpp\Guzzle;
+
 
 class PlayerController Extends Controller {
 

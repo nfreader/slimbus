@@ -12,17 +12,18 @@ class StatbusController extends Controller {
 
   public function __construct(ContainerInterface $container) {
     parent::__construct($container);
+    $this->guzzle = $this->container->get('guzzle');
   }
 
   public function index($request, $response, $args) {
     return $this->view->render($response, 'index.tpl',[
-      'numbers' => $this->getBigNumbers()
+      'numbers' => $this->getBigNumbers(),
+      'poly'    => $this->getPolyLine(),
     ]);
   }
 
   public function getBigNumbers(){
     $numbers = new \stdclass;
-
     $numbers->playtime = number_format($this->DB->row("SELECT sum(tbl_role_time.minutes) AS minutes FROM tbl_role_time WHERE tbl_role_time.job = 'Living';")->minutes);
     $numbers->deaths = number_format($this->DB->cell("SELECT count(id) as deaths FROM tbl_death;")+rand(-15,15));//fuzzed
     $numbers->rounds = number_format($this->DB->cell("SELECT count(id) as rounds FROM tbl_round;"));
@@ -147,5 +148,13 @@ class StatbusController extends Controller {
     return $this->view->render($this->response, 'tgdb/index.tpl',[
       'memos' => $memos
     ]);
+  }
+
+  public function getPolyLine() {
+    $server = pick('sybil,terry');
+    $poly = $this->guzzle->request('GET','https://tgstation13.org/parsed-logs/'.$server.'/data/npc_saves/Poly.json');
+    $poly = json_decode((string) $poly->getBody(), TRUE);
+    // var_dump();
+    return pick($poly['phrases']);
   }
 }

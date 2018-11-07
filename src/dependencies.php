@@ -44,9 +44,40 @@ $container['view'] = function ($container) {
 
   //Global statbus settings
   $view->getEnvironment()->addGlobal('statbus', $container->get('settings')['statbus']);
-  // $user = $container->get('user')->fetchUser();
-  // $view->getEnvironment()->addGlobal('user',$user);
+  //User added by the UserController when it gets instantiated
   return $view;
 };
 
+//Guzzle 
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Handler\CurlHandler;
+use GuzzleHttp\Psr7\InflateStream;
+use Kevinrob\GuzzleCache\CacheMiddleware;
+use League\Flysystem\Adapter\Local;
+use Kevinrob\GuzzleCache\KeyValueHttpHeader;
+use Kevinrob\GuzzleCache\Strategy\GreedyCacheStrategy;
+use Kevinrob\GuzzleCache\Storage\DoctrineCacheStorage;
+use Doctrine\Common\Cache\FilesystemCache;
 
+$container['guzzle'] = function ($container) {
+  $stack = HandlerStack::create();
+  $stack->push(
+      new CacheMiddleware(new GreedyCacheStrategy(new DoctrineCacheStorage(new FilesystemCache(__DIR__.'/../tmp/guzzle')),3600)),'greedy-cache'
+    );
+  $client = new Client([
+    'handler'        => $stack,
+    'headers'        => [
+      'Accept-Encoding' => 'gzip',
+      'User-Agent'      => 'Statbus'
+    ],
+  ]);
+  return $client;
+};
+
+function pick($list) {
+  if (!is_array($list)) {
+    $list = explode(',',$list);
+  }
+  return $list[floor(rand(0,count($list)-1))];
+}
