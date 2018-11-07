@@ -2,3 +2,4 @@
 .env
 /tmp/
 composer.lock
+src/conf/servers.json

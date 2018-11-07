@@ -2,10 +2,7 @@
 // DIC configuration
 
 $container = $app->getContainer();
-
-//Inject Statbus settings because the default app instantiator doesn't work(?!)
 $settings = $container->get('settings');
-$settings->replace(['statbus' => require __DIR__ . '/../src/conf/Statbus.php']);
 
 // DB
 $container['DB'] = function ($c) {

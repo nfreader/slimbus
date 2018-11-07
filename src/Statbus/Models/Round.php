@@ -42,7 +42,9 @@ class Round {
 
     $round = $this->mapStatus($round);
     $round->server = $this->settings['servers'][array_search($round->port, array_column($this->settings['servers'], 'port'))]['name'];
-
+    if (!$round->server) {
+      $round->server = 'Unknown';
+    }
     $round->shuttle = preg_replace("/[^a-zA-Z\d\s:]/", '', $round->shuttle);
     $round->shuttle = ucwords($round->shuttle);
     if('' == $round->shuttle) $round->shuttle = false;
