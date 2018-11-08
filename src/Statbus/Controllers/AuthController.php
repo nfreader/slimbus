@@ -16,9 +16,7 @@ class AuthController Extends Controller{
 
   public function __construct(ContainerInterface $container) {
     parent::__construct($container);
-
     $this->settings = $container->get('settings')['statbus']['auth'];
-
     if(!$this->settings['remote_auth']) {
       return $this->view->render($this->response, 'base/error.tpl', [
         'message' => "Authentication not supported",
@@ -70,6 +68,7 @@ class AuthController Extends Controller{
   public function auth_redirect(){
     $this->session_public_token  = $_SESSION['session_public_token'];
     $this->session_private_token = $_SESSION['session_private_token'];
+
     return $this->response->withRedirect("$this->TokenUrl?session_public_token=".urlencode($this->session_public_token));
   }
 

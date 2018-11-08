@@ -10,6 +10,7 @@
 2. Clone this repo into the document root you specified in step 1.
 3. Run  `composer update` and `composer dump-autoload -o`.
 4. Copy `.env.example` to `.env` and adjust your settings accordingly.
+5. Copy `src/conf/example-servers.json` to `src/conf/servers.json` and customize your settings accordingly.
 
 ## Updating
 1. Run `git pull`.

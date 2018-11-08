@@ -14,7 +14,7 @@ if(php_sapi_name() != 'cli'){
   if(!getenv('DEBUG')){
     session_start([
         'cookie_httponly' => true,
-        'cookie_secure' => true
+        'cookie_secure' => $secure
     ]);
   } else {
     session_start();

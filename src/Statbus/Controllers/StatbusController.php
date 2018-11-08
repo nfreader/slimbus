@@ -12,6 +12,7 @@ class StatbusController extends Controller {
 
   public function __construct(ContainerInterface $container) {
     parent::__construct($container);
+
     $this->guzzle = $this->container->get('guzzle');
   }
 
@@ -151,10 +152,15 @@ class StatbusController extends Controller {
   }
 
   public function getPolyLine() {
-    $server = pick('sybil,terry');
-    $poly = $this->guzzle->request('GET','https://tgstation13.org/parsed-logs/'.$server.'/data/npc_saves/Poly.json');
-    $poly = json_decode((string) $poly->getBody(), TRUE);
-    // var_dump();
-    return pick($poly['phrases']);
+
+    if($this->container->get('settings')['statbus']['remote_log_src']){
+      $server = pick('sybil,terry');
+      $poly = $this->guzzle->request('GET','https://tgstation13.org/parsed-logs/'.$server.'/data/npc_saves/Poly.json');
+      $poly = json_decode((string) $poly->getBody(), TRUE);
+      // var_dump();
+      return pick($poly['phrases']);
+    } else {
+      return false;
+    }
   }
 }

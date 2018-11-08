@@ -1,7 +1,7 @@
 {% extends ('base/index.html') %}
     {% block content %}
       <h1>Welcome to {{statbus.app_name}}!<br>
-        {% if user.ckey %}
+        {% if user.ckey and poly %}
           <div id="poly" class="engradio">
             [Poly] &ldquo;{{poly}}&rdquo;
             <img src="https://atlantaned.space/statbus/icons/mob/animal/parrot_sit.png" height="64" width="64"  alt="And now a word from Poly" />
