@@ -17,6 +17,7 @@ class Controller {
   public $per_page = 60;
 
   public $breadcrumbs = [];
+  public $ogdata = [];
 
   public function __construct(ContainerInterface $container) {
     $this->container = $container;
@@ -25,6 +26,17 @@ class Controller {
     $this->router = $this->container->get('router');
     $this->request = $this->container->get('request');
     $this->response = $this->container->get('response');
-    }
+    $this->ogdata = [
+      'site_name' => $this->container->get('settings')['statbus']['app_name'],
+      'url'       => $this->request->getUri()->getBaseUrl().$this->router->pathFor('statbus'),
+      'type'      => 'object',
+    ];
+    $this->view->getEnvironment()->addGlobal('ogdata', $this->ogdata);
+  }
+
+  public function getFullURL($path){
+    $base = trim($this->request->getUri()->getBaseUrl(), '/');
+    return $base.$path;
+  }
 }
 

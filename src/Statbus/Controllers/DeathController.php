@@ -112,8 +112,10 @@ class DeathController Extends Controller{
     foreach ($deaths as &$death){
       $death = $this->deathModel->parseDeath($death);
     }
-
-    $this->breadcrumbs['Round '.$args['round']] = $this->router->pathFor('round.single',['id'=>$args['round']]);
+    $url = parent::getFullURL($this->router->pathFor('round.single',['id'=>$args['round']]));
+    $this->ogdata['url'] = $url;
+    $this->ogdata['title'] = "Deaths for Round #$round";
+    $this->breadcrumbs['Round '.$args['round']] = $url;
 
     $this->url = $this->router->pathFor('death.round',['round'=>$args['round']]);
 
@@ -121,7 +123,8 @@ class DeathController Extends Controller{
       'deaths'      => $deaths,
       'death'       => $this,
       'wide'        => true,
-      'breadcrumbs' => $this->breadcrumbs
+      'breadcrumbs' => $this->breadcrumbs,
+      'ogdata'      => $this->ogdata
     ]);
   }
 
@@ -156,10 +159,23 @@ class DeathController Extends Controller{
         WHERE tbl_round.end_datetime IS NOT NULL
         AND tbl_death.id = ?", $args['id']);
       $death = $this->deathModel->parseDeath($death);
-    $this->breadcrumbs[$death->id] = $this->router->pathFor('death.single',['id'=>$death->id]);
+      $url = parent::getFullURL($this->router->pathFor('death.single',['id'=>$death->id]));
+    $this->breadcrumbs[$death->id] = $url;
+    if($death->lakey) {
+      $this->ogdata['title'] = "RIP $death->name - $death->tod, murdered by $death->laname";
+    } else {
+      $this->ogdata['title'] = "RIP $death->name - $death->tod";
+    }
+    $this->ogdata['description']= "At $death->mapname's $death->pod during round $death->round. ";
+    if($death->last_words) {
+      $this->ogdata['description'].= "Their last words were '$death->last_words'. ";
+    }
+    $this->ogdata['description'].= "Cause of death: $death->cause";
+    $this->ogdata['url'] = $url;
     return $this->view->render($response, 'death/death.tpl',[
       'death'       => $death,
-      'breadcrumbs' => $this->breadcrumbs
+      'breadcrumbs' => $this->breadcrumbs,
+      'ogdata'      => $this->ogdata
     ]);
   }
 

@@ -76,20 +76,25 @@ class RoundController Extends Controller {
     $round->stats = (new StatController($this->DB))->getStatsForRound($round->id);
     return $this->view->render($response, 'rounds/round.tpl',[
       'round'       => $round,
-      'breadcrumbs' => $this->breadcrumbs
+      'breadcrumbs' => $this->breadcrumbs,
+      'ogdata'      => $this->ogdata
     ]);
   }
 
   public function stat(object $round, string $stat, $response){
     $round->stat = (new StatController($this->DB))->getRoundStat($round->id, $stat);
-    $this->breadcrumbs[$stat] = $this->router->pathFor('round.single',[
+    $url = parent::getFullURL($this->router->pathFor('round.single',[
       'id'   =>$round->id,
       'stat' =>$stat
-    ]);
+    ]));
+    $this->breadcrumbs[$stat] = $url;
+    $this->ogdata['url'] = $url;
+    $this->ogdata['description'] = "Stats for $stat from round $round->id on $round->server";
     return $this->view->render($response, 'stats/stat.tpl',[
       'round'       => $round,
       'stat'        => $round->stat,
-      'breadcrumbs' => $this->breadcrumbs
+      'breadcrumbs' => $this->breadcrumbs,
+      'ogdata'      => $this->ogdata
     ]);
   }
 
@@ -117,7 +122,7 @@ class RoundController Extends Controller {
   }
 
 
-  public function getRound($id){
+  public function getRound(int $id){
     $id = filter_var($id, FILTER_VALIDATE_INT);
     $round = $this->DB->row("SELECT tbl_round.id,
       tbl_round.initialize_datetime,
@@ -146,7 +151,11 @@ class RoundController Extends Controller {
       WHERE tbl_round.id = ?
       AND tbl_round.shutdown_datetime IS NOT NULL", $id);
     $round = $this->roundModel->parseRound($round);
-    $this->breadcrumbs[$round->id] = $this->router->pathFor('round.single',['id'=>$round->id]);
+    $url = parent::getFullURL($this->router->pathFor('round.single',['id'=>$round->id]));
+    $this->breadcrumbs[$round->id] = $url;
+    $this->ogdata['url'] = $url;
+    $this->ogdata['title'] = "Round #$round->id on $round->server";
+    $this->ogdata['description'] = "A round of $round->mode on $round->map that lasted $round->duration and ended with $round->result and $round->deaths deaths.";
     return $round;
   }
 }
