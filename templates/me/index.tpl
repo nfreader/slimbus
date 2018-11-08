@@ -3,7 +3,9 @@
 {% if user.ckey %}
 
 <div class="page-header">
+  {% if statbus.auth.remote_auth %}
   <a class="badge badge-danger float-right" href="{{path_for('logout')}}">Logout</a>
+  {% endif %}
   <h1><small class="text-muted">You are</small> {{user.label|raw}}</h1>
 </div>
 <hr>

@@ -10,6 +10,8 @@ return [
     'token_url'    => 'oauth.php',
     'auth_session' => 'oauth_get_session_info.php'
   ],
+  'ip_auth'        => getenv('IP_AUTH') ?: false,
+  'ip_auth_days'   => getenv('IP_AUTH_DAYS') ?: 10,
   'perm_flags'     => [
     'BUILDMODE'   => (1<<0),
     'ADMIN'       => (1<<1),

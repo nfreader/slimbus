@@ -11,26 +11,34 @@ class UserController Extends Controller {
 
   //This controller is STRICTLY reserved for the current logged in user ONLY
   //and details about them.
+  
+  public $user = false;
+  private $skipRankVerify = false;
 
   public function __construct(ContainerInterface $container) {
     parent::__construct($container);
     $this->playerModel = new Player($this->container->get('settings')['statbus']);
     $this->PC = new PlayerController($this->container);
+    $this->settings = $this->container->get('settings');
 
-    if(isset($_SESSION['sb']['byond_ckey'])){
-      $this->user = $this->getUser($_SESSION['sb']['byond_ckey']);
-      $this->verifyAdminRank();
+    if(isset($_SESSION['sb']['byond_ckey']) && $this->settings['statbus']['auth']['remote_auth']){
+      $this->user = $this->PC->getPlayerByCkey($_SESSION['sb']['byond_ckey']);
+    } elseif ($this->settings['statbus']['ip_auth']){
+      $this->user = $this->PC->getPlayerByIP(ip2long($_SERVER['REMOTE_ADDR']));
+      if($this->user->days > $this->settings['statbus']['ip_auth_days']){
+        //Skip admin rank verification. 
+        $this->skipRankVerify = true;
+      }
+    }
+    if($this->user){
+      $this->verifyAdminRank($this->skipRankVerify);
       $this->user = $this->playerModel->parsePlayer($this->user);
       $this->view->getEnvironment()->addGlobal('user', $this->user);
     }
   }
 
-  public function getUser($ckey){
-    return $this->PC->getPlayerByCkey($ckey);
-  }
-
-  public function verifyAdminRank() {
-    if(empty($this->user->ckey)){
+  public function verifyAdminRank($skip = false) {
+    if(empty($this->user->ckey) || $skip){
       $this->user->rank = 'Player';
       return;
     }
