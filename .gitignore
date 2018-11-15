@@ -3,3 +3,4 @@
 /tmp/
 composer.lock
 src/conf/servers.json
+src/conf/ranks.json

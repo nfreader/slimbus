@@ -32,6 +32,10 @@ if(file_exists(__DIR__ . '/../src/conf/servers.json')){
   $settings['settings']['statbus']['servers'] = json_decode(file_get_contents(__DIR__ . '/../src/conf/servers.json'), true);
 }
 
+if(file_exists(__DIR__ . '/../src/conf/ranks.json')){
+  $settings['settings']['statbus']['ranks'] = json_decode(file_get_contents(__DIR__ . '/../src/conf/ranks.json'), true);
+}
+
 $app = new \Slim\App($settings);
 
 // Set up dependencies

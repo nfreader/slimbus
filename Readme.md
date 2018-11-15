@@ -11,6 +11,7 @@
 3. Run  `composer update` and `composer dump-autoload -o`.
 4. Copy `.env.example` to `.env` and adjust your settings accordingly.
 5. Copy `src/conf/example-servers.json` to `src/conf/servers.json` and customize your settings accordingly.
+6. Copy `src/conf/example-ranks.json` to `src/conf/ranks.json` and customize your settings accordingly. Icons are from [FontAwesome](https://fontawesome.com/icons?d=gallery&m=free). 
 
 ## Updating
 1. Run `git pull`.

@@ -35,55 +35,10 @@ return [
       'foreColor' => '#FFF',
       'icon'      => 'code'
     ],
-    'Codermin' => [
-      'backColor' => '#31b626',
-      'foreColor' => '#FFF',
-      'icon'      => 'code'
-    ],
-    'Debugger' => [
-      'backColor' => '#31b626',
-      'foreColor' => '#FFF',
-      'icon'      => 'spider'
-    ],
-    'TrialAdmin' => [
-      'backColor' => '#d05995',
-      'foreColor' => '#FFF',
-      'icon'      => 'gavel'
-    ],
-    'GameAdmin' => [
+    'Admin' => [
       'backColor' => '#9b59b6',
       'foreColor' => '#FFF',
       'icon'      => 'asterisk'
-    ],
-    'Barista' => [
-      'backColor' => '#6b4711',
-      'foreColor' => '#FFF',
-      'icon'      => 'coffee'
-    ],
-    'AdminTrainer' => [
-      'backColor' => '#9570c0',
-      'foreColor' => '#FFF',
-      'icon'      => 'asterisk'
-    ],
-    'GameMaster' => [
-      'backColor' => '#d9b733',
-      'foreColor' => '#000',
-      'icon'      => 'dungeon'
-    ],
-    'HeadAdmin' => [
-      'backColor' => '#ffa500',
-      'foreColor' => '#000',
-      'icon'      => 'star'
-    ],
-    'HeadCoder' => [
-      'backColor' => '#31b626',
-      'foreColor' => '#FFF',
-      'icon'      => 'star'
-    ],
-    'Host' => [
-      'backColor' => '#A00',
-      'foreColor' => '#FFF',
-      'icon'      => 'server'
     ],
   ],
   'servers'        => [

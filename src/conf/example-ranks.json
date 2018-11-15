@@ -1,0 +1,11 @@
+{
+  "Coder":{
+    "backColor":"#31b626",
+    "foreColor":"#FFF",
+    "icon":"code"
+  },
+"Admin": {
+  "backColor": "#9b59b6",
+  "foreColor": "#FFF",
+  "icon": "asterisk"
+}
