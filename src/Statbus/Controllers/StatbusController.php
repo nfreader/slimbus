@@ -157,7 +157,6 @@ class StatbusController extends Controller {
       $server = pick('sybil,terry');
       $poly = $this->guzzle->request('GET','https://tgstation13.org/parsed-logs/'.$server.'/data/npc_saves/Poly.json');
       $poly = json_decode((string) $poly->getBody(), TRUE);
-      // var_dump();
       return pick($poly['phrases']);
     } else {
       return false;

@@ -3,6 +3,8 @@
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+// $app->add(new \Statbus\Middleware\OpenGraph($container));
+
 // Routes
 
 //Index URL
@@ -42,6 +44,12 @@ $app->group('', function () {
   
   //Map view
   $this->get('/rounds/{id:[0-9]+}/map', \Statbus\Controllers\RoundController::class . ':mapView')->setName('round.map');
+
+  //Logs
+  $this->get('/rounds/{id:[0-9]+}/logs', \Statbus\Controllers\RoundController::class . ':listLogs')->setName('round.logs');
+
+  //Single log file
+  $this->get('/rounds/{id:[0-9]+}/logs/{file:[a-zA-Z.]+}[/{raw}]', \Statbus\Controllers\RoundController::class . ':getLogFile')->setName('round.log');
 
   //Single - Also handles single stat views!
   $this->get('/rounds/{id:[0-9]+}[/{stat}]', \Statbus\Controllers\RoundController::class . ':single')->setName('round.single');
@@ -89,7 +97,5 @@ $app->group('', function () {
 
   //Single Player View
   $this->get('/tgdb/player/{ckey:[a-z0-9]+}', \Statbus\Controllers\PlayerController::class . ':getPlayer')->setName('player.single');
-
-
 
 })->add(new \Statbus\Middleware\UserGuard($container));

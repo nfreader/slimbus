@@ -2,6 +2,8 @@
 
 namespace Statbus\Controllers;
 
+use ParagonIE\EasyDB\Exception\ConstructorFailed as CFException;
+
 class DBController {
   
   private $database;
@@ -39,9 +41,14 @@ class DBController {
           $options
       );
       $this->db = $db;
-    } catch (Exception $e){
-      var_dump($e->getMessage());
-
+      // var_dump($this->db->run("SHOW GRANTS FOR CURRENT_USER as grants;"));
+    } catch (CFException $e){
+      if(isset($conn['canFail']) && $conn['canFail']){
+        $this->db = false;
+      }
+      else {
+        var_dump($e->getMessage());
+      }
     }
     
   }

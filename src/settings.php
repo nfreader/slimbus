@@ -20,8 +20,22 @@ return [
                 'prefix'    => getenv('DB_PREFIX')   ?: 'ss13',
                 'charset'   => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
-                'strict' => false,
-                'engine' => null,
+                'strict'    => false,
+                'engine'    => null,
+                'canFail'   => FALSE
+            ],
+            'alt' => [
+                'host'      => getenv('ALT_DB_HOST')     ?: '127.0.0.1',
+                'port'      => getenv('ALT_DB_PORT')     ?: 3306,
+                'database'  => getenv('ALT_DB_DATABASE') ?: 'statbus',
+                'username'  => getenv('ALT_DB_USERNAME') ?: 'root',
+                'password'  => getenv('ALT_DB_PASSWORD') ?: '123',
+                'prefix'    => getenv('ALT_DB_PREFIX')   ?: '',
+                'charset'   => 'utf8mb4',
+                'collation' => 'utf8mb4_unicode_ci',
+                'strict'    => false,
+                'engine'    => null,
+                'canFail'   => TRUE
             ]
         ],
     ],

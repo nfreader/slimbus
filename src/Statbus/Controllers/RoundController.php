@@ -7,6 +7,7 @@ use Statbus\Controllers\Controller as Controller;
 use Statbus\Models\Round as Round;
 use Statbus\Controllers\StatController as StatController;
 use Statbus\Controllers\DeathController as DeathContorller;
+use Statbus\Controllers\LogsController as LogsController;
 
 class RoundController Extends Controller {
   
@@ -157,5 +158,44 @@ class RoundController Extends Controller {
     $this->ogdata['title'] = "Round #$round->id on $round->server";
     $this->ogdata['description'] = "A round of $round->mode on $round->map that lasted $round->duration and ended with $round->result and $round->deaths deaths.";
     return $round;
+  }
+
+  public function listLogs($request, $response, $args){
+    $round = $this->getRound($args['id']);
+    $this->breadcrumbs['Logs'] = $this->router->pathFor('round.logs',[
+      'id'   =>$round->id,
+    ]);
+    return $this->view->render($response, 'rounds/logs.tpl',[
+      'round'       => $round,
+      'breadcrumbs' => $this->breadcrumbs,
+      'logs'        => (new LogsController($this->container, $round))->listing()
+    ]);
+  }
+  public function getLogFile($request, $response, $args){
+    $round = $this->getRound($args['id']);
+    $file = filter_var($args['file'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    $raw = false;
+    if(isset($args['raw'])) {
+      $raw = filter_var($args['raw'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+      if('raw' === $raw) {
+        $raw = true;
+      }
+    }
+
+    $this->breadcrumbs['Logs'] = $this->router->pathFor('round.logs',[
+      'id'   =>$round->id,
+    ]);
+    $this->breadcrumbs[$file] = $this->router->pathFor('round.log',[
+      'id'   =>$round->id,
+      'file' =>$file
+    ]);
+    return $this->view->render($response, 'rounds/log.tpl',[
+      'round'       => $round,
+      'breadcrumbs' => $this->breadcrumbs,
+      'file'        => (new LogsController($this->container, $round))->getFile($file, $raw),
+      'filename'    => $file,
+      'raw'         => $raw,
+      'wide'        => true
+    ]);
   }
 }

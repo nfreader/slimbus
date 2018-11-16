@@ -1,6 +1,7 @@
 <?php
-// DIC configuration
 
+define('ROOTDIR', dirname(__DIR__));
+// DIC configuration
 $container = $app->getContainer();
 $settings = $container->get('settings');
 
