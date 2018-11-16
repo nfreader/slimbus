@@ -162,13 +162,21 @@ class RoundController Extends Controller {
 
   public function listLogs($request, $response, $args){
     $round = $this->getRound($args['id']);
-    $this->breadcrumbs['Logs'] = $this->router->pathFor('round.logs',[
-      'id'   =>$round->id,
-    ]);
+    $logs = (new LogsController($this->container, $round))->listing();
+
+    $url = parent::getFullURL($this->router->pathFor('round.logs',['id'=>$round->id]));
+
+    $this->breadcrumbs['Logs'] = $url;
+
+    $this->ogdata['url'] = $url;
+    $this->ogdata['title'] = "Log listing for round #$round->id on $round->server";
+    $this->ogdata['description'] = count($logs)." log files available.";
+
     return $this->view->render($response, 'rounds/logs.tpl',[
       'round'       => $round,
       'breadcrumbs' => $this->breadcrumbs,
-      'logs'        => (new LogsController($this->container, $round))->listing()
+      'ogdata'      => $this->ogdata,
+      'logs'        => $logs
     ]);
   }
   public function getLogFile($request, $response, $args){
@@ -181,18 +189,27 @@ class RoundController Extends Controller {
         $raw = true;
       }
     }
+    $logs = (new LogsController($this->container, $round))->getFile($file, $raw);
 
-    $this->breadcrumbs['Logs'] = $this->router->pathFor('round.logs',[
-      'id'   =>$round->id,
-    ]);
-    $this->breadcrumbs[$file] = $this->router->pathFor('round.log',[
-      'id'   =>$round->id,
-      'file' =>$file
-    ]);
+    $this->breadcrumbs['Logs'] = parent::getFullURL($this->router->pathFor('round.logs',[
+      'id'   => $round->id,
+    ]));
+
+    $url = parent::getFullURL($this->router->pathFor('round.log',[
+      'id'   => $round->id,
+      'file' => $file
+    ]));
+    
+    $this->breadcrumbs[$file] = $url;
+
+    $this->ogdata['url'] = $url;
+    $this->ogdata['title'] = "$file logfile for Round #$round->id on $round->server";
+    $this->ogdata['description'] = count($logs)." lines found in $file";
     return $this->view->render($response, 'rounds/log.tpl',[
       'round'       => $round,
       'breadcrumbs' => $this->breadcrumbs,
-      'file'        => (new LogsController($this->container, $round))->getFile($file, $raw),
+      'ogdata'      => $this->ogdata,
+      'file'        => $logs,
       'filename'    => $file,
       'raw'         => $raw,
       'wide'        => true
