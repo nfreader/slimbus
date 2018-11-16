@@ -30,6 +30,7 @@ class Death {
     $death->vitals->stamina = $death->stamina; unset($death->stamina);
 
     $death->max = array_search(max((array) $death->vitals),(array) $death->vitals);
+    $death->cause = "Natural causes";
     switch ($death->max){
       case 'brute':
         $death->cause      = "Blunt-Force Trauma";
@@ -51,7 +52,7 @@ class Death {
         $death->last_line  = "with their dying breath";
       break;
 
-      case 'toxi':
+      case 'tox':
         $death->cause      = "Poisoning";
         $death->last_line  = "twitching as toxins coursed through their system";
       break;
