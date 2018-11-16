@@ -42,6 +42,13 @@ $container['view'] = function ($container) {
 
   //Global statbus settings
   $view->getEnvironment()->addGlobal('statbus', $container->get('settings')['statbus']);
+
+  //Alert HTML if set
+  if(is_file(__DIR__."/conf/alert.html")){
+    $alert = file_get_contents(__DIR__."/conf/alert.html");
+    $view->getEnvironment()->addGlobal('alert', $alert);
+  }
+
   //User added by the UserController when it gets instantiated
   return $view;
 };

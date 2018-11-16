@@ -342,6 +342,7 @@
   {% block nav %} {{ include('base/nav.tpl') }} {% endblock %}
   <main role="main">
     <div class="container{% if wide is defined and wide %}-fluid{% endif %} position-relative" id="container">
+      {{alert|raw}}
       {% if breadcrumbs is defined %}
         {% set nav = breadcrumbs %}
         {% include('components/breadcrumbs.html') with nav %}
