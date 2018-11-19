@@ -1,6 +1,7 @@
 <?php
 return [
     'settings' => [
+        'refresh_key'            => (bool) getenv('REFRESH_KEY') ?: FALSE,
         'displayErrorDetails'    => (bool) getenv('DISPLAY_ERRORS') ?: FALSE, 
         'addContentLengthHeader' => false,
         'debug'                  => (bool) getenv('DEBUG') ?: FALSE,

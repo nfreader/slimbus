@@ -30,6 +30,7 @@ $container['csrf'] = function ($c) {
 // Register component on container
 $container['view'] = function ($container) {
   $settings = $container->get('settings')['twig'];
+  
   $view = new \Slim\Views\Twig($settings['template_path'], [
       'debug' => $settings['twig_debug'],
       'cache' => $settings['template_cache']
