@@ -47,7 +47,7 @@
               <small class="text-muted">Check Out</small>
             </h3>
             <h2 class="display-4 mb-0">{{numbers.books}}</h2>
-            <h3><small class="text-muted">Books In The <a href="{{app.url}}library.php">Library</a></small></h3>
+            <h3><small class="text-muted">Books In The <a href="{{path_for('library.index')}}">Library</a></small></h3>
           </div>
         </div>
       </div>

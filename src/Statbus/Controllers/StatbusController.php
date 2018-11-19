@@ -28,7 +28,8 @@ class StatbusController extends Controller {
     $numbers->playtime = number_format($this->DB->row("SELECT sum(tbl_role_time.minutes) AS minutes FROM tbl_role_time WHERE tbl_role_time.job = 'Living';")->minutes);
     $numbers->deaths = number_format($this->DB->cell("SELECT count(id) as deaths FROM tbl_death;")+rand(-15,15));//fuzzed
     $numbers->rounds = number_format($this->DB->cell("SELECT count(id) as rounds FROM tbl_round;"));
-    $numbers->books = number_format($this->DB->cell("SELECT count(id) as books FROM tbl_library;"));
+    $numbers->books = number_format($this->DB->cell("SELECT count(tbl_library.id) FROM tbl_library WHERE tbl_library.content != ''
+      AND (tbl_library.deleted IS NULL OR tbl_library.deleted = 0)"));
     return $numbers;
   }
 
