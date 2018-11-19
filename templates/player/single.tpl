@@ -8,10 +8,10 @@
   <div class="col">
     <ul class="list-group">
       <li class="list-group-item">
-        <strong>First Seen</strong> {{player.firstseen|timestamp|raw}}
+        <strong>First Seen</strong> {{player.firstseen|timestamp}}
       </li>
       <li class="list-group-item">
-        <strong>Last Seen</strong> {{player.lastseen|timestamp|raw}}
+        <strong>Last Seen</strong> {{player.lastseen|timestamp}}
       </li>
       <li class="list-group-item">
         <strong>Last IP Address</strong> <span class="tlp tlp-red">{{player.ip_real}}</span>

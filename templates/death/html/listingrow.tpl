@@ -21,7 +21,7 @@
   <td class="align-middle">{{death.mapname}} - {{death.pod}} ({{death.x}}, {{death.y}}, {{death.z}})<br>
       {% if death.last_words %} <small><em>{{death.last_words}}</em></small> {% endif %}
   </td>
-  <td class="align-middle">{{death.tod|timestamp|raw}}<br>
+  <td class="align-middle">{{death.tod|timestamp}}<br>
     <small><a href="{{path_for('round.single',{'id': death.round})}}"><i class="far fa-circle"></i> {{death.round}}</a> - {{death.server}}</small>
   </td>
   <td class="align-middle">

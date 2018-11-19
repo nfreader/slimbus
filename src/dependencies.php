@@ -17,6 +17,16 @@ $container['user'] = function ($container) {
   return $user;
 };
 
+//Crsf
+$container['csrf'] = function ($c) {
+  $csrf = new \Slim\Csrf\Guard('sb_csrf');
+  $csrf->setFailureCallable(function ($request, $response, $next) {
+    $request = $request->withAttribute("csrf_status", false);
+    return $next($request, $response);
+  });
+  return $csrf;
+};
+
 // Register component on container
 $container['view'] = function ($container) {
   $settings = $container->get('settings')['twig'];
@@ -28,6 +38,9 @@ $container['view'] = function ($container) {
   // Instantiate and add Slim specific extension
   $basePath = rtrim(str_ireplace('index.php', '', $container->get('request')->getUri()->getBasePath()), '/');
   $view->addExtension(new Slim\Views\TwigExtension($container->get('router'), $basePath));
+
+  $view->addExtension(new Statbus\Extensions\CsrfExtension($container->get('csrf')));
+
   $view->addExtension(new \Twig_Extension_Debug());
 
   //Fancy timestamp filter
@@ -37,8 +50,15 @@ $container['view'] = function ($container) {
     $return.= "<time datetime='$string' title='$string' ";
     $return.= "data-toggle='tooltip'>$string</time></span>";
     return $return;
-  });
+  }, array('is_safe' => array('html')));
   $view->getEnvironment()->addFilter($twigTimestampFilter);
+
+  //My censored filter that I <3
+  $twigCensorFilter = new \Twig_Filter('censor', function ($string) {
+    $string = strip_tags($string);
+    return preg_replace("/\S/", '█', $string);
+  });
+  $view->getEnvironment()->addFilter($twigCensorFilter);
 
   //Global statbus settings
   $view->getEnvironment()->addGlobal('statbus', $container->get('settings')['statbus']);

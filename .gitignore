@@ -4,4 +4,4 @@
 composer.lock
 src/conf/servers.json
 src/conf/ranks.json
-src/conf/alert.html
+src/conf/alert.html*

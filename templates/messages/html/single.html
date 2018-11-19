@@ -3,7 +3,7 @@
     <span class="message-title"><i class="fas fa-{{message.icon}}"></i> {{message.type}} <a href="{{path_for('message.single', {'id': message.id})}}" class="{{message.class}}">#{{message.id}}</a> 
     {% if 'Memo' != message.type %} for <a href="{{path_for('player.single',{'ckey': message.target.ckey})}}">{{message.target.label|raw}}</a>
     {% endif %} by {{message.admin.label|raw}}</span>
-    <span class="message-timestamp">Posted {{message.timestamp|timestamp|raw}}</span>
+    <span class="message-timestamp">Posted {{message.timestamp|timestamp}}</span>
   </div>
   <div class="card-body">{{message.text|raw}}</div>
   <div class="card-footer d-flex justify-content-between">
@@ -13,7 +13,7 @@
     <span class="badge badge-{{message.severity_class}}" data-toggle="tooltip" title="{{message.severity}} Severity {{message.type}}">{{message.severity}}</span>
     </span>
     {% endif %}
-    <span>{% if message.expire %}Expires: {{message.expire|timestamp|raw}} {% endif %}</span>
+    <span>{% if message.expire %}Expires: {{message.expire|timestamp}} {% endif %}</span>
     <span>
       {% if 'Note' == message.type %}
         {% if message.secret %}

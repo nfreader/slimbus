@@ -25,7 +25,7 @@
     {% for l in logs %}
       <tr id="{{l.id}}" class="table-{{l.class}}">
         <td class="align-middle nw"><a href="#{{l.id}}">{{l.id}}</a></td>
-        <td class="align-middle nw">{{l.datetime|timestamp|raw}}</td>
+        <td class="align-middle nw">{{l.datetime|timestamp}}</td>
         <td class="align-middle nw">{{l.admin.label|raw}}</td>
         <td class="align-middle nw"><i class="fas fa-{{l.icon}}"></i> {{l.operation}}</td>
         <td class="align-middle nw">{{l.target}}</td>

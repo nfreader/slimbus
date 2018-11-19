@@ -11,7 +11,7 @@
 <hr>
 
 <p class="lead">
-Between your first connection {{user.firstseen|timestamp|raw}} and your most recent connection {{user.lastseen|timestamp|raw}}, you have connected {{user.connections}} times.
+Between your first connection {{user.firstseen|timestamp}} and your most recent connection {{user.lastseen|timestamp}}, you have connected {{user.connections}} times.
 </p>
 
 <p class="lead">You have wasted <span title="About {{user.hours}}, since we started tracking time spent in roles" data-toggle="tooltip">0</span> hours playing Space Station 13, because time spent doing something you enjoy isn't wasted time.</p>

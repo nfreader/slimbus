@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="jumbotron">
-  <h1 class="display-3">{{code}}</h1>
+  <h1 class="display-3"><small class="text-muted" style="font-size: 2rem;">error code</small> {{code}}</h1>
   <p class="lead">{{message}}</p>
   <p class="lead">
     {% if link %}

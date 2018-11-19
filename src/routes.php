@@ -4,8 +4,8 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 // $app->add(new \Statbus\Middleware\OpenGraph($container));
-
-// Routes
+$container = $app->getContainer();
+$app->add($container->get('csrf'));
 
 //Index URL
 $app->get('/', \Statbus\Controllers\StatbusController::class . ':index')->setName('statbus');
@@ -82,8 +82,31 @@ $app->group('', function () {
 
 });
 
+//Library
+$app->group('', function () {
+
+  //Index
+  $this->get('/library[/page/{page}]', \Statbus\Controllers\LibraryController::class . ':index')->setName('library.index');
+
+  // //Station Names
+  // $this->get('/rounds/stations', \Statbus\Controllers\RoundController::class . ':stationNames')->setName('round.stations');
+  
+  // //Map view
+  // $this->get('/rounds/{id:[0-9]+}/map', \Statbus\Controllers\RoundController::class . ':mapView')->setName('round.map');
+
+  // //Logs
+  // $this->get('/rounds/{id:[0-9]+}/logs', \Statbus\Controllers\RoundController::class . ':listLogs')->setName('round.logs');
+
+  // //Single log file
+  // $this->get('/rounds/{id:[0-9]+}/logs/{file:[a-zA-Z.]+}[/{raw}]', \Statbus\Controllers\RoundController::class . ':getLogFile')->setName('round.log');
+
+  //Single - Also handles single stat views!
+  $this->get('/library/{id:[0-9]+}', \Statbus\Controllers\LibraryController::class . ':single')->setName('library.single');
+
+  $this->post('/library/{id:[0-9]+}/delete', \Statbus\Controllers\LibraryController::class . ':deleteBook')->setName('library.delete');
+});
+
 //TGDB
-$container = $app->getContainer();
 $app->group('', function () {
 
   //Index
