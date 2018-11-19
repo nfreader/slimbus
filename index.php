@@ -35,7 +35,7 @@ if(file_exists(__DIR__ . '/src/conf/ranks.json')){
   $settings['settings']['statbus']['ranks'] = json_decode(file_get_contents(__DIR__ . '/src/conf/ranks.json'), true);
 }
 if ($settings['settings']['refresh_key'] == filter_input(INPUT_GET,'refresh', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH)){
-  $settings['settings']['twig']['auto_reload'] = TRUE;
+  exec("rm -rf ".__DIR__."/tmp/twig");
   print("Twig cache has been cleared");
 }
 $app = new \Slim\App($settings);
