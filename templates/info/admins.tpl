@@ -51,9 +51,9 @@
         <td>{{a.rank}}</td>
         {% for name, bits in perms %}
           {% if a.flags b-and bits %}
-          <td class="table-success text-success text-center"><i class="far fa-check-circle" data-toggle="tooltip" title="{{a.ckey}} has {{name}}"></i></td>
+          <td class="table-success text-success text-center" data-toggle="tooltip" title="{{a.ckey}} has {{name}}"><i class="far fa-check-circle"></i></td>
           {% else %}
-          <td></td>
+          <td class="table-danger text-danger text-center" data-toggle="tooltip" title="{{a.ckey}} does not have {{name}}"><i class="far fa-times-circle"></i></td>
           {% endif %}
         {% endfor %}
       </tr>

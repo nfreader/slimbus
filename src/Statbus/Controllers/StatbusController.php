@@ -12,7 +12,6 @@ class StatbusController extends Controller {
 
   public function __construct(ContainerInterface $container) {
     parent::__construct($container);
-
     $this->guzzle = $this->container->get('guzzle');
     $this->user = $this->container->get('user')->user;
   }
@@ -147,14 +146,12 @@ class StatbusController extends Controller {
   public function tgdbIndex() {
     //This method exists solely to scaffold the tgdb index page
     $memos = (new MessageController($this->container))->getAdminMemos();
-
     return $this->view->render($this->response, 'tgdb/index.tpl',[
       'memos' => $memos
     ]);
   }
 
   public function getPolyLine() {
-
     if($this->container->get('settings')['statbus']['remote_log_src']){
       $server = pick('sybil,terry');
       $poly = $this->guzzle->request('GET','https://tgstation13.org/parsed-logs/'.$server.'/data/npc_saves/Poly.json');
@@ -164,6 +161,43 @@ class StatbusController extends Controller {
       return false;
     }
   }
+
+  public function popGraph(){
+    $query = "SELECT
+    FLOOR(AVG(admincount)) AS admins,
+    FLOOR(AVG(playercount)) AS players,
+    server_port,
+    HOUR(`time`) AS `hour`,
+    DATE_FORMAT(`time`, '%Y-%m-%e %H:00:00') as `date`,
+    count(round_id) AS rounds
+    FROM tbl_legacy_population
+    GROUP BY HOUR (`time`), DAY(`TIME`), MONTH(`TIME`), YEAR(`TIME`), server_port
+    ORDER BY `time` DESC;";
+    $hash = hash('sha512',$query);
+    if(file_exists(ROOTDIR."/tmp/$hash")){
+      $data = file_get_contents(ROOTDIR."/tmp/$hash");
+      $data = json_decode($data);
+      if($data->timestamp > time()){
+        return $this->view->render($this->response, 'info/heatmap.tpl',[
+          'data'      => json_encode($data->data),
+          'fromCache' => TRUE
+        ]);
+      }
+    }
+    $data = $this->DB->run($query);
+
+    $tmp = new \stdclass;
+    $tmp->timestamp = time() + 86400;
+    $tmp->data = $data;
+    $tmp = json_encode($tmp);
+    $file = fopen(ROOTDIR."/tmp/$hash", "w+");
+    fwrite($file, $tmp);
+    fclose($file);
+    return $this->view->render($this->response, 'info/heatmap.tpl',[
+      'data' => json_encode($data)
+    ]);
+  }
+
   public function submitToAuditLog($action, $text){
     //Check if the audit log exists
     try {
