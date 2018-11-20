@@ -11,6 +11,8 @@ class PlayerController Extends Controller {
   public function __construct(ContainerInterface $container) {
     parent::__construct($container);
     $this->playerModel = new Player($this->container->get('settings')['statbus']);
+    $dbConn = $this->container->get('settings')['database']['alt'];
+    $this->alt_db = (new DBController($dbConn))->db;
   }
 
   public function getPlayer($request, $response, $args) {
@@ -86,14 +88,32 @@ class PlayerController Extends Controller {
       ORDER BY job ASC", $ckey));
   }
 
-  public function getNamesFromDeaths($ckey) {
+  public function getPlayerNames($ckey) {
+    $names['deaths'] = $this->getPlayerNamesFromDeath($ckey);
+    $names['manifest'] = $this->getPlayerNamesFromManifest($ckey);
+    return $names;
+  }
+
+  public function getPlayerNamesFromDeath($ckey) {
     return $this->DB->run("SELECT DISTINCT(`name`),
-      count(id) AS times
+      count(id) AS `times`
       FROM ss13death
       WHERE byondkey = ?
       GROUP BY `name`
       HAVING times > 1
-      ORDER BY times DESC
+      ORDER BY `times` DESC
+      LIMIT 0,5;", $ckey);
+  }
+
+  public function getPlayerNamesFromManifest($ckey) {
+    if(!$this->alt_db) return false;
+    return $this->alt_db->run("SELECT DISTINCT(`name`),
+      count(`name`) AS `times`
+      FROM manifest
+      WHERE ckey = ?
+      GROUP BY `name`
+      HAVING `times` > 1
+      ORDER BY `times` DESC
       LIMIT 0,5;", $ckey);
   }
 
@@ -135,7 +155,7 @@ class PlayerController Extends Controller {
   public function gatherAdditionalData(&$player){
     $player->role_time = $this->getRoleData($player->ckey);
     $player->messages = (new MessageController($this->container))->getMessagesForCkey($player->ckey, TRUE);
-    $player->names = $this->getNamesFromDeaths($player->ckey);
+    $player->names = $this->getPlayerNames($player->ckey);
     $player->standing = (new BanController($this->container))->getPlayerStanding($player->ckey);
     $player->ips = $this->getIPs('ckey', $player->ckey);
     $player->cids = $this->getCIDs('ckey', $player->ckey);

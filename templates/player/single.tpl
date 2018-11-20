@@ -86,16 +86,42 @@
   <div class="col">
     <div class="card">
       <div class="card-header" data-target="#namelist" data-toggle="collapse">
-        <span class="badge badge-info">BETA</span> Character Names ({{player.names|length}})
+        <span class="badge badge-info">BETA</span> Character Names 
+          ({{player.names.deaths|length + player.names.manifest|length}})
       </div>
       <ul class="list-group list-group-flush collapse" id="namelist">
+        {% if player.names.manifest %}
+        <strong>Manifest</strong>
         <table class="table table-sm">
           <thead>
-            <th>Name</th>
-            <th>Times Seen</th>
+            <tr>
+              <th>Name</th>
+              <th>Times Seen</th>
+            </tr>
           </thead>
           <tbody>
-            {% for name in player.names %}
+            {% for name in player.names.manifest %}
+            <tr>
+              <td>{{name.name}}</td>
+              <td>{{name.times}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <p>
+        <small class="text-muted">Times being the number of times this ckey was found attached to this character name in a parsed manifest.txt. <strong>THIS IS PRELIMINARY</strong></small>
+        </p>
+        {% endif %}
+        <strong>Deaths Table</strong>
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Times Seen</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for name in player.names.deaths %}
             <tr>
               <td>{{name.name}}</td>
               <td>{{name.times}}</td>
