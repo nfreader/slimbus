@@ -77,8 +77,11 @@ $app->group('', function () {
   //Admin Activity
   $this->get('/info/admins', \Statbus\Controllers\StatbusController::class . ':DoAdminsPlay')->setName('admin_connections');
 
+  $this->get('/info/population', \Statbus\Controllers\StatbusController::class . ':popGraph')->setName('population');
+
   //Admin Activity
   $this->get('/info/adminlogs[/page/{page}]', \Statbus\Controllers\StatbusController::class . ':adminLogs')->setName('admin_logs');
+
 
 });
 
@@ -88,19 +91,7 @@ $app->group('', function () {
   //Index
   $this->get('/library[/page/{page}]', \Statbus\Controllers\LibraryController::class . ':index')->setName('library.index');
 
-  // //Station Names
-  // $this->get('/rounds/stations', \Statbus\Controllers\RoundController::class . ':stationNames')->setName('round.stations');
-  
-  // //Map view
-  // $this->get('/rounds/{id:[0-9]+}/map', \Statbus\Controllers\RoundController::class . ':mapView')->setName('round.map');
-
-  // //Logs
-  // $this->get('/rounds/{id:[0-9]+}/logs', \Statbus\Controllers\RoundController::class . ':listLogs')->setName('round.logs');
-
-  // //Single log file
-  // $this->get('/rounds/{id:[0-9]+}/logs/{file:[a-zA-Z.]+}[/{raw}]', \Statbus\Controllers\RoundController::class . ':getLogFile')->setName('round.log');
-
-  //Single - Also handles single stat views!
+  //Single Book
   $this->get('/library/{id:[0-9]+}', \Statbus\Controllers\LibraryController::class . ':single')->setName('library.single');
 
   $this->post('/library/{id:[0-9]+}/delete', \Statbus\Controllers\LibraryController::class . ':deleteBook')->setName('library.delete');
