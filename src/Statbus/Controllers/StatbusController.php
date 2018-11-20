@@ -171,6 +171,7 @@ class StatbusController extends Controller {
     DATE_FORMAT(`time`, '%Y-%m-%e %H:00:00') as `date`,
     count(round_id) AS rounds
     FROM tbl_legacy_population
+    WHERE YEAR(`time`) >= NOW() - INTERVAL 2 YEAR
     GROUP BY HOUR (`time`), DAY(`TIME`), MONTH(`TIME`), YEAR(`TIME`), server_port
     ORDER BY `time` DESC;";
     $hash = hash('sha512',$query);
