@@ -225,7 +225,7 @@ class LogsController Extends Controller {
     $matches = [];
     //EDGECASE: Sometimes the PDA name isn't specified
     $this->file = str_replace(") (PDA: PDA to ", ") (PDA: Unknown Device PDA to ", $this->file);
-    preg_match_all('/\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3})\] (PDA|COMMENT): (.+?)\/\((.+?)\) \(PDA: (.+?) PDA to (.+?) \((.+?)\)\) "(.+?)" \((.+?) \((\d{1,3}), (\d{1,3}), (\d{1,3})/mi', $this->file, $matches, PREG_SET_ORDER);
+    preg_match_all('/\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3})\] (PDA|COMMENT): (.+?)\/\((.+?)\) \(PDA: (.+?)PDA to (.+?) \((.+?)\)\) "(.+?)" \((.+?) \((\d{1,3}), (\d{1,3}), (\d{1,3})/mi', $this->file, $matches, PREG_SET_ORDER);
     foreach ($matches as $tmp){
       $entry = [];
       $entry['timestamp']      = $tmp[1];
