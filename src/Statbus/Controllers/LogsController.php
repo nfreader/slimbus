@@ -212,7 +212,7 @@ class LogsController Extends Controller {
           'ckey'       => $e['ckey'],
           'job'        => $e['job'],
           'role'       => $e['special'],
-          'roundstart' => $e['when']
+          'roundstart' => (int) $e['when']
         ]);
       } catch (Exception $e){
         var_dump($e->getMessage());
