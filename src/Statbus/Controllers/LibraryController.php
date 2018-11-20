@@ -98,8 +98,12 @@ class LibraryController Extends Controller {
       ]);
     }
     $delete = TRUE;
+    $action = 'F451';
+    $text = "Deleted book $id";
     if($book->deleted){
       $delete = FALSE;
+      $action = 'F452';
+      $text = "Undeleted book $id";
     }
     $this->DB->update('tbl_library',[
       'deleted' => $delete
@@ -107,6 +111,7 @@ class LibraryController Extends Controller {
       'id' => $id
     ]);
     $book = $this->getBook($id);
+    (new StatbusController($this->container))->submitToAuditLog($action, $text);
     return $this->view->render($response, 'library/single.tpl',[
       'book'        => $book,
       'breadcrumbs' => $this->breadcrumbs,

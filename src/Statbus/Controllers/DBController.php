@@ -41,7 +41,6 @@ class DBController {
           $options
       );
       $this->db = $db;
-      // var_dump($this->db->run("SHOW GRANTS FOR CURRENT_USER as grants;"));
     } catch (CFException $e){
       if(isset($conn['canFail']) && $conn['canFail']){
         $this->db = false;

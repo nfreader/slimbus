@@ -14,6 +14,7 @@ class StatbusController extends Controller {
     parent::__construct($container);
 
     $this->guzzle = $this->container->get('guzzle');
+    $this->user = $this->container->get('user')->user;
   }
 
   public function index($request, $response, $args) {
@@ -162,5 +163,19 @@ class StatbusController extends Controller {
     } else {
       return false;
     }
+  }
+  public function submitToAuditLog($action, $text){
+    //Check if the audit log exists
+    try {
+      $this->DB->run("SELECT 1 FROM tbl_external_activity LIMIT 1");
+    } catch (\PDOException $e){
+      return false;
+    }
+    $this->DB->insert('tbl_external_activity',[
+      'action' => $action,
+      'text'   => $text,
+      'ckey'   => ($this->user->ckey) ? $this->user->ckey : null,
+      'ip'     => ip2long($_SERVER['REMOTE_ADDR'])
+    ]);
   }
 }
