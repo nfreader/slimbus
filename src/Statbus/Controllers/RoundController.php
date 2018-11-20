@@ -42,7 +42,7 @@ class RoundController Extends Controller {
       SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.initialize_datetime, tbl_round.start_datetime)) AS init_time,
       SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.end_datetime, tbl_round.shutdown_datetime)) AS shutdown_time
       FROM tbl_round
-
+      WHERE tbl_round.end_datetime IS NOT NULL
       ORDER BY tbl_round.shutdown_datetime DESC
       LIMIT ?,?", ($this->page * $this->per_page) - $this->per_page, $this->per_page);
 
@@ -68,7 +68,10 @@ class RoundController Extends Controller {
     $round = $this->getRound($args['id']);
     if(!$round->id) {
       return $this->view->render($response, 'base/error.tpl',[
-        'round' => $round,
+        'code'    => 404,
+        'message' => 'Round not found, or is ongoing',
+        'link'    => $this->router->pathFor('round.index'),
+        'linkText'=> 'Round Listing'
       ]);
     }
     if(isset($args['stat'])){
@@ -150,7 +153,7 @@ class RoundController Extends Controller {
       LEFT JOIN tbl_round AS prev ON prev.id = tbl_round.id - 1 
       LEFT JOIN tbl_death AS D ON D.round_id = tbl_round.id
       WHERE tbl_round.id = ?
-      AND tbl_round.shutdown_datetime IS NOT NULL", $id);
+      AND tbl_round.end_datetime IS NOT NULL", $id);
     $round = $this->roundModel->parseRound($round);
     $url = parent::getFullURL($this->router->pathFor('round.single',['id'=>$round->id]));
     $this->breadcrumbs[$round->id] = $url;
@@ -170,7 +173,7 @@ class RoundController Extends Controller {
 
     $this->ogdata['url'] = $url;
     $this->ogdata['title'] = "Log listing for round #$round->id on $round->server";
-    $this->ogdata['description'] = count($logs)." log files available.";
+    $this->ogdata['description'] = (($logs) ? count($logs) : 0)." log files available";
 
     return $this->view->render($response, 'rounds/logs.tpl',[
       'round'       => $round,
@@ -204,7 +207,7 @@ class RoundController Extends Controller {
 
     $this->ogdata['url'] = $url;
     $this->ogdata['title'] = "$file logfile for Round #$round->id on $round->server";
-    $this->ogdata['description'] = count($logs)." lines found in $file";
+    $this->ogdata['description'] = (($logs) ? count($logs) : 0)." lines found in $file.";
     return $this->view->render($response, 'rounds/log.tpl',[
       'round'       => $round,
       'breadcrumbs' => $this->breadcrumbs,

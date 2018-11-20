@@ -3,7 +3,6 @@
 define('ROOTDIR', dirname(__DIR__));
 // DIC configuration
 $container = $app->getContainer();
-$settings = $container->get('settings');
 
 // DB
 $container['DB'] = function ($c) {
