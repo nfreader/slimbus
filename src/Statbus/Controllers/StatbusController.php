@@ -170,13 +170,13 @@ class StatbusController extends Controller {
     HOUR(`time`) AS `hour`,
     DATE_FORMAT(`time`, '%Y-%m-%e %H:00:00') as `date`,
     count(round_id) AS rounds
-    FROM ss13legacy_population
+    FROM tbl_legacy_population
     WHERE `time` > DATE_FORMAT(CURDATE(), '%Y-%m-01') - INTERVAL 2 YEAR
     GROUP BY HOUR (`time`), DAY(`TIME`), MONTH(`TIME`), YEAR(`TIME`), server_port
     ORDER BY `time` DESC;";
     $hash = hash('sha512',$query);
     if(file_exists(ROOTDIR."/tmp/db/$hash")){
-      $data = file_get_contents(ROOTDIR."/tmp/$hash");
+      $data = file_get_contents(ROOTDIR."/tmp/db/$hash");
       $data = json_decode($data);
       if($data->timestamp > time()){
         return $this->view->render($this->response, 'info/heatmap.tpl',[

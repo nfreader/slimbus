@@ -12,7 +12,7 @@
 {% block js %}
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
-Plotly.d3.json("/tmp/{{hash}}",function(data){
+Plotly.d3.json("/tmp/db/{{hash}}",function(data){
     console.log(data);
     dates   = unpack(data.data,'date')
     hours   = unpack(data.data,'hour')
