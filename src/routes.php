@@ -77,10 +77,11 @@ $app->group('', function () {
   //Admin Activity
   $this->get('/info/admins', \Statbus\Controllers\StatbusController::class . ':DoAdminsPlay')->setName('admin_connections');
 
-  $this->get('/info/population', \Statbus\Controllers\StatbusController::class . ':popGraph')->setName('population');
-
   //Admin Activity
   $this->get('/info/adminlogs[/page/{page}]', \Statbus\Controllers\StatbusController::class . ':adminLogs')->setName('admin_logs');
+
+  //Population Data
+  $this->get('/info/population', \Statbus\Controllers\StatbusController::class . ':popGraph')->setName('population');
 
 
 });
