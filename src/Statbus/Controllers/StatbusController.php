@@ -175,7 +175,7 @@ class StatbusController extends Controller {
     GROUP BY HOUR (`time`), DAY(`TIME`), MONTH(`TIME`), YEAR(`TIME`), server_port
     ORDER BY `time` DESC;";
     $hash = hash('sha512',$query);
-    if(file_exists(ROOTDIR."/tmp/$hash")){
+    if(file_exists(ROOTDIR."/tmp/db/$hash")){
       $data = file_get_contents(ROOTDIR."/tmp/$hash");
       $data = json_decode($data);
       if($data->timestamp > time()){
@@ -192,7 +192,7 @@ class StatbusController extends Controller {
     $tmp->timestamp = time() + 86400;
     $tmp->data = $data;
     $tmp = json_encode($tmp);
-    $file = fopen(ROOTDIR."/tmp/$hash", "w+");
+    $file = fopen(ROOTDIR."/tmp/db/$hash", "w+");
     fwrite($file, $tmp);
     fclose($file);
     return $this->view->render($this->response, 'info/heatmap.tpl',[

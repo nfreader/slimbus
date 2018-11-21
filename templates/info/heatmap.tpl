@@ -14,11 +14,11 @@
 <script>
 Plotly.d3.json("/tmp/{{hash}}",function(data){
     console.log(data);
-    dates   = unpack(data.data,'date');
-    hours   = unpack(data.data,'hour');
-    servers = unpack(data.data,'server_port');
-    players = unpack(data.data,'players');
-    admins  = unpack(data.data,'admins'); 
+    dates   = unpack(data.data,'date')
+    hours   = unpack(data.data,'hour')
+    servers = unpack(data.data,'server_port')
+    players = unpack(data.data,'players')
+    admins  = unpack(data.data,'admins')
     renderGraph()
 })
 function renderGraph(){
@@ -53,7 +53,7 @@ function renderGraph(){
       yaxis: {
         title: 'Population'
       }
-    };
+    }
 
     var data = [trace1, trace2]
     Plotly.plot('population', data, layout, {responsive: true})
