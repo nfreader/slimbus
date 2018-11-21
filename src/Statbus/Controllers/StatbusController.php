@@ -170,8 +170,8 @@ class StatbusController extends Controller {
     HOUR(`time`) AS `hour`,
     DATE_FORMAT(`time`, '%Y-%m-%e %H:00:00') as `date`,
     count(round_id) AS rounds
-    FROM tbl_legacy_population
-    WHERE YEAR(`time`) >= NOW() - INTERVAL 2 YEAR
+    FROM ss13legacy_population
+    WHERE `time` > DATE_FORMAT(CURDATE(), '%Y-%m-01') - INTERVAL 2 YEAR
     GROUP BY HOUR (`time`), DAY(`TIME`), MONTH(`TIME`), YEAR(`TIME`), server_port
     ORDER BY `time` DESC;";
     $hash = hash('sha512',$query);
@@ -181,7 +181,8 @@ class StatbusController extends Controller {
       if($data->timestamp > time()){
         return $this->view->render($this->response, 'info/heatmap.tpl',[
           'data'      => json_encode($data->data),
-          'fromCache' => TRUE
+          'fromCache' => TRUE,
+          'hash'      => $hash
         ]);
       }
     }
@@ -195,7 +196,8 @@ class StatbusController extends Controller {
     fwrite($file, $tmp);
     fclose($file);
     return $this->view->render($this->response, 'info/heatmap.tpl',[
-      'data' => json_encode($data)
+      'data' => json_encode($data),
+      'hash' => $hash
     ]);
   }
 

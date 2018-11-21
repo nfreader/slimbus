@@ -1,5 +1,8 @@
 <?php
 if (PHP_SAPI == 'cli-server') {
+  if(strpos($_SERVER['SCRIPT_NAME'], '/tmp') !== FALSE){
+    return false;
+  }
   $_SERVER['SCRIPT_NAME'] = '/index.php';
 }
 
