@@ -48,6 +48,9 @@ $app->group('', function () {
   //Logs
   $this->get('/rounds/{id:[0-9]+}/logs', \Statbus\Controllers\RoundController::class . ':listLogs')->setName('round.logs');
 
+  //Game logs
+  $this->get('/rounds/{id:[0-9]+}/logs/game[/page/{page}]', \Statbus\Controllers\RoundController::class . ':getGameLogs')->setName('round.gamelogs');
+
   //Single log file
   $this->get('/rounds/{id:[0-9]+}/logs/{file:[a-zA-Z.]+}[/{raw}]', \Statbus\Controllers\RoundController::class . ':getLogFile')->setName('round.log');
 

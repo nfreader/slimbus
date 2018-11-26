@@ -223,4 +223,46 @@ class RoundController Extends Controller {
       'wide'        => true
     ]);
   }
+
+  public function getGameLogs($request, $response, $args){
+    $file = 'game.txt';
+    $round = $this->getRound($args['id']);
+    if(isset($args['page'])) {
+      $this->page = filter_var($args['page'], FILTER_VALIDATE_INT);
+    }
+    $round->page = $this->page;
+    $this->pages = 1;
+    $logs = (new LogsController($this->container, $round))->getGameLogs($this->page);
+    $round->pages = (new LogsController($this->container, $round))->getPages();
+
+    if(!$logs){
+      return $this->view->render($response, 'base/error.tpl',[
+        'message'  => "Alt DB not configured. No parsed logs available",
+        'code'     => 500,
+        'linkText' => "Back",
+        'link'     => parent::getFullURL($this->router->pathFor('round.single',[
+              'id'   =>$round->id,
+            ]
+          ))
+      ]);
+    }
+
+    $url = parent::getFullURL($this->router->pathFor('round.log',[
+      'id'   => $round->id,
+      'file' => $file
+    ]));
+
+    $this->breadcrumbs['Logs'] = parent::getFullURL($this->router->pathFor('round.logs',['id'=>$round->id]));
+    
+    $this->breadcrumbs['Parsed Game Logs'] = $url;
+
+    return $this->view->render($response, 'rounds/log.tpl',[
+      'round'       => $round,
+      'breadcrumbs' => $this->breadcrumbs,
+      'ogdata'      => $this->ogdata,
+      'file'        => $logs,
+      'filename'    => $file,
+      'wide'        => true
+    ]);
+  }
 }

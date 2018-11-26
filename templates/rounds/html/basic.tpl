@@ -38,20 +38,17 @@
       <th class="align-middle text-right">Logs</th>
       <td class="align-middle">
         {% if round.logs %}
-          <a class="btn btn-warning btn-sm" href="{{path_for('round.logs',{'id': round.id})}}">Parsed</a>
           <a class="btn btn-primary btn-sm" href="{{round.remote_logs_dir}}" target="_blank" rel="noopener noreferrer">Original <i class="fas fa-external-link-alt"></i></a>
         {% else %}
         <em>Not available</em>
         {% endif %}
       </td>
     </tr>
-    {% if app.constants.REMOTE_LOG_SRC %}
+    {% if round.logs %}
     <tr>
-      <td class="table-info" colspan="2" class="text-right">
-        <a href="{{app.url}}round.php?round={{round.id}}&logs">View Additional Data</a>
-      </td>
-      <td class="table-info" colspan="2">
-        <a href="{{app.url}}round.php?round={{round.id}}&map">View Positional Data On A Map</a>
+      <th class="align-middle text-right" colspan="2">Logs By Statbus</th>
+      <td colspan="2">
+        <a class="btn btn-warning btn-sm" href="{{path_for('round.gamelogs',{'id': round.id})}}">Collated Game & Attack Logs</a> <a class="btn btn-warning btn-sm" href="{{path_for('round.logs',{'id': round.id})}}">Log File Listing</a>
       </td>
     </tr>
     {% endif %}

@@ -245,4 +245,122 @@ class LogsController Extends Controller {
     }
     $this->file = $lines;
   }
+
+  public function getPages(){
+    if(!$this->alt_db) return false;
+    $pages = $this->alt_db->cell("SELECT count(*) FROM round_logs WHERE round = ?", $this->round->id);
+    $this->pages = ceil($pages / 1000);
+    return ceil($pages / 1000);
+  }
+
+  public function getGameLogs(){
+    if(!$this->alt_db) return false;
+    if(!$this->checkForLogs()) $this->processGameLogs();
+    return $this->alt_db->run("SELECT `timestamp`, `type`, `text`, x, y, z, area, id
+      FROM round_logs
+      WHERE round = ?
+      ORDER BY `timestamp` ASC
+      LIMIT ?,?", $this->round->id, ($this->round->page*1000) - 1000, 1000);
+  }
+
+  public function checkForLogs(){
+    return $this->alt_db->cell("SELECT round FROM round_logs WHERE round = ?",$this->round->id);
+  }
+
+  public function processGameLogs(){
+    $i = 0;
+    $handle = fopen("phar://".$this->zip."/game.txt", "r");
+    if ($handle) {
+        while (($line = fgets($handle)) !== false) {
+          $tmp = [];
+          $entry = [];
+          if(!preg_match("/\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3})] (\w*): (.*)/", $line, $tmp)) continue;
+          $entry['type'] = $tmp[2];
+          $entry['time'] = $tmp[1];
+          $entry['text'] = $tmp[3];
+          $entry['x']    = null;
+          $entry['y']    = null;
+          $entry['z']    = null;
+          $entry['area'] = null;
+          if(strpos($entry['text'], ') (DEAD) "') !== FALSE) {
+            $entry['type'] = "DSAY";
+          }
+          if(strpos($entry['text'], ') (ghost) "') !== FALSE) {
+            continue;
+          }
+          unset($tmp);
+          if(isset($entry['text'])){
+            $t = [];
+            if(preg_match("/(.*) \((.*)\((\d{1,}), (\d{1,}), (\d{1,})\)\)/", $entry['text'], $t)){
+              $entry['text'] = $t[1];
+              $entry['x']    = $t[3];
+              $entry['y']    = $t[4];
+              $entry['z']    = $t[5];
+              $entry['area'] = $t[2];
+              // var_dump($merge);
+            }
+            try{
+              $this->alt_db->insert('round_logs',[
+              'round'     => $this->round->id,
+              'timestamp' => $entry['time'],
+              'type'      => $entry['type'],
+              'text'      => filter_var($entry['text'], FILTER_SANITIZE_FULL_SPECIAL_CHARS,FILTER_FLAG_NO_ENCODE_QUOTES),
+              'x'         => $entry['x'],
+              'y'         => $entry['y'],
+              'z'         => $entry['z'],
+              'area'      => filter_var($entry['area'],FILTER_SANITIZE_FULL_SPECIAL_CHARS,FILTER_FLAG_NO_ENCODE_QUOTES)
+            ]);
+              $i++;
+            } catch (Exception $e){
+              echo $e->getMessage();
+            }
+          }
+        }
+      fclose($handle);
+    }
+
+    $handle = fopen("phar://".$this->zip."/attack.txt", "r");
+    if ($handle) {
+        while (($line = fgets($handle)) !== false) {
+          $tmp = [];
+          $entry = [];
+          if(!preg_match("/\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3})] (\w*): (.*)/", $line, $tmp)) continue;
+          $entry['type'] = $tmp[2];
+          $entry['time'] = $tmp[1];
+          $entry['text'] = $tmp[3];
+          $entry['x']    = null;
+          $entry['y']    = null;
+          $entry['z']    = null;
+          $entry['area'] = null;
+          unset($tmp);
+          if(isset($entry['text'])){
+            $t = [];
+            if(preg_match("/(.*) \((.*)\((\d{1,}), (\d{1,}), (\d{1,})\)\)/", $entry['text'], $t)){
+              $entry['text'] = $t[1];
+              $entry['x']    = $t[3];
+              $entry['y']    = $t[4];
+              $entry['z']    = $t[5];
+              $entry['area'] = $t[2];
+              // var_dump($merge);
+            }
+            try{
+              $this->alt_db->insert('round_logs',[
+              'round'     => $this->round->id,
+              'timestamp' => $entry['time'],
+              'type'      => $entry['type'],
+              'text'      => filter_var($entry['text'], FILTER_SANITIZE_FULL_SPECIAL_CHARS,FILTER_FLAG_NO_ENCODE_QUOTES),
+              'x'         => $entry['x'],
+              'y'         => $entry['y'],
+              'z'         => $entry['z'],
+              'area'      => filter_var($entry['area'], FILTER_SANITIZE_FULL_SPECIAL_CHARS,FILTER_FLAG_NO_ENCODE_QUOTES)
+            ]);
+              $i++;
+            } catch (Exception $e){
+              echo $e->getMessage();
+            }
+          }
+        }
+      fclose($handle);
+    }
+  }
 }
