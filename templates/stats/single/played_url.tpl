@@ -5,17 +5,17 @@
 {% endif %}
 <table class="table table-sm table-bordered sort">
   <thead>
-    <th>{{stat.label.key}}</th>
-    <th>{{stat.label.value}}</th>
-    <th>{{stat.label.value2}}</th>
+    <th>Admin</th>
+    <th>URL Played</th>
+    <th>Times Played</th>
   </thead>
   <tbody>
-  {% for k,v in stat.data %}
+  {% for k,v in stat.output %}
     {% for path, value in v %}
     <tr>
-      <th><a href="{{path}}" target="_blank" rel="noopener noreferrer"><i class='fas fa-external-link-alt'></i> {{path}}</a></th>
+      <th>{{k}}</th>
+      <td><a href="{{path}}" target="_blank" rel="noopener noreferrer"><i class='fas fa-external-link-alt'></i> {{path}}</a></td>
       <td>{{value}}</td>
-      <td>{{k}}</td>
     </tr>
     {% endfor %}
   {% endfor %} 

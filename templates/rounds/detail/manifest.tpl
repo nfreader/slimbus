@@ -15,7 +15,7 @@
     {% for c in crew %}
       <tr class="{% if c.role %}table-danger{% endif %}">
         <td>
-        {% if user.level >= 2 %}
+        {% if user.canAccessTGDB %}
           <a href="tgdb/player.php?ckey={{c.ckey}}">{{c.ckey}}</a>
         {% else %}
           {{c.ckey}}

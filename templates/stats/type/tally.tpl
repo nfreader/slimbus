@@ -1,8 +1,3 @@
-{% if stat.label.splain %}
-<div class="alert alert-secondary" role="alert">
-  {{stat.label.splain}}
-</div>
-{% endif %}
 <table class="table table-sm table-bordered sort">
   <thead>
     <th>{{stat.label.key}}</th>
@@ -23,7 +18,7 @@
     <tfoot>
     <tr style="border-top: 2px solid grey;">
       <th>
-        Total {{ stat.label.value }}
+        {{ stat.label.total }}
       </th>
       <td>
         {{ stat.total }}

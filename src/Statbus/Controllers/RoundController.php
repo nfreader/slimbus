@@ -42,7 +42,7 @@ class RoundController Extends Controller {
       SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.initialize_datetime, tbl_round.start_datetime)) AS init_time,
       SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.end_datetime, tbl_round.shutdown_datetime)) AS shutdown_time
       FROM tbl_round
-      WHERE tbl_round.end_datetime IS NOT NULL
+      WHERE tbl_round.shutdown_datetime IS NOT NULL
       ORDER BY tbl_round.shutdown_datetime DESC
       LIMIT ?,?", ($this->page * $this->per_page) - $this->per_page, $this->per_page);
 
@@ -78,6 +78,10 @@ class RoundController Extends Controller {
       return $this->stat($round, $args['stat'], $response);
     }
     $round->stats = (new StatController($this->DB))->getStatsForRound($round->id);
+    $round->data = (new StatController($this->DB))->getStatsForRound($round->id,[
+      'nuclear_challenge_mode',
+      'testmerged_prs'
+    ]);
     return $this->view->render($response, 'rounds/round.tpl',[
       'round'       => $round,
       'breadcrumbs' => $this->breadcrumbs,
@@ -86,6 +90,7 @@ class RoundController Extends Controller {
   }
 
   public function stat(object $round, string $stat, $response){
+    $stat = filter_var($stat, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
     $round->stat = (new StatController($this->DB))->getRoundStat($round->id, $stat);
     $url = parent::getFullURL($this->router->pathFor('round.single',[
       'id'   =>$round->id,
@@ -94,7 +99,7 @@ class RoundController Extends Controller {
     $this->breadcrumbs[$stat] = $url;
     $this->ogdata['url'] = $url;
     $this->ogdata['description'] = "Stats for $stat from round $round->id on $round->server";
-    return $this->view->render($response, 'stats/stat.tpl',[
+    return $this->view->render($response, 'stats/single.tpl',[
       'round'       => $round,
       'stat'        => $round->stat,
       'breadcrumbs' => $this->breadcrumbs,
@@ -153,7 +158,7 @@ class RoundController Extends Controller {
       LEFT JOIN tbl_round AS prev ON prev.id = tbl_round.id - 1 
       LEFT JOIN tbl_death AS D ON D.round_id = tbl_round.id
       WHERE tbl_round.id = ?
-      AND tbl_round.end_datetime IS NOT NULL", $id);
+      AND tbl_round.shutdown_datetime IS NOT NULL", $id);
     $round = $this->roundModel->parseRound($round);
     $url = parent::getFullURL($this->router->pathFor('round.single',['id'=>$round->id]));
     $this->breadcrumbs[$round->id] = $url;

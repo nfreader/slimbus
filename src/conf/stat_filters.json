@@ -1,0 +1,255 @@
+{
+  "admin_cookies_spawned":{},
+  "admin_secrets_fun_used": {
+    "label": {
+      "key": "Button Pressed",
+      "value": "Times Pressed",
+      "subvalue": "Conditions"
+    }
+  },
+  "admin_toggle":{
+    "label": {
+      "key": "Verb",
+      "value": "Times Used",
+      "subvalue": "Conditions"
+    }
+  },
+  "admin_verb":{
+    "label": {
+      "key": "Verb",
+      "value": "Times Used",
+      "subvalue": "Conditions",
+      "total":"Total Verbs Used"
+    }
+  },
+  "ahelp_stats":{
+    "label":{
+      "key": "Ahelp Status",
+      "value": "Times",
+      "subvalue": "Conditions",
+      "total":"Total Ahelps"
+    }
+  },
+  "ais_created":{},
+  "antagonists":{},
+  "arcade_results":{},
+  "assembly_made":{
+    "label": {
+      "key": "Assembly",
+      "value": "Number Made",
+      "subvalue": "Conditions",
+      "total":"Total Assemblies Made"
+    }
+  },
+  "brother_success":{},
+  "byond_build":{},
+  "byond_version":{},
+  "cargo_imports":{},
+  "cell_used":{
+    "label": {
+      "key": "Cell",
+      "value": "Number Used",
+      "total":"Total Cells Used"
+    }
+  },
+  "changeling_objective":{},
+  "changeling_powers":{},
+  "changeling_power_purchase":{
+    "label": {
+      "key": "Power",
+      "value": "Times Purchased",
+      "total":"Total Powers Purchased"
+    }
+  },
+  "changeling_success":{},
+  "chaplain_armor":{},
+  "chaplain_weapon":{},
+  "chemical_reaction":{
+    "label": {
+      "key": "Reagent",
+      "value": "Units created",
+      "total":"Total Units Created"
+    }
+  },
+  "circuit_printed":{},
+  "client_byond_version":{
+    "label": {
+      "key": "Version",
+      "value": "Times Seen",
+      "total":"Useless number of clients seen"
+    }
+  },
+  "clockcult_scripture_recited":{},
+  "colonies_dropped":{},
+  "commendation":{},
+  "contaminated":{
+    "label": {
+      "key": "Item/Structure",
+      "value": "Number Irridated",
+      "total":"Total Items/Structures Irridiated"
+    }
+  },
+  "cult_objective":{},
+  "cult_runes_scribed":{
+    "label": {
+      "key": "Rune",
+      "value": "Number Scribed",
+      "total":"Total Runes Scribed"
+    }
+  },
+  "cyborg_birth":{
+    "label":{
+      "splain":"I. LIVE. AGAIN."
+    }
+  },
+  "cyborg_frames_built":{},
+  "cyborg_modules":{},
+  "dm_version":{},
+  "engine_started":{},
+  "event_admin_cancelled":{
+    "label": {
+      "key": "Event",
+      "value": "Cancellations",
+      "total":"Total Events Canceled"
+    }
+  },
+  "event_ran":{
+    "label": {
+      "key": "Event",
+      "value": "Times Ran",
+      "total":"Total Events Run"
+    }
+  },
+  "explosion":{
+    "label": {
+      "splain":"Numbers in red are values without bombcap applied"
+    }
+  },
+  "export_sold_cost":{
+    "label": {
+      "key": "Item",
+      "value": "Value",
+      "total":"Total Exported"
+    }
+  },
+  "food_harvested":{},
+  "food_made":{},
+  "gorillas_created":{},
+  "gun_fired":{},
+  "handcuffs":{},
+  "high_research_level":{},
+  "hivelord_core":{},
+  "immortality_talisman_uses":{},
+  "item_deconstructed":{},
+  "item_printed":{},
+  "item_used_for_combat":{
+    "label": {
+      "key": "Weapon",
+      "value": "Times Used",
+      "value2": "Damage",
+      "filter": "/obj/item",
+      "splain": "/obj/item removed for readability purposes"
+    }
+  },
+  "jaunter":{},
+  "job_preferences":{},
+  "keycard_auths":{
+    "label": {
+      "key": "Protocol",
+      "value": "Times Authorized",
+      "subvalue": "Conditions"
+    }
+  },
+  "lazarus_injector":{},
+  "mechas_created":{},
+  "megafauna_kills":{},
+  "megafauna_kills_crusher":{},
+  "mining_equipment_bought":{},
+  "mining_voucher_redeemed":{},
+  "mmis_filled":{},
+  "mobs_killed_mining":{},
+  "newscaster_channels":{},
+  "newscaster_stories":{},
+  "newspapers_printed":{},
+  "nuclear_challenge_mode":{},
+  "object_crafted":{},
+  "ore_mined":{
+    "label": {
+      "key": "Ore",
+      "value": "Units Mined",
+      "filter": "/obj/item/stack",
+      "splain": "/obj/item/stack removed for readability purposes"
+    }
+  },
+  "pick_used_mining":{},
+  "played_url":{},
+  "preferences_verb":{},
+  "radio_usage":{
+    "label": {
+      "key": "Channel",
+      "value": "Messages Transmitted",
+      "total": "Total Messages Transmitted"
+    }
+  },
+  "random_seed":{},
+  "religion_book":{},
+  "religion_deity":{},
+  "religion_name":{},
+  "roundend_nukedisk":{},
+  "round_end_stats":{},
+  "science_techweb_unlock":{},
+  "science_techweb_unlock_first_thi":{},
+  "SDQL query":{
+    "label": {
+      "key": "Admin",
+      "value":"Times Executed",
+      "subvalue": "Query",
+      "total": "Times Executed"
+    }
+  },
+  "security_level_changes":{},
+  "server_tools":{},
+  "server_tools_api":{},
+  "shuttle_fasttravel":{},
+  "shuttle_gib":{},
+  "shuttle_manipulator":{},
+  "shuttle_purchase":{},
+  "shuttle_reason":{},
+  "slime_babies_born":{},
+  "slime_cores_used":{},
+  "slime_core_harvested":{},
+  "spacepod_created":{},
+  "station_renames":{},
+  "surgeries_completed":{},
+  "teams":{},
+  "testmerged_prs":{},
+  "time_dilation_current":{},
+  "traitor_objective":{},
+  "traitor_random_uplink_items_gott":{},
+  "traitor_success":{},
+  "traitor_uplink_items_bought":{
+    "label": {
+      "key": "Item",
+      "subvalue":"Cost",
+      "value": "Number Purchased"
+    }
+  },
+  "traumas":{},
+  "vending_machine_usage":{
+    "label": {
+      "key": "Vending Machine",
+      "subvalue":"Item Vended",
+      "value": "Number Vended",
+      "filter":["/obj/machinery/vending/","/obj/item"],
+      "splain":"/obj/machinery/vending/ and /obj/item removed for readability purposes"
+    }
+  },
+  "voice_of_god":{},
+  "warp_cube":{},
+  "wisp_lantern":{},
+  "wizard_objective":{},
+  "wizard_spell_improved":{},
+  "wizard_spell_learned":{},
+  "wizard_success":{},
+  "zone_targeted":{}
+}

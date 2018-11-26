@@ -319,6 +319,29 @@
     border-radius: 5px;
     padding: 3px;
   }
+  .seclevel-green {
+    color: white;
+    background: green;
+  }
+  .seclevel-blue {
+    color: white;
+    background: blue;
+  }
+  .seclevel-red {
+    color: white;
+    background: red;
+  }
+  .seclevel-delta {
+    animation: panic 2s linear infinite;
+    color: black;
+    background: orange;
+  }
+  @keyframes panic {
+    50% {
+      box-shadow: 0px 0px 5px 2px #EB0012, inset 0px 0px 5px 2px #EB0012;
+      border-color: #EB0012; }
+    0%, 100% {
+      box-shadow: none; } }
 /*  .tlp-red:after {
     position: absolute;
     top: 0;

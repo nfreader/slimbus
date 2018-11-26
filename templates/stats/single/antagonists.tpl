@@ -1,6 +1,3 @@
-{% if stat is iterable %}
-  {% set stat = stat[0] %}
-{% endif %}
 {% if stat.version < 3 %}
 {% for ckey, objs in stat.data %}
 {% set type = objs|keys[0] %}
@@ -72,6 +69,4 @@
     </ul>
   </div>
 {% endfor %}
-
-
 {% endif %}

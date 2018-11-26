@@ -1,4 +1,5 @@
 {% extends "base/index.html" %}
+{% import('components/macros.tpl') as m %}
 {% block pagetitle %}Logs - Round #{{round.id}}{% endblock %}
 {% block content %}
 {% include('rounds/html/header.tpl') %}
