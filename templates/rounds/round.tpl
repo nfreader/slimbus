@@ -22,7 +22,7 @@
   </div>
   <div class="card-body">
   {% set stat = [round.data.testmerged_prs] %}
-  {% include('stats/special-cases/prs.tpl') with stat %}
+  {% include('stats/single/testmerged_prs.tpl') with stat %}
   </div>
 </div>
 {% endif %}
