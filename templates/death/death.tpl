@@ -69,8 +69,8 @@
       <div class="card-body h4">
         {{death.mapname}} - {{death.pod}} ({{death.x}}, {{death.y}}, {{death.z}})
         {% if death.z == 2 %}
-        <iframe src="https://atlantaned.space/renderbus/#5/{{death.x}}/{{death.y}}/{{death.mapname}}"></iframe><br>
-            <a href="https://atlantaned.space/renderbus/#5/{{death.x}}/{{death.y}}/{{death.mapname}}" target="_blank" rel="noopener noreferrer">Full view</a>
+        <iframe src="https://atlantaned.space/renderbus/#5/{{death.x}}/{{death.y}}/{{death.map_url}}"></iframe><br>
+            <a href="https://atlantaned.space/renderbus/#5/{{death.x}}/{{death.y}}/{{death.map_url}}" target="_blank" rel="noopener noreferrer">Full view</a>
         {% endif %}
       </div>
     </div>

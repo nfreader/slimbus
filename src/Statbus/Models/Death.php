@@ -67,6 +67,7 @@ class Death {
         $death->last_line  = "whispered in their final moments";
       break;
     }
+    $death->map_url = str_replace(' ', '', $death->mapname);
     return $death;
   }
 }
