@@ -61,8 +61,8 @@
 <div class="row">
   <div class="col">
     <div class="card">
-      <div class="card-header" data-target="#iplist" data-toggle="collapse">
-        IP Addresses ({{player.ips|length}})
+      <div class="card-header">
+        <a data-target="#iplist" data-toggle="collapse">IP Addresses ({{player.ips|length}})</a>
       </div>
       <ul class="list-group list-group-flush collapse" id="iplist">
       {% for ip in player.ips %}
@@ -73,8 +73,8 @@
   </div>
   <div class="col">
     <div class="card">
-      <div class="card-header" data-target="#cidlist" data-toggle="collapse">
-        Computer IDs ({{player.cids|length}})
+      <div class="card-header">
+        <a data-target="#cidlist" data-toggle="collapse">Computer IDs ({{player.cids|length}})</a>
       </div>
       <ul class="list-group list-group-flush collapse" id="cidlist">
       {% for cid in player.cids %}
@@ -85,9 +85,9 @@
   </div>
   <div class="col">
     <div class="card">
-      <div class="card-header" data-target="#namelist" data-toggle="collapse">
-        <span class="badge badge-info">BETA</span> Character Names 
-          ({{player.names.deaths|length + player.names.manifest|length}})
+      <div class="card-header">
+        <a data-target="#namelist" data-toggle="collapse"><span class="badge badge-info">BETA</span> Character Names 
+          ({{player.names.deaths|length + player.names.manifest|length}})</a>
       </div>
       <ul class="list-group list-group-flush collapse" id="namelist">
         {% if player.names.manifest %}
@@ -140,8 +140,8 @@
 <div class="row">
   <div class="col">
     <div class="card">
-      <div class="card-header" data-target="#alts_ip" data-toggle="collapse">
-        <span class="badge badge-info">BETA</span> Ckeys with the player's current IP address ({{player.alts.ip_alts|length}})
+      <div class="card-header">
+        <a data-target="#alts_ip" data-toggle="collapse"><span class="badge badge-info">BETA</span> Ckeys with the player's current IP address ({{player.alts.ip_alts|length}})</a>
       </div>
       <ul class="list-group list-group-flush collapse" id="alts_ip">
         {% for p in player.alts.ip_alts %}
@@ -154,8 +154,8 @@
   </div>
   <div class="col">
     <div class="card">
-      <div class="card-header" data-target="#alts_cid" data-toggle="collapse">
-        <span class="badge badge-info">BETA</span> Ckeys with the player's current CID ({{player.alts.cid_alts|length}})
+      <div class="card-header">
+        <a data-target="#alts_cid" data-toggle="collapse"><span class="badge badge-info">BETA</span> Ckeys with the player's current CID ({{player.alts.cid_alts|length}})</a>
       </div>
       <ul class="list-group list-group-flush collapse" id="alts_cid">
       {% for p in player.alts.cid_alts %}
