@@ -44,7 +44,13 @@ class Stat {
           $d['id'] = strtoupper(substr(hash('sha512', $d['commendee'].$d['reason']), 0,6));
         }
       break;
+
+      case 'testmerged_prs':
+        $stat->data = array_map("unserialize", array_unique(array_map("serialize", $stat->data)));
+      break;
     }
+
+
 
     return $stat;
   }

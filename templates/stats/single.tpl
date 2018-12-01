@@ -13,7 +13,7 @@
     {{stat.label.splain}}
   </div>
   {% endif %}
-  {% include ['stats/single/' ~ stat.key_name ~'.tpl','stats/type/' ~ stat.key_type ~'.tpl', 'stats/generic.tpl'] %}
+  {% include ['stats/single/' ~ stat.key_name ~'-' ~ stat.version ~'.tpl', 'stats/single/' ~ stat.key_name ~'.tpl','stats/type/' ~ stat.key_type ~'.tpl', 'stats/generic.tpl'] %}
   <hr>
   <dl class="row">
     <dt class="col-sm-3">Stat ID</dt>

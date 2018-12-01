@@ -15,16 +15,17 @@
 
 {% include('rounds/html/basic.tpl') %}
 
-{% if round.data.testmerged_prs %}
-<div class="card mb-2" id="prs">
-  <div class="card-header">
-    Testmerged PRs
-  </div>
-  <div class="card-body">
-  {% set stat = [round.data.testmerged_prs] %}
-  {% include('stats/single/testmerged_prs.tpl') with stat %}
-  </div>
-</div>
+{% if round.data %}
+  {% for name, stat in round.data %}
+  <div class="card mb-2" id="prs">
+    <div class="card-header">
+      <code>{{name}}</code>
+    </div>
+    <div class="card-body">
+    {% include ['stats/single/' ~ stat.key_name ~'-' ~ stat.version ~'.tpl', 'stats/single/' ~ stat.key_name ~'.tpl','stats/type/' ~ stat.key_type ~'.tpl', 'stats/generic.tpl'] %}
+      </div>
+    </div>
+  {% endfor %}
 {% endif %}
 
 <h3>Round Stats</h3>
