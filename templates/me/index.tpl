@@ -25,6 +25,19 @@ Between your first connection {{user.firstseen|timestamp}} and your most recent 
     <p>(Tracked over time since around July of 2017)</p>
   </div>
 </div>
+<hr>
+<div class="card">
+  <h3 class="card-header"><a data-toggle="collapse" href="#lastwords" role="button" aria-expanded="false" aria-controls="lastwords">Your Last Words</a></h3>
+  <div class="card-body collapse" id="lastwords">
+      <ul class="list-inline">
+      {% for death in lastWords %}
+        <li class="list-inline-item">
+          <code><em><a href="{{path_for('death.single',{'id': death.id})}}">{{death.last_words|raw}}</a></em></code>
+        </li>
+      {% endfor %}
+      </ul>
+  </div>
+</div>
 
 {% else %}
 <div class="page-header">

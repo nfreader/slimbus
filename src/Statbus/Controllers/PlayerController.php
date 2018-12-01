@@ -162,4 +162,8 @@ class PlayerController Extends Controller {
     $player->alts = $this->findAlts($player->ckey);
     return $player;
   }
+
+  public function getLastWords($ckey){
+    return $this->DB->run("SELECT last_words, id FROM ss13death WHERE byondkey = ? AND last_words IS NOT NULL AND last_words != '';", $ckey);
+  }
 }

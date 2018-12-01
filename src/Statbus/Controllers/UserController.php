@@ -82,8 +82,10 @@ class UserController Extends Controller {
 
    public function me($request, $response, $args) {
     $roleData = $this->PC->getRoleData($this->user->ckey);
+    $lastWords = $this->PC->getLastWords($this->user->ckey);
     return $this->view->render($response, 'me/index.tpl',[
-      'roleData' => $roleData
+      'roleData'  => $roleData,
+      'lastWords' => $lastWords
     ]);
   }
 }
