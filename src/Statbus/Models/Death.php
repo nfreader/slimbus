@@ -11,7 +11,6 @@ class Death {
   }
 
   public function parseDeath(&$death) {
-    
     $death->server = $this->settings['servers'][array_search($death->port, array_column($this->settings['servers'], 'port'))]['name'];
 
     $death->class = '';
