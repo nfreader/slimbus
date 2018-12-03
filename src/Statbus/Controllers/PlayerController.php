@@ -10,7 +10,8 @@ class PlayerController Extends Controller {
 
   public function __construct(ContainerInterface $container) {
     parent::__construct($container);
-    $this->playerModel = new Player($this->container->get('settings')['statbus']);
+    $this->sb = $this->container->get('settings')['statbus'];
+    $this->playerModel = new Player($this->sb);
     $dbConn = $this->container->get('settings')['database']['alt'];
     $this->alt_db = (new DBController($dbConn))->db;
   }
@@ -81,10 +82,11 @@ class PlayerController Extends Controller {
   }
 
    public function getRoleData($ckey) {
+    $jobs = "('".implode("','",$this->sb['jobs'])."')";
     return json_encode($this->DB->run("SELECT job, minutes
       FROM tbl_role_time
       WHERE ckey = ?
-      AND tbl_role_time.job IN ('Assistant','Scientist','Shaft Miner','Station Engineer','Cyborg','Medical Doctor','Security Officer','Roboticist','Cargo Technician','Botanist','Chemist','AI','Cook','Atmospheric Technician','Janitor','Clown','Captain','Bartender','Head of Personnel','Quartermaster','Chaplain','Geneticist','Chief Engineer','Research Director','Mime','Lawyer','Detective','Chief Medical Officer','Head of Security','Virologist','Librarian','Warden')
+      AND tbl_role_time.job IN $jobs
       ORDER BY job ASC", $ckey));
   }
 

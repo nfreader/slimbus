@@ -16,15 +16,12 @@
 2. Clone this repo into the document root you specified in step 1.
 3. Run  `composer update` and `composer dump-autoload -o`.
 4. Copy `.env.example` to `.env` and adjust your settings accordingly.
-5. Copy `src/conf/example-servers.json` to `src/conf/servers.json` and customize your settings accordingly.
-6. Copy `src/conf/example-ranks.json` to `src/conf/ranks.json` and customize your settings accordingly. Icons are from [FontAwesome](https://fontawesome.com/icons?d=gallery&m=free).
 
 ### Second Database (Alt DB)
 Some data, when parsed, can be saved to a second database. To enable this function: 
 
 1. Make sure the `ALT_DB_*` variables are set in your `.env`. See `.env.example` for details.
 2. Initialize the second database using the table structure defined in `sql/alt_db.sql`.
-
 
 ## Updating
 1. Run `git pull`.
@@ -33,3 +30,10 @@ Some data, when parsed, can be saved to a second database. To enable this functi
 
 ### Second Database (Alt DB)
 1. Apply any updates specified in `sql/sqlchangelog.md`. 
+
+##Customizations
+There are several files you can edit in order to tailor Statbus to your codebase: 
+
+- `src/conf/servers.json` can be used to map server information. At the minimum, you must specify a server port and name. See `src/conf/example-servers.json`.
+- `src/conf/ranks.json` holds the definitions for admin rank badge colors and icons. See `src/conf/example-ranks.json` for examples. The icon field sources icons from [FontAwsome](https://fontawesome.com/icons?d=gallery&s=solid&m=free). You only need the name of the icon, the part after `fa-`. 
+- `src/conf/jobs.json` can be used to customize what jobs are looked at for querying role_time data (as seen on `/me`). You should copy `src/conf/example-jobs.json` into your `jobs.json` and add or remove jobs from that listing.
