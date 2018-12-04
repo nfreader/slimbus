@@ -14,7 +14,9 @@ class DeathController Extends Controller{
     $this->router = $this->container->get('router');
     $this->deathModel = new Death($this->container->get('settings')['statbus']);
 
-    $this->pages = ceil($this->DB->cell("SELECT count(tbl_death.id) FROM tbl_death") / $this->per_page);
+    $this->pages = ceil($this->DB->cell("SELECT count(tbl_death.id) FROM tbl_death
+        LEFT JOIN tbl_round ON tbl_round.id = tbl_death.round_id
+        WHERE tbl_round.end_datetime IS NOT NULL") / $this->per_page);
 
     $this->breadcrumbs['Deaths'] = $this->router->pathFor('death.index');
 
