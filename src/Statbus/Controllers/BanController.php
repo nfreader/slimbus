@@ -13,61 +13,33 @@ class BanController extends Controller {
 
   public function getPlayerStanding($ckey){
     $standing = new \stdclass;
-    $standing->ban_list = [];
-
-    $bans = $this->DB->run("SELECT bantype,
-      id
-      FROM ss13ban
+    $standing->bans = $this->DB->run("
+      SELECT B.role, 
+      B.id,
+      B.expiration_time
+      FROM ss13ban AS B
       WHERE ckey = ?
-      AND (ss13ban.expiration_time > NOW()
-      OR ss13ban.unbanned != 1
-      OR (ss13ban.duration = -1
-      AND ss13ban.unbanned IS NULL))
-      ORDER BY bantype, id DESC;", $ckey);
-    if(!$bans){
-      $standing->class = 'success';
-      $standing->text  = 'Not Banned';
-      $id = false;
-      return $standing;
-    }
-    $ban_list = [];
-    foreach ($bans as $b){
-      if(isset($standing->ban_list[$b->bantype])){
+      AND ((B.expiration_time > NOW() AND B.unbanned_ckey IS NULL)
+      OR (B.expiration_time IS NULL AND B.unbanned_ckey IS NULL))", $ckey);
+    foreach($standing->bans as &$b){
+      //Loop through all the active bans we found
+      //If there's no expiration time set, flag it as perma
+      $b->perm = (isset($b->expiration_time)) ? FALSE : TRUE;
+      //If we find a ban with a perma flag set, and if it's a server role,
+      //exit the loop. We got what we needed.
+      if ($b->perm && 'Server' === $b->role){
+        $standing->class = "perma";
+        $standing->text = "Permabanned";
         continue;
       } else {
-        $standing->ban_list[$b->bantype] = $b->id;
+        $standing->class = "danger";
+        $standing->text = "Active Bans";
       }
     }
-    $bl = array_keys($standing->ban_list);
-    if(in_array('JOB_TEMPBAN', $bl)){
-      $standing->class = 'danger';
-      $standing->text  = 'Job Tempbanned';
-      $standing->id    = $standing->ban_list['TEMPBAN'];
-    }
-    if(in_array('TEMPBAN', $bl)){
-      $standing->class = 'danger';
-      $standing->text  = 'Temporarily Banned';
-      $standing->id    = $standing->ban_list['JOB_TEMPBAN'];
-    }
-    if(in_array('ADMIN_TEMPBAN', $bl)){
-      $standing->class = 'danger';
-      $standing->text  = 'Temporarily Admin Banned';
-      $standing->id    = $standing->ban_list['ADMIN_TEMPBAN'];
-    }
-    if(in_array('JOB_PERMABAN', $bl)){
-      $standing->class = 'perma';
-      $standing->text  = 'Permanently Job Banned';
-      $standing->id    = $standing->ban_list['JOB_PERMABAN'];
-    }
-    if(in_array('ADMIN_PERMABAN', $bl)){
-      $standing->class = 'perma';
-      $standing->text  = 'Permanently Admin Banned';
-      $standing->id    = $standing->ban_list['ADMIN_PERMABAN'];
-    }
-    if(in_array('PERMABAN', $bl)){
-      $standing->class = 'perma';
-      $standing->text  = 'Permanently Banned';
-      $standing->id    = $standing->ban_list['PERMABAN'];
+    if(!$standing->bans){
+      $standing->class = 'success';
+      $standing->text  = 'Not Banned';
+      return $standing;
     }
     return $standing;
   }

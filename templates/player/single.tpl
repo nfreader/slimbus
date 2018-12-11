@@ -24,14 +24,19 @@
   <div class="col">
     <ul class="list-group">
       <li class="list-group-item list-group-item-{{player.standing.class}}">
-        <strong>Account Standing</strong> {{player.standing.text}} {% if player.standing.id %} <a href="#">#{{player.standing.id}}</a> {% endif %}
+        <strong>Account Standing</strong> {{player.standing.text}}<br>
+        <ul class="list-unstyled">
+        {% for b in player.standing.bans %}
+          <li>{{b.role}} (<a href="#"><i class="fas fa-ban"></i> {{b.id}}</a>) ({% if b.expiration_time %}Temp{% else %}Perma{% endif %})</li>
+        {% endfor %}
+        </ul>
       </li>
-      <li class="list-group-item d-flex justify-content-between align-items-center">
+      <!-- <li class="list-group-item d-flex justify-content-between align-items-center">
         <strong>IPs seen</strong> <span class='badge badge-pill badge-primary'>{{player.ips|length}}</span>
       </li>
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <strong>ComputerIDs seen</strong> <span class='badge badge-pill badge-primary'>{{player.cids|length}}</span>
-      </li>
+      </li> -->
     </ul>
   </div>
   <div class="col">
