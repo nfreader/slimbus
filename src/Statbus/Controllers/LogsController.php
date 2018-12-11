@@ -213,7 +213,7 @@ class LogsController Extends Controller {
 
   private function parseNewscaster(){
     $file = json_decode($this->file, TRUE);
-    foreach ($this->file as &$c){
+    foreach ($file as &$c){
       foreach ($c['messages'] as $k => &$v){
         if (!is_array($v)){
           $tmp = $c['messages'];
@@ -226,7 +226,7 @@ class LogsController Extends Controller {
           $v['id'] = substr(sha1($v['body'].$v['time stamp']),0,7);
           $v['body'] = filter_var($v['body'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_NO_ENCODE_QUOTES);
           if('' != $v['photo file']){
-            $v['photo file'] = base64_encode(file_get_contents("phar://".$this->zipCache."/photos/".$v['photo file'].".png"));
+            $v['photo file'] = base64_encode(file_get_contents("phar://".$this->zip."/photos/".$v['photo file'].".png"));
           }
          }
       }
