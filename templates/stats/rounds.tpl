@@ -8,7 +8,7 @@
   {% set vars = {
     'nbPages': round.pages,
     'currentPage': round.page,
-    'url': path_for('round.index')
+    'url': path_for('stat.rounds',{'stat': stat})
     } 
   %}
   {% include 'components/pagination.html' with vars %}
