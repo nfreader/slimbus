@@ -207,7 +207,6 @@ class LogsController Extends Controller {
 
   private function parseNewscaster(){
     $file = json_decode($this->file, TRUE);
-    var_dump($file);
     foreach ($file as &$c){
       foreach ($c['messages'] as $k => &$v){
         if (!is_array($v)){

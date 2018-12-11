@@ -1,6 +1,5 @@
 
 {% for channel in file %}
-{{dump(channel)}}
 <div class="card mb-3">
   <h3 class="card-header">{{attribute(channel, 'channel name')}} <small class='text-muted'>{{channel.author}}</small></h3>
   <ul class="list-group list-group-flush">
