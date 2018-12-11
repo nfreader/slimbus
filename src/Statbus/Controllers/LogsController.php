@@ -91,8 +91,14 @@ class LogsController Extends Controller {
       return false;
     }
     if(file_exists("phar://".$this->zip.'/'.$file)){
-      $this->file = strip_tags(file_get_contents("phar://".$this->zip."/".$file));
-      $this->file = filter_var($this->file, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_NO_ENCODE_QUOTES);
+      $this->file = file_get_contents("phar://".$this->zip."/".$file);
+    }
+    if(in_array($file,[
+      'newscaster.json'
+    ])){
+      $this->file = strip_tags($this->file,'<br>');
+    } else {
+    $this->file = filter_var($this->file, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_NO_ENCODE_QUOTES);
     }
     if ($raw){
       return $this->file;
@@ -207,18 +213,18 @@ class LogsController Extends Controller {
 
   private function parseNewscaster(){
     $file = json_decode($this->file, TRUE);
-    foreach ($file as &$c){
+    foreach ($this->file as &$c){
       foreach ($c['messages'] as $k => &$v){
         if (!is_array($v)){
           $tmp = $c['messages'];
           $tmp['id'] = substr(sha1($tmp['body'].$tmp['time stamp']),0,7);
-          $tmp['body'] = nl2br($tmp['body']);
+          $tmp['body'] = filter_var($tmp['body'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_NO_ENCODE_QUOTES);
           unset($c['messages']);
           $c['messages'][] = $tmp;
           continue 2; 
         } else {
           $v['id'] = substr(sha1($v['body'].$v['time stamp']),0,7);
-          $v['body'] = nl2br($v['body']);
+          $v['body'] = filter_var($v['body'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_NO_ENCODE_QUOTES);
           if('' != $v['photo file']){
             $v['photo file'] = base64_encode(file_get_contents("phar://".$this->zipCache."/photos/".$v['photo file'].".png"));
           }
