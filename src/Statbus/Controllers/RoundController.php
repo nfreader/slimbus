@@ -10,21 +10,8 @@ use Statbus\Controllers\DeathController as DeathContorller;
 use Statbus\Controllers\LogsController as LogsController;
 
 class RoundController Extends Controller {
-  
-  public function __construct(ContainerInterface $container) {
-    parent::__construct($container);
-    $this->pages = ceil($this->DB->cell("SELECT count(tbl_round.id) FROM tbl_round") / $this->per_page);
 
-    $this->roundModel = new Round($this->container->get('settings')['statbus']);
-
-    $this->breadcrumbs['Rounds'] = $this->router->pathFor('round.index');
-  }
-
-  public function index($request, $response, $args) {
-    if(isset($args['page'])) {
-      $this->page = filter_var($args['page'], FILTER_VALIDATE_INT);
-    }
-    $rounds = $this->DB->run("SELECT tbl_round.id,
+  private $columns = "tbl_round.id,
       tbl_round.initialize_datetime,
       tbl_round.start_datetime,
       tbl_round.shutdown_datetime,
@@ -40,7 +27,22 @@ class RoundController Extends Controller {
       SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.initialize_datetime, tbl_round.shutdown_datetime)) AS duration,
       SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.start_datetime, tbl_round.end_datetime)) AS round_duration,
       SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.initialize_datetime, tbl_round.start_datetime)) AS init_time,
-      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.end_datetime, tbl_round.shutdown_datetime)) AS shutdown_time
+      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.end_datetime, tbl_round.shutdown_datetime)) AS shutdown_time";
+  
+  public function __construct(ContainerInterface $container) {
+    parent::__construct($container);
+    $this->pages = ceil($this->DB->cell("SELECT count(tbl_round.id) FROM tbl_round") / $this->per_page);
+
+    $this->roundModel = new Round($this->container->get('settings')['statbus']);
+
+    $this->breadcrumbs['Rounds'] = $this->router->pathFor('round.index');
+  }
+
+  public function index($request, $response, $args) {
+    if(isset($args['page'])) {
+      $this->page = filter_var($args['page'], FILTER_VALIDATE_INT);
+    }
+    $rounds = $this->DB->run("SELECT $this->columns
       FROM tbl_round
       WHERE tbl_round.shutdown_datetime IS NOT NULL
       ORDER BY tbl_round.shutdown_datetime DESC
@@ -133,23 +135,7 @@ class RoundController Extends Controller {
 
   public function getRound(int $id){
     $id = filter_var($id, FILTER_VALIDATE_INT);
-    $round = $this->DB->row("SELECT tbl_round.id,
-      tbl_round.initialize_datetime,
-      tbl_round.start_datetime,
-      tbl_round.shutdown_datetime,
-      tbl_round.end_datetime,
-      tbl_round.server_port AS port,
-      tbl_round.commit_hash,
-      tbl_round.game_mode AS mode,
-      tbl_round.game_mode_result AS result,
-      tbl_round.end_state,
-      tbl_round.shuttle_name AS shuttle,
-      tbl_round.map_name AS map,
-      tbl_round.station_name,
-      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.initialize_datetime, tbl_round.shutdown_datetime)) AS duration,
-      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.start_datetime, tbl_round.end_datetime)) AS round_duration,
-      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.initialize_datetime, tbl_round.start_datetime)) AS init_time,
-      SEC_TO_TIME(TIMESTAMPDIFF(SECOND, tbl_round.end_datetime, tbl_round.shutdown_datetime)) AS shutdown_time,
+    $round = $this->DB->row("SELECT $this->columns,
       MAX(next.id) AS next,
       MAX(prev.id) AS prev,
       COUNT(D.id) AS deaths
@@ -263,6 +249,32 @@ class RoundController Extends Controller {
       'file'        => $logs,
       'filename'    => $file,
       'wide'        => true
+    ]);
+  }
+
+  public function getRoundsWithStat($request, $response, $args){
+    if(isset($args['page'])) {
+      $this->page = filter_var($args['page'], FILTER_VALIDATE_INT);
+    }
+    if(isset($args['stat'])) {
+      $stat = filter_var($args['stat'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    }
+    $this->pages = ceil($this->DB->cell("SELECT count(tbl_feedback.id) FROM tbl_feedback WHERE key_name = ?", $stat) / $this->per_page);
+    $rounds = $this->DB->run("SELECT $this->columns
+      FROM tbl_feedback
+      LEFT JOIN tbl_round ON tbl_feedback.round_id = tbl_round.id
+      WHERE key_name = ?
+      ORDER BY round_id DESC
+      LIMIT ?,?", $stat, ($this->page * $this->per_page) - $this->per_page, $this->per_page);
+    foreach ($rounds as &$round){
+      $round = $this->roundModel->parseRound($round);
+    }
+    return $this->view->render($response, 'stats/rounds.tpl',[
+      'rounds'      => $rounds,
+      'round'       => $this,
+      'wide'        => true,
+      'stat'        => $stat,
+      'breadcrumbs' => $this->breadcrumbs
     ]);
   }
 }

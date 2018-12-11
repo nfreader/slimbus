@@ -33,6 +33,12 @@
             <a class="dropdown-item" href="{{path_for('admin_logs')}}"><i class="fas fa-user-times"></i> Admin Rank Activity</a>
           </div>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="" role="button" aria-haspopup="true" aria-expanded="farlse"><i class="fas fa-globe"></i> Extra</a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="{{path_for('stat.rounds',{'stat': 'newscaster_stories'})}}"><i class="fas fa-newspaper"></i> Newscaster Stories</a>
+          </div>
+        </li>
         {% if user.canAccessTGDB %}
         <li class="nav-item">
           <a class="nav-link text-danger" href="{{path_for('tgdb')}}">

@@ -58,6 +58,11 @@ $app->group('', function () {
   $this->get('/rounds/{id:[0-9]+}[/{stat}]', \Statbus\Controllers\RoundController::class . ':single')->setName('round.single');
 });
 
+//Stat Pages
+$app->group('', function () {
+  $this->get('/stats/{stat}/rounds[/page/{page}]', \Statbus\Controllers\RoundController::class . ':getRoundsWithStat')->setName('stat.rounds');
+});
+
 //Deaths
 $app->group('', function () {
 
