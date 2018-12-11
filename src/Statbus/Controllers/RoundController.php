@@ -82,7 +82,8 @@ class RoundController Extends Controller {
     $round->stats = (new StatController($this->DB))->getStatsForRound($round->id);
     $round->data = (new StatController($this->DB))->getStatsForRound($round->id,[
       'nuclear_challenge_mode',
-      'testmerged_prs'
+      'testmerged_prs',
+      'newscaster_stories'
     ]);
     return $this->view->render($response, 'rounds/round.tpl',[
       'round'       => $round,
