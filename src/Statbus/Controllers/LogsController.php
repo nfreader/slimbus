@@ -124,6 +124,10 @@ class LogsController Extends Controller {
         $this->parseManifest();
       break;
 
+      case 'newscaster.json':
+        $this->parseNewscaster();
+      break;
+
       case 'pda.txt':
         $this->parsePDA();
       break;
@@ -199,6 +203,30 @@ class LogsController Extends Controller {
     }
     $this->file = $lines;
     $this->saveManifest();
+  }
+
+  private function parseNewscaster(){
+    $file = json_decode($this->file, TRUE);
+    var_dump($file);
+    foreach ($file as &$c){
+      foreach ($c['messages'] as $k => &$v){
+        if (!is_array($v)){
+          $tmp = $c['messages'];
+          $tmp['id'] = substr(sha1($tmp['body'].$tmp['time stamp']),0,7);
+          $tmp['body'] = nl2br($tmp['body']);
+          unset($c['messages']);
+          $c['messages'][] = $tmp;
+          continue 2; 
+        } else {
+          $v['id'] = substr(sha1($v['body'].$v['time stamp']),0,7);
+          $v['body'] = nl2br($v['body']);
+          if('' != $v['photo file']){
+            $v['photo file'] = base64_encode(file_get_contents("phar://".$this->zipCache."/photos/".$v['photo file'].".png"));
+          }
+         }
+      }
+    }
+    $this->file = $file;
   }
 
   private function saveManifest(){

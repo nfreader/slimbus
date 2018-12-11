@@ -25,8 +25,8 @@
     </tr>
     {% endif %}
     {% for log in file %}
-    <tr id="{{log.id}}">
-      <td class="align-middle timestamp"><a href='#{{log.id}}'>{{log.timestamp}}</a></td>
+    <tr id="{{log.id}}" data-line="{{log.id}}">
+      <td class="align-middle timestamp">{{log.timestamp}}</td>
       <td class="align-middle coord x">{{log.x}}</td>
       <td class="align-middle coord y">{{log.y}}</td>
       <td class="align-middle coord z">{{log.z}}</td>
@@ -38,4 +38,23 @@
   </tbody>
 </table>
 {% include 'components/pagination.html' with vars %}
+{% endblock %}
+{% block js %}
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script>
+  $('tr').click(function(e){
+    start = $(this).attr('data-line')
+    window.history.replaceState(null, null, "#" + start)
+    console.log(this)
+    $(this).toggleClass('targeted')
+    if(e.shiftKey && start){
+      end = $(this).attr('data-line')
+      range = start+" to "+end
+      console.log(range)
+    }
+  });
+</script>
 {% endblock %}

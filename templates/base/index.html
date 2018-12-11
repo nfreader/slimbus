@@ -53,7 +53,8 @@
   table.sort thead tr th.tablesorter-headerDesc:before {
     content: "\f0dd";
   }
-  tr:target{
+  tr:target
+  tr.targeted {
     background: #ffffd9;
   }
 
@@ -392,13 +393,15 @@
       </div>
     </div>
   </footer>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.17.7/js/jquery.tablesorter.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js" integrity="sha256-2/3+Q1kMYR8MDaqFPNBgmLgiqWJjySkg1wqLx/iE5Zo=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone-with-data.min.js" integrity="sha256-FJZOELgwnfQRdG8KZUSWCYgucECDf4w5kfQdQSGbVpI=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked@0.3.18/marked.min.js"></script>
   <script>
     function unpack(rows, key) {
       return rows.map(function(row) { return row[key]; });
@@ -443,25 +446,6 @@
       var year = date.getUTCFullYear();
       clock.textContent = hours+':'+minutes+':'+seconds+' '+days+'.'+month+'.'+year;
     }, 1000);
-    md = document.querySelectorAll(".md");
-    md.forEach(function(m){
-      txt = m.innerHTML;
-      m.innerHTML = marked(txt);
-    });
-    $('#parseLogs').click(function(e){
-      e.preventDefault();
-      console.log('Dispatching log parser script...');
-      $(this).toggleClass('disabled')
-      $(this).text('Parsing, please wait...')
-      $.ajax({
-        'url': $(this).attr('href')
-      }).done(function(e){
-        console.log(e);
-        var html = "<a href='"+window.location.href+"' class='btn btn-success'>Click to view</a>";
-        $(html).insertAfter('#parseLogs');
-        $('#parseLogs').hide();
-      })
-    })
   </script>
   {% block js %}
   {% endblock %}
