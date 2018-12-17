@@ -42,11 +42,13 @@
 $('button').on('click', function(e){
   e.preventDefault();
   if('yea' === $(this).attr('value')){
-    vote = 1
+    vote = '1'
   } else {
-    vote = 0
+    vote = '0'
   }
   name = $('#nameField').attr('value');
+  $('#name').html("<i class='fas fa-cog fa-spin'></i>")
+  $('#job').html("<i class='fas fa-cog fa-spin'></i>")
   data = {
     vote: vote,
     name: name
