@@ -59,6 +59,7 @@
 <script>
 $('#exampleModalCenter').modal('toggle')
 $('button').on('click', function(e){
+  $('button').toggleClass('disabled')
   e.preventDefault();
   if('yea' == $(this).attr('value')){
     vote = 'yea'
@@ -83,6 +84,7 @@ $('button').on('click', function(e){
     $('#name').html(r.name.name);
     $('#nameField').attr('value',r.name.name)
     $('#job').html(r.name.job);
+    $('button').toggleClass('disabled')
   }).fail(function(r){
     console.log(r.responseText);
   })
