@@ -83,6 +83,17 @@ CREATE TABLE `version` (
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Create syntax for TABLE 'name_vote'
+CREATE TABLE `name_vote` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL DEFAULT '',
+  `ckey` varchar(32) NOT NULL DEFAULT '',
+  `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `good` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`,`ckey`)
+) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8mb4;
+
 INSERT INTO `version` (`major`, `minor`, `patch`)
 VALUES
-  (1, 6, 0);
+  (2, 0, 0);

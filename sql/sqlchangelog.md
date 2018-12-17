@@ -1,5 +1,20 @@
+##2.0 - 17-12-2018
+Adds a new table to track voting on character names.
+
+```CREATE TABLE `name_vote` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL DEFAULT '',
+  `ckey` varchar(32) NOT NULL DEFAULT '',
+  `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `good` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`,`ckey`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;```
+
+```UPDATE `version` SET `major` = '2', `minor` = '0' WHERE `major` = '1' AND `minor` = '6' AND `patch` = '0' AND `updated` = '2018-11-16 16:13:55' LIMIT 1;```
+
 ##1.6 - 16-11-2018
-THe following updates to the `manifest` table should be applied. These changes will allow character names, jobs, and special roles that are longer than 32 characters.
+The following updates to the `manifest` table should be applied. These changes will allow character names, jobs, and special roles that are longer than 32 characters.
 
 ```ALTER TABLE `manifest` CHANGE `name` `name` VARCHAR(64)  CHARACTER SET utf8mb4  COLLATE utf8mb4_general_ci  NULL  DEFAULT NULL;```
 
