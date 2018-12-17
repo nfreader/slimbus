@@ -32,9 +32,9 @@ class NameVoteController Extends Controller {
       return json_encode(['error'=>'You must be logged in to vote for names!']); 
     }
     if('nay'===$args['vote']) {
-      $args['vote'] = false;
+      $args['vote'] = 0;
     } else {
-      $args['vote'] = true;
+      $args['vote'] = 1;
     }
     if($this->alt_db->row("SELECT name, ckey FROM name_vote WHERE name = ? and ckey = ?",$args['name'], $this->user->ckey)){
       return json_encode(['name'=>$this->getName(),'args'=>$args]);
@@ -42,7 +42,7 @@ class NameVoteController Extends Controller {
     try{
       $this->alt_db->insert('name_vote',[
         'name' => $args['name'],
-        'good' => (bool) $args['vote'],
+        'good' => $args['vote'],
         'ckey' => $this->user->ckey,
       ]);
     } catch (Exception $e){
