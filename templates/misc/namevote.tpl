@@ -8,6 +8,24 @@
   <p class="lead">You need to be logged in in oder to vote on names</p>
   <a href="{{path_for('auth')}}" class="btn btn-success btn-lg btn-block">Authenticate</a>
 {% else %}
+<div class="modal fade show" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Hey! Listen!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        This is <strong>JUST FOR FUN</strong>. Votes cast here will have no effect on policy and will not be used to change anything. If it becomes un fun it will be removed.
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-primary" data-dismiss="modal">I Understand This Is Just For Fun</a>
+      </div>
+    </div>
+  </div>
+</div>
 <h1>Name Rater 5000</h1>
 <hr>
 <p class="lead">Just for funsies*, select whether or not the name below is good or bad, in your opinion. Remember that we're simply judging the name, not the player behind the name.</p>
@@ -39,6 +57,7 @@
 
 {% block js %}
 <script>
+$('#exampleModalCenter').modal('toggle')
 $('button').on('click', function(e){
   e.preventDefault();
   if('yea' == $(this).attr('value')){
