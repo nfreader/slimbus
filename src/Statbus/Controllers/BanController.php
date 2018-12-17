@@ -17,7 +17,7 @@ class BanController extends Controller {
       SELECT B.role, 
       B.id,
       B.expiration_time
-      FROM ss13ban AS B
+      FROM tbl_ban AS B
       WHERE ckey = ?
       AND ((B.expiration_time > NOW() AND B.unbanned_ckey IS NULL)
       OR (B.expiration_time IS NULL AND B.unbanned_ckey IS NULL))", $ckey);

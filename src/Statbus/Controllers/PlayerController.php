@@ -99,7 +99,7 @@ class PlayerController Extends Controller {
   public function getPlayerNamesFromDeath($ckey) {
     return $this->DB->run("SELECT DISTINCT(`name`),
       count(id) AS `times`
-      FROM ss13death
+      FROM tbl_death
       WHERE byondkey = ?
       GROUP BY `name`
       HAVING times > 1
@@ -139,9 +139,9 @@ class PlayerController Extends Controller {
     $alts = $this->DB->run("SELECT
       I.ckey AS ip_alts,
       C.ckey AS cid_alts
-      FROM ss13player AS P
-      LEFT JOIN ss13connection_log AS I ON I.ip = P.ip AND I.ckey != P.ckey
-      LEFT JOIN ss13connection_log AS C ON C.computerid = P.computerid AND P.ckey != C.ckey
+      FROM tbl_player AS P
+      LEFT JOIN tbl_connection_log AS I ON I.ip = P.ip AND I.ckey != P.ckey
+      LEFT JOIN tbl_connection_log AS C ON C.computerid = P.computerid AND P.ckey != C.ckey
       WHERE P.ckey = ?
       GROUP BY ip_alts, cid_alts;", $ckey);
     foreach ($alts as $a){
@@ -166,6 +166,6 @@ class PlayerController Extends Controller {
   }
 
   public function getLastWords($ckey){
-    return $this->DB->run("SELECT last_words, id FROM ss13death WHERE byondkey = ? AND last_words IS NOT NULL AND last_words != '';", $ckey);
+    return $this->DB->run("SELECT last_words, id FROM tbl_death WHERE byondkey = ? AND last_words IS NOT NULL AND last_words != '';", $ckey);
   }
 }
