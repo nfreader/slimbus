@@ -41,10 +41,10 @@
 <script>
 $('button').on('click', function(e){
   e.preventDefault();
-  if('yea' === $(this).attr('value')){
-    vote = '1'
+  if('yea' == $(this).attr('value')){
+    vote = 'yea'
   } else {
-    vote = '0'
+    vote = 'nay'
   }
   name = $('#nameField').attr('value');
   $('#name').html("<i class='fas fa-cog fa-spin'></i>")

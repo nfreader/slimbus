@@ -31,6 +31,11 @@ class NameVoteController Extends Controller {
     if(!$this->user){
       return json_encode(['error'=>'You must be logged in to vote for names!']); 
     }
+    if('nay'===$args['vote']) {
+      $args['vote'] = false;
+    } else {
+      $args['vote'] = true;
+    }
     if($this->alt_db->row("SELECT name, ckey FROM name_vote WHERE name = ? and ckey = ?",$args['name'], $this->user->ckey)){
       return json_encode(['name'=>$this->getName(),'args'=>$args]);
     }
@@ -41,7 +46,7 @@ class NameVoteController Extends Controller {
         'ckey' => $this->user->ckey,
       ]);
     } catch (Exception $e){
-      return json_encode(['name'=>$this->getName(),'args'=>$args]); 
+      return json_encode(['name'=>$this->getName(), 'args'=>$args]); 
     }
     return json_encode(['name'=>$this->getName(),'args'=>$args]);
   }
