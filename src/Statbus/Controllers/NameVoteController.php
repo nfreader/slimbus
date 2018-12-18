@@ -17,7 +17,7 @@ class NameVoteController Extends Controller {
   }
 
   public function index($request, $response, $args){
-    return $this->view->render($response, 'misc/namevote.tpl',[
+    return $this->view->render($response, 'misc/namevote/vote.tpl',[
       'name'      => $this->getname()
     ]);
   }
@@ -49,6 +49,24 @@ class NameVoteController Extends Controller {
       return json_encode(['name'=>$this->getName(), 'args'=>$args]); 
     }
     return json_encode(['name'=>$this->getName(),'args'=>$args]);
+  }
+
+  public function rankings($request, $response, $args) {
+    $rank = 'best';
+    $sort = '`yes`';
+    $rank = filter_var($args['rank'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    if('worst' === $rank){
+      $sort = '`no`';
+    }
+    $ranking = $this->alt_db->run("SELECT `name`,
+      IFNULL(count(good),1) - sum(good) AS `no`,
+      sum(good) AS `yes`
+      FROM name_vote
+      GROUP BY `name`
+      ORDER BY ? DESC;", $sort);
+    return $this->view->render($response, 'misc/namevote/results.tpl',[
+      'ranking' => $ranking
+    ]);
   }
 
   public function getName(){

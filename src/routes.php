@@ -14,6 +14,8 @@ $app->get('/', \Statbus\Controllers\StatbusController::class . ':index')->setNam
 $app->get('/names', \Statbus\Controllers\NameVoteController::class . ':index')->setName('nameVoter');
 $app->post('/names', \Statbus\Controllers\NameVoteController::class . ':cast')->setName('nameVoter.cast');
 
+$app->get('/names/rank/{rank}', \Statbus\Controllers\NameVoteController::class . ':rankings')->setName('nameVoter.results');
+
 //Auth
 $app->group('', function () {
 

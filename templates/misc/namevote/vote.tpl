@@ -28,9 +28,16 @@
 </div>
 <h1>Name Rater 5000</h1>
 <hr>
+<div class="btn-group" role="group">
+  <a class="btn btn-primary text-white" href="{{path_for('nameVoter')}}">Vote on Names</a>
+  <a class="btn btn-primary text-white" href="{{path_for('nameVoter.results',{'rank':'best'})}}">Best Names</a>
+  <a class="btn btn-primary text-white" href="{{path_for('nameVoter.results',{'rank':'worst'})}}">Worst Names</a>
+</div>
+<hr>
 <p class="lead">Just for funsies*, select whether or not the name below is good or bad, in your opinion. Remember that we're simply judging the name, not the player behind the name.</p>
 <div class="jumbotron jumbotron-fluid">
   <div class="container text-center">
+    <h3 class="display-4">Is this a good name?</h3>
     <h1 class="display-1" id="name">{{name.name}}</h1>
     <h2 class="display-4" id="job">({{name.job}})</h2>
     <hr>
@@ -52,6 +59,7 @@
 <code>Assistant, Atmospheric Technician, Bartender, Botanist, Captain, Cargo Technician, Chaplain, Chemist, Chief Engineer, Chief Medical Officer, Cook, Curator, Detective, Geneticist, Head of Personnel, Head of Security, Janitor, Lawyer, Librarian, Medical Doctor, Quartermaster, Research Director, Roboticist, Scientist, Security Officer, Shaft Miner, Station Engineer, Virologist, Warden</code>
 <p>Meaning antagonist roles, ghost spawns, etc are not being shown.</p>
 <p>As species data is not tracked, there is no way to differentiate between human/lizard/moth/fly person names.</p>
+<p>Duplicate votes are discarded, so dont worry if you see the same name twice.</p>
 {% endif %}
 {% endblock %}
 
