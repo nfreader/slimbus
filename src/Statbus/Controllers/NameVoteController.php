@@ -53,17 +53,24 @@ class NameVoteController Extends Controller {
 
   public function rankings($request, $response, $args) {
     $rank = 'best';
-    $sort = '`yes`';
     $rank = filter_var($args['rank'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
     if('worst' === $rank){
-      $sort = '`no`';
+      $ranking = $this->alt_db->run("SELECT `name`,
+        IFNULL(count(good),1) - sum(good) AS `no`,
+        sum(good) AS `yes`
+        FROM name_vote
+        GROUP BY `name`
+        ORDER BY `no` DESC
+        LIMIT 0, 100;");
+    } else {
+      $ranking = $this->alt_db->run("SELECT `name`,
+        IFNULL(count(good),1) - sum(good) AS `no`,
+        sum(good) AS `yes`
+        FROM name_vote
+        GROUP BY `name`
+        ORDER BY `yes` DESC
+        LIMIT 0, 100;");
     }
-    $ranking = $this->alt_db->run("SELECT `name`,
-      IFNULL(count(good),1) - sum(good) AS `no`,
-      sum(good) AS `yes`
-      FROM name_vote
-      GROUP BY `name`
-      ORDER BY ? DESC;", $sort);
     return $this->view->render($response, 'misc/namevote/results.tpl',[
       'ranking' => $ranking
     ]);
