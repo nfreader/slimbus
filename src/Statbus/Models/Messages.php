@@ -12,6 +12,15 @@ class Messages {
   }
 
   public function parseMessage(&$message) {
+    $message->text = str_replace([
+      '\"',
+      "\'",
+      "\n"
+    ], [
+      '"',
+      "'",
+      "  "
+    ], $message->text);
     $message->text = $this->md->text($message->text);
     switch ($message->type){
       case 'memo':
