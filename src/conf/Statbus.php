@@ -13,7 +13,7 @@ return [
   'ip_auth'        => getenv('IP_AUTH') ?: false,
   'ip_auth_days'   => getenv('IP_AUTH_DAYS') ?: 10,
   'perm_flags'     => [
-    'BUILDMODE'   => (1<<0),
+    'BUILD'       => (1<<0),
     'ADMIN'       => (1<<1),
     'BAN'         => (1<<2),
     'FUN'         => (1<<3),
@@ -24,9 +24,9 @@ return [
     'STEALTH'     => (1<<8),
     'POLL'        => (1<<9),
     'VAREDIT'     => (1<<10),
-    'SOUNDS'      => (1<<11),
+    'SOUND'       => (1<<11),
     'SPAWN'       => (1<<12),
-    'AUTOLOGIN'   => (1<<13),
+    'AUTOADMIN'   => (1<<13),
     'DBRANKS'     => (1<<14)
   ],
   'ranks' => [

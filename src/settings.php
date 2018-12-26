@@ -14,12 +14,12 @@ return [
         ],
         'database' => [
             'primary' => [
-                'host'      => getenv('DB_HOST')     ?: '127.0.0.1',
-                'port'      => getenv('DB_PORT')     ?: 3306,
-                'database'  => getenv('DB_DATABASE') ?: 'tgdb',
-                'username'  => getenv('DB_USERNAME') ?: 'root',
-                'password'  => getenv('DB_PASSWORD') ?: '123',
-                'prefix'    => getenv('DB_PREFIX')   ?: 'ss13',
+                'host'      => getenv('DB_HOST')     ?: '',
+                'port'      => getenv('DB_PORT')     ?: '',
+                'database'  => getenv('DB_DATABASE') ?: '',
+                'username'  => getenv('DB_USERNAME') ?: '',
+                'password'  => getenv('DB_PASSWORD') ?: '',
+                'prefix'    => getenv('DB_PREFIX')   ?: '',
                 'charset'   => 'utf8mb4',
                 'collation' => 'utf8mb4_unicode_ci',
                 'strict'    => false,
