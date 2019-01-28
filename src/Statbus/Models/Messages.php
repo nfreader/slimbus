@@ -12,6 +12,8 @@ class Messages {
   }
 
   public function parseMessage(&$message) {
+    $message->text = strip_tags($message->text);
+    $message->text = $this->md->text($message->text);
     $message->text = str_replace([
       '\"',
       "\'",
@@ -19,9 +21,8 @@ class Messages {
     ], [
       '"',
       "'",
-      "  "
+      "<br>"
     ], $message->text);
-    $message->text = $this->md->text($message->text);
     switch ($message->type){
       case 'memo':
         $message->icon  = 'sticky-note';

@@ -39,6 +39,9 @@
       <td class="align-middle">
         {% if round.logs %}
           <a class="btn btn-primary btn-sm" href="{{round.remote_logs_dir}}" target="_blank" rel="noopener noreferrer">Original <i class="fas fa-external-link-alt"></i></a>
+          {% if user.canAccessTGDB %}
+            <a class="btn btn-primary btn-sm" href="{{round.admin_logs_dir}}" target="_blank" rel="noopener noreferrer">Original <i class="fas fa-external-link-alt"></i></a>
+          {% endif %}
         {% else %}
         <em>Not available</em>
         {% endif %}

@@ -85,6 +85,7 @@ class LogsController Extends Controller {
       'round_end_data.json',
       'runtime.txt',
       'singulo.html',
+      'telecomms.txt',
       'supermatter.html',
       'wires.html',
     ])) {

@@ -197,7 +197,8 @@ class StatbusController extends Controller {
     fclose($file);
     return $this->view->render($this->response, 'info/heatmap.tpl',[
       'data' => json_encode($data),
-      'hash' => $hash
+      'hash' => $hash,
+      'wide' => TRUE
     ]);
   }
 
