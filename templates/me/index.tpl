@@ -16,16 +16,8 @@ Between your first connection {{user.firstseen|timestamp}} and your most recent 
 
 <p class="lead">You have wasted <span title="About {{user.hours}}, since we started tracking time spent in roles" data-toggle="tooltip">0</span> hours playing Space Station 13, because time spent doing something you enjoy isn't wasted time.</p>
 
-<div class="card">
-  <h3 class="card-header">Role Time</h3>
-  <div class="card-body">
-    <div id="roletime">
-
-    </div>
-    <p>(Tracked over time since around July of 2017)</p>
-  </div>
-</div>
 <hr>
+<h3><a href="{{path_for('me.roles')}}">Role Time</a></h3>
 <div class="card">
   <h3 class="card-header"><a data-toggle="collapse" href="#lastwords" role="button" aria-expanded="false" aria-controls="lastwords">Your Last Words</a></h3>
   <div class="card-body collapse" id="lastwords">
@@ -48,23 +40,4 @@ Between your first connection {{user.firstseen|timestamp}} and your most recent 
   <a href="{{path_for('auth')}}" class="btn btn-success btn-lg btn-block">Authenticate</a>
 {% endif %}
 
-{% endblock %}
-
-{% block js %}
-<script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-<script>
-var data = {{roleData|raw}};
-var jobs = unpack(data,'job');
-var minutes = unpack(data,'minutes');
-var trace1 = {
-  x: jobs,
-  y: minutes,
-  type: 'bar',
-  name: 'Minutes'
-}
-
-var data = [trace1]
-Plotly.newPlot('roletime',data)
-</script>
 {% endblock %}

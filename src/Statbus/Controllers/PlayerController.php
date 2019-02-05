@@ -4,7 +4,7 @@ namespace Statbus\Controllers;
 use Psr\Container\ContainerInterface;
 use Statbus\Controllers\Controller as Controller;
 use Statbus\Models\Player as Player;
-
+use Statbus\Controllers\UserController as User;
 
 class PlayerController Extends Controller {
 
@@ -33,7 +33,12 @@ class PlayerController Extends Controller {
   }
 
   public function getPlayerRoleTime($request, $response, $args) {
+    if(isset($args['ckey'])){
     $ckey = filter_var($args['ckey'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    } else {
+      $user = (new User($this->container))->fetchUser();
+      $ckey = $user->ckey;
+    }
     $player = $this->getPlayerByCkey($ckey);
     if (!$player->ckey) {
       return $this->view->render($this->response, 'base/error.tpl', [

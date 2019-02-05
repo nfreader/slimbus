@@ -37,6 +37,9 @@ $app->group('', function () {
 
   //Index
   $this->get('/me', \Statbus\Controllers\UserController::class . ':me')->setName('me');
+
+  //My role time
+  $this->get('/me/roles', \Statbus\Controllers\PlayerController::class . ':getPlayerRoleTime')->setName('me.roles');
 });
 
 //Rounds
