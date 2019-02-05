@@ -32,6 +32,52 @@ class PlayerController Extends Controller {
     ]);
   }
 
+  public function getPlayerRoleTime($request, $response, $args) {
+    $ckey = filter_var($args['ckey'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    $player = $this->getPlayerByCkey($ckey);
+    if (!$player->ckey) {
+      return $this->view->render($this->response, 'base/error.tpl', [
+        'message' => "Ckey not found",
+        'code'    => 404,
+      ]);
+    }
+    // $player = $this->gatherAdditionalData($player);
+    $p = $request->getQueryParams();
+    $start = null;
+    $end = null;
+    if(isset($p['start']) && isset($p['end'])){
+      $start = filter_var($p['start'], FILTER_SANITIZE_STRING, 
+       FILTER_FLAG_STRIP_HIGH);
+      $end = filter_var($p['end'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    }
+    $jobs = "('".implode("','",$this->sb['jobs'])."')";
+    $minmax = $this->DB->row("SELECT 
+      min(STR_TO_DATE(R.datetime, '%Y-%m-%d')) AS min,
+      max(STR_TO_DATE(R.datetime, '%Y-%m-%d')) AS max
+      FROM tbl_role_time_log AS R
+      WHERE R.datetime != '0000-00-00 00:00:00'
+      AND R.job IN $jobs
+      AND ckey = ?;", $ckey);
+    if(!$start) {
+      $start = $minmax->min;
+      $end = $minmax->max;
+    } else {
+      $startDate = new \dateTime($start);
+      $start = $startDate->format('Y-m-d');
+      $endDate = new \dateTime($end);
+      $end = $endDate->format('Y-m-d');
+    }
+    $player->role_time = $this->getRoleData($player->ckey, $start, $end, $jobs);
+    $player = $this->playerModel->parsePlayer($player);
+    return $this->view->render($response, 'player/roles.tpl',[
+      'player' => $player,
+      'start'  => $start,
+      'end'    => $end,
+      'min'    => $minmax->min,
+      'max'    => $minmax->max
+    ]);
+  }
+
   public function getPlayerByCkey($ckey){
     return $this->DB->row("SELECT tbl_player.ckey,
       tbl_player.firstseen,
@@ -81,13 +127,14 @@ class PlayerController Extends Controller {
       WHERE tbl_player.ip = ?", $IP);
   }
 
-   public function getRoleData($ckey) {
-    $jobs = "('".implode("','",$this->sb['jobs'])."')";
-    return json_encode($this->DB->run("SELECT job, minutes
-      FROM tbl_role_time
+   public function getRoleData($ckey, $start = null, $end = null, $jobs) {
+    return json_encode($this->DB->run("SELECT job, SUM(delta) AS minutes
+      FROM tbl_role_time_log
       WHERE ckey = ?
-      AND tbl_role_time.job IN $jobs
-      ORDER BY job ASC", $ckey));
+      AND tbl_role_time_log.job IN $jobs
+      AND tbl_role_time_log.datetime BETWEEN ? AND ?
+      GROUP BY job
+      ORDER BY job ASC", $ckey, $start, $end));
   }
 
   public function getPlayerNames($ckey) {
@@ -155,7 +202,7 @@ class PlayerController Extends Controller {
   }
 
   public function gatherAdditionalData(&$player){
-    $player->role_time = $this->getRoleData($player->ckey);
+    // $player->role_time = $this->getRoleData($player->ckey);
     $player->messages = (new MessageController($this->container))->getMessagesForCkey($player->ckey, TRUE);
     $player->names = $this->getPlayerNames($player->ckey);
     $player->standing = (new BanController($this->container))->getPlayerStanding($player->ckey);

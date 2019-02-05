@@ -128,6 +128,9 @@ $app->group('', function () {
   //Single Player View
   $this->get('/tgdb/player/{ckey:[a-z0-9]+}', \Statbus\Controllers\PlayerController::class . ':getPlayer')->setName('player.single');
 
+  //Single Player Role Time View
+  $this->get('/tgdb/player/{ckey:[a-z0-9]+}/roles', \Statbus\Controllers\PlayerController::class . ':getPlayerRoleTime')->setName('player.roletime');
+
   //Typeahead
   $this->get('/tgdb/suggest', \Statbus\Controllers\PlayerController::class . ':findCkeys')->setName('player.suggest');
 

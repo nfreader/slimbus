@@ -173,15 +173,7 @@
   </div>
 </div>
 <hr>
-<div class="card">
-  <h3 class="card-header">Role Time</h3>
-  <div class="card-body">
-    <div id="roletime">
-
-    </div>
-    <p>(Tracked over time since around July of 2017)</p>
-  </div>
-</div>
+  <h3><a href="{{path_for('player.roletime',{'ckey': player.ckey})}}">Role Time</a></h3>
 <hr>
 <div class="card mb-4">
   {% if player.messages|length > 3 %}
