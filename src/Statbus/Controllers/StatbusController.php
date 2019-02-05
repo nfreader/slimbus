@@ -73,7 +73,11 @@ class StatbusController extends Controller {
         }
       }
       $a->total = $a->ghost + $a->living;
+      if(isset($args['json'])) continue;
       $a = $pm->parsePlayer($a);
+    }
+    if(isset($args['wiki'])) {
+      return $this->admins2wiki($admins,$this->container->get('settings')['statbus']['ranks']);
     }
     return $this->view->render($response, 'info/admins.tpl',[
       'admins'   => $admins,
@@ -81,6 +85,22 @@ class StatbusController extends Controller {
       'perms'    => $perms,
       'wide'     => true
     ]);
+  }
+
+  public function admins2wiki($admins, $ranks){
+    $return = '';
+    foreach ($admins as $a){
+      $return.= "{{Admin<br>";
+      $return.= "|Name=$a->ckey<br>";
+      $return.= "|Rank=$a->rank<br>";
+      $return.= "|Feedback=<br>";
+      $return.= "}}<br>";
+    }
+    echo $return;
+    foreach ($ranks as $k => $v){
+      echo " | $k = color: ".$v['foreColor']."; background: ".$v['backColor'].";<br>";
+    }
+
   }
 
   public function adminLogs($request, $response, $args){
