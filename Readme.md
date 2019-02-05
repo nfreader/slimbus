@@ -8,7 +8,7 @@
 ## Requirements
 - PHP 7.2
 - Composer
-- A MySQL user with **read-only grants** to your Space Station 13 database
+- A MySQL user with **read-only privileges** to your Space Station 13 database
 - (optional) A second database for saving some parsed data
 
 ## Setup

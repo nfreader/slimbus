@@ -447,6 +447,51 @@
       clock.textContent = hours+':'+minutes+':'+seconds+' '+days+'.'+month+'.'+year;
     }, 1000);
   </script>
+  {% if user.canAccessTGDB >= 2 %}
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.6/jquery.typeahead.min.js" integrity="sha256-W+Cxk9exgjON2p73M4RcoKvCpQUZ+IjXhEzZk6rlg9M=" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.6/jquery.typeahead.min.css" integrity="sha256-CU0/rbxVB3Eixd3bbIuJxHJLDnXriJS9cwp/BfcgpLw=" crossorigin="anonymous" />
+      <script>
+      $("#tgdbsearch").submit(function(e){
+        e.preventDefault();
+      });
+      $.typeahead({
+        input: '#tgdbsearch',
+        minLength: 2,
+        order: 'desc',
+        source: {
+          ckey: {
+            ajax: {
+              url: "tgdb/suggest/",
+              method: "get",
+              data: {
+                ckey: function () { return $('#tgdbsearch').val()} 
+              }
+            }
+          }
+        },
+        dynamic: true,
+        debug: true,
+        hint: true,
+        mustSelectItem: true,
+        display: ['ckey'],
+        href: function (item) {
+          return "tgdb/player/" + item.ckey
+        },
+        callback: {
+          onClickAfter: function (node, a, item, event) {
+            event.preventDefault;
+            window.location.href = item.href;
+          },
+          onResult: function (query, result, resultCount, resultCountPerGroup) {
+            console.log(query)
+            console.log(result)
+            console.log(resultCount)
+            console.log(resultCountPerGroup)
+          }
+        }
+      })
+      </script>
+      {% endif %}
   {% block js %}
   {% endblock %}
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">

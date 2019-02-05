@@ -168,4 +168,16 @@ class PlayerController Extends Controller {
   public function getLastWords($ckey){
     return $this->DB->run("SELECT last_words, id FROM tbl_death WHERE byondkey = ? AND last_words IS NOT NULL AND last_words != '';", $ckey);
   }
+
+  public function findCkeys($request, $response, $args){
+    $args = $request->getQueryParams();
+    $ckey = filter_var($args['ckey'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    if ($ckey){
+      $results = $this->DB->run("SELECT tbl_player.ckey FROM tbl_player
+        WHERE tbl_player.ckey LIKE ?
+        ORDER BY lastseen DESC
+        LIMIT 0, 15", '%'.$this->DB->escapeLikeValue($ckey).'%');
+      return $response->withJson($results);
+    }
+  }
 }

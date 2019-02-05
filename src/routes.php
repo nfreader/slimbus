@@ -128,4 +128,7 @@ $app->group('', function () {
   //Single Player View
   $this->get('/tgdb/player/{ckey:[a-z0-9]+}', \Statbus\Controllers\PlayerController::class . ':getPlayer')->setName('player.single');
 
+  //Typeahead
+  $this->get('/tgdb/suggest', \Statbus\Controllers\PlayerController::class . ':findCkeys')->setName('player.suggest');
+
 })->add(new \Statbus\Middleware\UserGuard($container));

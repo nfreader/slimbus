@@ -50,8 +50,10 @@
     </div>
     {% if user.canAccessTGDB %}
       <form class="form-inline">
-          <input class="form-control mr-sm-2 form-control-sm" type="search" placeholder="ckey" aria-label="Search" id="tgdbsearch">
-        </form>
+        <div class="typeahead__container">
+          <input class="form-control mr-sm-2 form-control-sm js-typeahead" type="search" placeholder="ckey" aria-label="Search" id="tgdbsearch">
+        </div>
+      </form>
     {% endif %}
     <span class="navbar-text">
       {% spaceless %}
