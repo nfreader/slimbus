@@ -5,10 +5,7 @@
       <div class="col-md-6">
         <h2>TGDB</h2>
         <hr>
-        <p class="text-danger">VERY SECRET PAGE!!!!!</p>
-        <span class="tlp tlp-green">1234567890</span>
-        <span class="tlp tlp-amber">1234567890</span>
-        <span class="tlp tlp-red">1234567890</span>
+        <p class="lead"><span class="label label-danger">NEW!</span> Update your <a href="{{path_for('admin.feedback')}}"> Feedback Link</a></p>
       </div>
       <div class="col-md-6">
         <h2>Admin Memos</h2>

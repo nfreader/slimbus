@@ -28,6 +28,7 @@
       <th data-toggle="tooltip" title="Time spent as ghost is roughly equated with active adminning. Time spent living is time roughly equated with playing instead of adminning.">Play time</th>
       <th>Connections</th>
       <th>Rank</th>
+      <th class="perm-flag">Feedback</th>
       {% for name, bits in perms %}
       <th class="perm-flag">{{name}}</th>
       {% endfor %}
@@ -49,6 +50,7 @@
         </td>
         <td>{{a.connections}}</td>
         <td>{{a.rank}}</td>
+        <td>{% if a.feedback %}<a href="{{a.feedback}}" target="_blank" rel="noopener noreferrer">Thread</a>{% endif %}</td>
         {% for name, bits in perms %}
           {% if a.flags b-and bits %}
           <td class="table-success text-success text-center" data-toggle="tooltip" title="{{a.ckey}} has {{name}}"><i class="far fa-check-circle"></i></td>

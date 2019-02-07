@@ -12,7 +12,7 @@ $container['DB'] = function ($c) {
 
 // User
 $container['user'] = function ($container) {
-  $user = (new Statbus\Controllers\UserController($container));
+  $user = (new Statbus\Controllers\UserController($container))->fetchUser();
   return $user;
 };
 

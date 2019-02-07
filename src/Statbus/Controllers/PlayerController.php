@@ -36,8 +36,7 @@ class PlayerController Extends Controller {
     if(isset($args['ckey'])){
     $ckey = filter_var($args['ckey'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
     } else {
-      $user = (new User($this->container))->fetchUser();
-      $ckey = $user->ckey;
+      $ckey = $this->container->user->ckey;
     }
     $player = $this->getPlayerByCkey($ckey);
     if (!$player->ckey) {

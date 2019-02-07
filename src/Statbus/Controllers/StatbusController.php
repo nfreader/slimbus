@@ -13,7 +13,7 @@ class StatbusController extends Controller {
   public function __construct(ContainerInterface $container) {
     parent::__construct($container);
     $this->guzzle = $this->container->get('guzzle');
-    $this->user = $this->container->get('user')->user;
+    $this->user = $this->container->get('user');
   }
 
   public function index($request, $response, $args) {
@@ -48,6 +48,7 @@ class StatbusController extends Controller {
     }
     $admins = $this->DB->run("SELECT A.ckey, 
       A.rank,
+      A.feedback,
       R.flags,
       R.exclude_flags,
       R.can_edit_flags,
@@ -82,7 +83,7 @@ class StatbusController extends Controller {
         $return.= "{{Admin<br>";
         $return.= "|Name=$a->ckey<br>";
         $return.= "|Rank=$a->rank<br>";
-        $return.= "|Feedback=<br>";
+        $return.= "|Feedback=$a->feedback";
         $return.= "}}<br>";
       }
       return $this->view->render($response, 'dump.tpl',[

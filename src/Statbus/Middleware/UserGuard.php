@@ -13,13 +13,13 @@ class UserGuard {
   }
 
   public function __invoke($request, $response, $next) {
-    if(!$this->user->getCkey()) {
+    if(!$this->user->ckey) {
       $_SESSION['return_uri'] = (string) $this->request->getUri();
       $args = null;
       return (new Auth($this->container))->auth($request, $response, $args);
       // die("You do not have permission to access this page");
     }
-    if (!$this->user->canAccessTGDB()) {
+    if (!$this->user->canAccessTGDB) {
       return $this->view->render($response, 'base/error.tpl',[
         'message' => "You do not have permission to access this page.",
         'code'    => 403
