@@ -6,3 +6,4 @@ src/conf/servers.json
 src/conf/ranks.json
 src/conf/alert.html*
 composer.lock
+/.db

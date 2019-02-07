@@ -1,0 +1,24 @@
+version: "3.1"
+services:
+  mariadb:
+    image: mariadb:10.1
+    container_name: statbus-mariadb
+    working_dir: /application
+    volumes:
+      - .db/:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123
+    ports:
+      - "3306:3306"
+
+  php:
+    container_name: statbus-php
+    working_dir: /usr/src/myapp
+    volumes:
+      - .:/usr/src/myapp
+    ports: 
+      - "8000:8000"
+    command: ["php", "-S", "0.0.0.0:8000", "-t", "/usr/src/myapp", "index.php"]
+    build: 
+      context: .
+      dockerfile: Dockerfile
