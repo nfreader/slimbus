@@ -94,7 +94,6 @@ $app->group('', function () {
   //Admin Activity
   $this->get('/info/admins[/wiki]', \Statbus\Controllers\StatbusController::class . ':DoAdminsPlay')->setName('admin_connections');
 
-
   //Admin Activity
   $this->get('/info/adminlogs[/page/{page}]', \Statbus\Controllers\StatbusController::class . ':adminLogs')->setName('admin_logs');
 

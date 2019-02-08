@@ -99,6 +99,7 @@ class UserController Extends Controller {
           'ckey' => $this->user->ckey
         ]);
         (new StatbusController($this->container))->submitToAuditLog('FBL', "Updated feedback link to '$feedback'");
+        $this->user->rank->feedback = $feedback;
       } catch (Exception $e){
         return $this->view->render($response, 'base/error.tpl',[
           'message'  => $e->getMessage(),
