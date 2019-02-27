@@ -10,6 +10,8 @@ $app->add($container->get('csrf'));
 //Index URL
 $app->get('/', \Statbus\Controllers\StatbusController::class . ':index')->setName('statbus');
 
+$app->get('/election', \Statbus\Controllers\StatbusController::class . ':electionManager')->setName('election');
+
 //Name vote
 $app->get('/names', \Statbus\Controllers\NameVoteController::class . ':index')->setName('nameVoter');
 $app->post('/names', \Statbus\Controllers\NameVoteController::class . ':cast')->setName('nameVoter.cast');

@@ -39,6 +39,12 @@
             <a class="dropdown-item" href="{{path_for('stat.rounds',{'stat': 'newscaster_stories'})}}"><i class="fas fa-newspaper"></i> Newscaster Stories</a>
           </div>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-info" href="{{path_for('election')}}">
+            <i class="fas fa-vote-yea"></i>
+            Elections
+          </a>
+        </li>
         {% if user.canAccessTGDB %}
         <li class="nav-item">
           <a class="nav-link text-danger" href="{{path_for('tgdb')}}">
