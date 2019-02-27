@@ -38,20 +38,10 @@
   .card:target {
     box-shadow: 0 0 5px blue;
   }
-  thead tr th:before,
-  thead tr th:after{
-    font-family: FontAwesome;
+  thead tr th .tablesorter-header-inner i {
     display: inline;
     float: right;
-  }
-  table.sort thead tr th.tablesorter-headerUnSorted:before {
-    content: "\f0dc";
-  }
-  table.sort thead tr th.tablesorter-headerAsc:before {
-    content: "\f0de";
-  }
-  table.sort thead tr th.tablesorter-headerDesc:before {
-    content: "\f0dd";
+    margin: 4px 0 0 0;
   }
   tr:target
   tr.targeted {
@@ -399,7 +389,7 @@
     crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.17.7/js/jquery.tablesorter.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/jquery.tablesorter.min.js" integrity="sha256-uC1JMW5e1U5D28+mXFxzTz4SSMCywqhxQIodqLECnfU=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js" integrity="sha256-2/3+Q1kMYR8MDaqFPNBgmLgiqWJjySkg1wqLx/iE5Zo=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone-with-data.min.js" integrity="sha256-FJZOELgwnfQRdG8KZUSWCYgucECDf4w5kfQdQSGbVpI=" crossorigin="anonymous"></script>
   <script>
@@ -425,7 +415,13 @@
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip();
-      $('.sort').tablesorter();
+      $('.sort').tablesorter({
+        headerTemplate: '{content}{icon}',
+        cssIcon: 'tablesorter-icon fas',
+        cssIconAsc: 'fa-sort-up',
+        cssIconDesc: 'fa-sort-down',
+        cssIconNone: 'fa-sort'
+      });
     });
     moment.locale('en');
     moment.tz.setDefault("Universal");
