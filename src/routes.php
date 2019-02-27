@@ -12,6 +12,8 @@ $app->get('/', \Statbus\Controllers\StatbusController::class . ':index')->setNam
 
 $app->get('/election', \Statbus\Controllers\StatbusController::class . ':electionManager')->setName('election');
 
+$app->post('/election', \Statbus\Controllers\StatbusController::class . ':electionManager')->setName('election');
+
 //Name vote
 $app->get('/names', \Statbus\Controllers\NameVoteController::class . ':index')->setName('nameVoter');
 $app->post('/names', \Statbus\Controllers\NameVoteController::class . ':cast')->setName('nameVoter.cast');

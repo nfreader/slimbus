@@ -41,12 +41,14 @@ return [
       'icon'      => 'asterisk'
     ],
   ],
-  'servers'        => [
+  'servers'       => [
     [
       'port'=>1234,
       'name'=>'Server'
     ]
   ],
+  'election_mode'    => false,
+  'election_officer' => getenv('ELECTION_OFFICER') ?: false,
   'mode_icons' => [
     'Abduction'=>'street-view',
     'Ai Malfunction'=>'network-wired',

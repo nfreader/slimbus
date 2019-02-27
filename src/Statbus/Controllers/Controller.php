@@ -32,6 +32,7 @@ class Controller {
       'type'      => 'object',
     ];
     $this->view->getEnvironment()->addGlobal('ogdata', $this->ogdata);
+    $this->view->getEnvironment()->addGlobal('settings', $this->container->get('settings')['statbus']);
   }
 
   public function getFullURL($path){
