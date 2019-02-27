@@ -261,7 +261,7 @@ class StatbusController extends Controller {
         'options'=>array(
         'default'=>60,
         'min_range'=>2,
-        'max_range'=>60
+        'max_range'=>180
       ));
       $interval = filter_var($args['interval'], FILTER_VALIDATE_INT, $options);
     } else {

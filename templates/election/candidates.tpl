@@ -4,7 +4,7 @@
 <hr>
 <form class="form-inline" method="GET" action="">
   <div class="form-group">
-    <input type="number" max='60' min='2' class="form-control mx-sm-3" id="interval" placeholder="Days" value="{{interval}}" name="interval">
+    <input type="number" max='180' min='2' class="form-control mx-sm-3" id="interval" placeholder="Days" value="{{interval}}" name="interval">
     <small class="text-muted">
       Days
     </small>
