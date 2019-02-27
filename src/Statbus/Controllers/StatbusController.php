@@ -248,7 +248,7 @@ class StatbusController extends Controller {
         $u = strtolower(preg_replace("/[^a-zA-Z0-9]/", '', $u));
       }
       try{
-        $handle = fopen(ROOTDIR."/src/conf/candidates.json", 'w+');
+        $handle = fopen(ROOTDIR."/tmp/candidates.json", 'w+');
         fwrite($handle, json_encode($update));
         fclose($handle);
       } catch(Excention $e){

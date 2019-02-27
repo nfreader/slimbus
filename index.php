@@ -38,7 +38,7 @@ if(file_exists(__DIR__ . '/src/conf/jobs.json')){
 
 if(file_exists(__DIR__ . '/src/conf/candidates.json')){
   $settings['settings']['statbus']['election_mode'] = TRUE;
-  $settings['settings']['statbus']['candidates'] = json_decode(file_get_contents(__DIR__ . '/src/conf/candidates.json'), true);
+  $settings['settings']['statbus']['candidates'] = json_decode(file_get_contents(__DIR__ . '/tmp/candidates.json'), true);
 }
 
 if ($settings['settings']['refresh_key'] == filter_input(INPUT_GET,'refresh', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH)){
