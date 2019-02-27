@@ -36,7 +36,7 @@ if(file_exists(__DIR__ . '/src/conf/jobs.json')){
   $settings['settings']['statbus']['jobs'] = json_decode(file_get_contents(__DIR__ . '/src/conf/jobs.json'), true);
 }
 
-if(file_exists(__DIR__ . '/src/conf/candidates.json')){
+if(file_exists(__DIR__ . '/tmp/candidates.json')){
   $settings['settings']['statbus']['election_mode'] = TRUE;
   $settings['settings']['statbus']['candidates'] = json_decode(file_get_contents(__DIR__ . '/tmp/candidates.json'), true);
 }
