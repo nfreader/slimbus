@@ -278,4 +278,55 @@ class RoundController Extends Controller {
       'breadcrumbs' => $this->breadcrumbs
     ]);
   }
+
+  public function getRoundsForCkey($ckey){
+    $this->pages = ceil($this->DB->cell("SELECT count(tbl_round.id) FROM tbl_connection_log
+        LEFT JOIN tbl_round ON tbl_connection_log.round_id = tbl_round.id
+        WHERE tbl_connection_log.ckey = ?
+        AND tbl_round.shutdown_datetime IS NOT NULL", $ckey) / $this->per_page);
+    $rounds = $this->DB->run("SELECT $this->columns
+      FROM tbl_connection_log
+      LEFT JOIN tbl_round ON tbl_connection_log.round_id = tbl_round.id
+      WHERE tbl_connection_log.ckey = ?
+      AND tbl_round.shutdown_datetime IS NOT NULL
+      ORDER BY tbl_connection_log.`datetime` DESC
+      LIMIT ?,?", $ckey, ($this->page * $this->per_page) - $this->per_page, $this->per_page);
+    foreach ($rounds as &$round){
+      $round = $this->roundModel->parseRound($round);
+    }
+    return $rounds;
+  }
+
+  public function getMyRounds($request, $response, $args){
+    if(isset($args['page'])) {
+      $this->page = filter_var($args['page'], FILTER_VALIDATE_INT);
+    }
+    $this->user = $this->container->get('user');
+    $rounds = $this->getRoundsForCkey($this->user->ckey);
+    return $this->view->render($response, 'me/rounds.tpl',[
+      'rounds'      => $rounds,
+      'round'       => $this,
+      'wide'        => true,
+      'stat'        => $stat,
+      'breadcrumbs' => $this->breadcrumbs
+    ]);
+  }
+
+  public function getPlayerRounds($request, $response, $args){
+    if(isset($args['page'])) {
+      $this->page = filter_var($args['page'], FILTER_VALIDATE_INT);
+    }
+    if(isset($args['ckey'])) {
+      $ckey = filter_var($args['ckey'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    }
+    $rounds = $this->getRoundsForCkey($ckey);
+    return $this->view->render($response, 'player/rounds.tpl',[
+      'rounds'      => $rounds,
+      'round'       => $this,
+      'wide'        => true,
+      'stat'        => $stat,
+      'breadcrumbs' => $this->breadcrumbs,
+      'ckey'        => $ckey
+    ]);
+  }
 }

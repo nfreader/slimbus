@@ -205,6 +205,13 @@ class PlayerController Extends Controller {
     return $return;
   }
 
+  public function countRounds($ckey){
+    return $this->DB->cell("SELECT count(tbl_round.id) FROM tbl_connection_log
+      LEFT JOIN tbl_round ON tbl_connection_log.round_id = tbl_round.id
+      WHERE tbl_connection_log.ckey = ?
+      AND tbl_round.shutdown_datetime IS NOT NULL", $ckey);
+  }
+
   public function gatherAdditionalData(&$player){
     // $player->role_time = $this->getRoleData($player->ckey);
     $player->messages = (new MessageController($this->container))->getMessagesForCkey($player->ckey, TRUE);
@@ -213,6 +220,7 @@ class PlayerController Extends Controller {
     $player->ips = $this->getIPs('ckey', $player->ckey);
     $player->cids = $this->getCIDs('ckey', $player->ckey);
     $player->alts = $this->findAlts($player->ckey);
+    $player->roundCount = $this->countRounds($player->ckey);
     return $player;
   }
 

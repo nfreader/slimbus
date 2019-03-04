@@ -19,6 +19,9 @@
       <li class="list-group-item">
         <strong>Last ComputerID</strong> <span class="tlp tlp-red">{{player.computerid}}</span>
       </li>
+      <li class="list-group-item">
+        <strong>Rounds</strong> {{player.roundCount}} (<a href="{{path_for('player.rounds',{'ckey': player.ckey})}}">List</a>)
+      </li>
     </ul>
   </div>
   <div class="col">

@@ -1,7 +1,6 @@
 {% extends "base/index.html"%}
 {%block content %}
 {% if user.ckey %}
-
 <div class="page-header">
   {% if statbus.auth.remote_auth %}
   <a class="badge badge-danger float-right" href="{{path_for('logout')}}">Logout</a>
@@ -18,6 +17,7 @@ Between your first connection {{user.firstseen|timestamp}} and your most recent 
 
 <hr>
 <h3><a href="{{path_for('me.roles')}}">Role Time</a></h3>
+<h3><a href="{{path_for('me.rounds')}}">Your Rounds</a></h3>
 <div class="card">
   <h3 class="card-header"><a data-toggle="collapse" href="#lastwords" role="button" aria-expanded="false" aria-controls="lastwords">Your Last Words</a></h3>
   <div class="card-body collapse" id="lastwords">
