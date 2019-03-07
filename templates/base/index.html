@@ -378,6 +378,9 @@
           <p class="text-muted">Data presented here should be treated as preliminary and non-operational</p>
         </div>
         <div class="col">
+          {% if settings.bug_reports %}
+          <p class="text-muted">Found a bug? Have a feature request? Report it <a href="{{settings.bug_reports}}" target="_blank" rel="noopener noreferrer">here</a>.</p>
+          {% endif %}
           <samp class="text-muted" id="clock">{{app.currentDate}}</samp>
         </div>
       </div>

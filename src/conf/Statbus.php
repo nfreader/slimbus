@@ -49,6 +49,7 @@ return [
   ],
   'election_mode'    => false,
   'election_officer' => getenv('ELECTION_OFFICER') ?: false,
+  'bug_reports'      => getenv('BUG_REPORTS') ?: false,
   'mode_icons' => [
     'Abduction'=>'street-view',
     'Ai Malfunction'=>'network-wired',
