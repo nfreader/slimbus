@@ -36,12 +36,16 @@ class StatbusController extends Controller {
 
   public function doAdminsPlay($request, $response, $args){
     $args = $request->getQueryParams();
+    $maxRange = 30;
+    if($this->user->canAccessTGDB){
+      $maxRange = 90;
+    }
     if(isset($args['interval'])) {
       $options = array(
         'options'=>array(
         'default'=>20,
         'min_range'=>2,
-        'max_range'=>30
+        'max_range'=>$maxRange
       ));
       $interval = filter_var($args['interval'], FILTER_VALIDATE_INT, $options);
     } else {
@@ -97,7 +101,8 @@ class StatbusController extends Controller {
       'admins'   => $admins,
       'interval' => $interval,
       'perms'    => $perms,
-      'wide'     => true
+      'wide'     => true,
+      'maxRange' => $maxRange
     ]);
   }
 
@@ -205,7 +210,8 @@ class StatbusController extends Controller {
         return $this->view->render($this->response, 'info/heatmap.tpl',[
           'data'      => json_encode($data->data),
           'fromCache' => TRUE,
-          'hash'      => $hash
+          'hash'      => $hash,
+          'wide'      =>TRUE
         ]);
       }
     }
