@@ -320,6 +320,14 @@ class RoundController Extends Controller {
       $ckey = filter_var($args['ckey'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
     }
     $rounds = $this->getRoundsForCkey($ckey);
+    $this->breadcrumbs = [
+      $ckey => parent::getFullURL($this->router->pathFor('player.single',[
+        'ckey'=>$ckey
+      ])),
+      'Rounds' => parent::getFullURL($this->router->pathFor('player.rounds',[
+        'ckey'=>$ckey
+      ]))
+    ];
     return $this->view->render($response, 'player/rounds.tpl',[
       'rounds'      => $rounds,
       'round'       => $this,
