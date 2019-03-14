@@ -8,3 +8,4 @@ src/conf/alert.html*
 src/conf/candidates.json
 composer.lock
 /.db
+/templates/tracker.html

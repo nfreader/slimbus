@@ -8,18 +8,7 @@
   {% for k, v in ogdata %}
   <meta property="og:{{k}}" content="{{v}}" />
   {% endfor %}
-  {% if statbus.UA %}
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-    ga('create', '{{statbus.UA}}', 'auto');
-    ga('send', 'pageview');
-
-  </script>
-  {% endif %}
+  {% include 'base/tracker.html' ignore missing %}
   <style>
   /* Move down content because we have a fixed navbar that is 3.5rem tall */
   body {
