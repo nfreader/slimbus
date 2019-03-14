@@ -1,6 +1,6 @@
 {% extends "index.tpl"%}
 {% block content %}
-<h2>{{player.label|raw}}
+<h2>{{player.label|raw}} | 
   <small class="text-muted"><a href="http://www.byond.com/members/{{player.ckey}}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> Byond</a> | <a href="https://tgstation13.org/tgdb/playerdetails.php?ckey={{player.ckey}}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> tgdb</a></small>
 </h2>
 <hr>
@@ -45,13 +45,13 @@
   <div class="col">
     <ul class="list-group">
       <li class="list-group-item" style="background-color: {{player.design.backColor}}; color: {{player.design.foreColor}};">
-        <span title="Ranks are currently not working reliably" data-toggle="tooltip"><strong>Rank</strong> {{player.rank}}</span>
+        <span data-toggle="tooltip"><strong>Rank</strong> {{player.rank}}</span>
       </li>
       <li class="list-group-item">
         <strong>Connection Count</strong> {{player.connections}}
       </li>
       <li class="list-group-item">
-        <strong>Playtime</strong> ~{{player.hours}} hours<br>
+        <strong>Playtime</strong> ~{{player.hours}} hours (<a href="{{path_for('player.roletime',{'ckey': player.ckey})}}">View Roles</a>)<br>
         <small>Since role time tracking was enabled</small>
         {% set total = player.ghost + player.living %}
         <div class="progress">
@@ -175,8 +175,6 @@
     </div>
   </div>
 </div>
-<hr>
-  <h3><a href="{{path_for('player.roletime',{'ckey': player.ckey})}}">Role Time</a></h3>
 <hr>
 <div class="card mb-4">
   {% if player.messages|length > 3 %}
