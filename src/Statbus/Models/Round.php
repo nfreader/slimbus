@@ -41,9 +41,12 @@ class Round {
     $round->end_state = ucwords($round->end_state);
 
     $round = $this->mapStatus($round);
-    $round->server = $this->settings['servers'][array_search($round->port, array_column($this->settings['servers'], 'port'))]['name'];
+    $round->server_data = (object) $this->settings['servers'][array_search($round->port, array_column($this->settings['servers'], 'port'))];
+   
     if (!$round->server) {
       $round->server = 'Unknown';
+    } else {
+      $round->server = $round->server_data->name;
     }
     $round->shuttle = preg_replace("/[^a-zA-Z\d\s:]/", '', $round->shuttle);
     $round->shuttle = ucwords($round->shuttle);
@@ -59,15 +62,15 @@ class Round {
     $round->logs = FALSE;
     $logs = isset($this->settings['remote_log_src']) ? $this->settings['remote_log_src'] : FALSE;
     if($logs){
-      $server = strtolower($round->server);
+      $server = strtolower($round->server->name);
       $date = new \DateTime($round->start_datetime);
       $year = $date->format('Y');
       $month = $date->format('m');
       $day = $date->format('d');
-      $round->remote_logs = $logs."$server/data/logs/";
+      $round->remote_logs = $round->server_data->public_logs;
       $round->remote_logs.= "$year/$month/$day/round-$round->id.zip";
       $round->remote_logs_dir = str_replace('.zip', '', $round->remote_logs);
-      $round->admin_logs_dir = str_replace('parsed-logs', 'raw-logs', $round->remote_logs_dir);
+      $round->admin_logs_dir = str_replace($round->server_data->public_logs, $round->server_data->raw_logs, $round->remote_logs_dir);
       $round->logs = TRUE;
     }
 
