@@ -1,0 +1,329 @@
+/* Move down content because we have a fixed navbar that is 3.5rem tall */
+  body {
+    padding-top: 5rem;
+  }
+  img {
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+  }
+  iframe {
+    width: 100%;
+    height: 100%;
+    margin: 10px 0;
+    border: 0;
+  }
+  .card:target {
+    box-shadow: 0 0 5px blue;
+  }
+  thead tr th .tablesorter-header-inner i {
+    display: inline;
+    float: right;
+    margin: 4px 0 0 0;
+  }
+  tr:target
+  tr.targeted {
+    background: #ffffd9;
+  }
+
+  tr.table-inverse td {
+    color: white;
+    background: black;
+  }
+  
+  tr.table-vote td {
+    background: rebeccapurple;
+    color: white;
+  }
+
+    .alert-inverse,
+    .badge-inverse,
+    tr.table-inverse td {
+      color: white;
+      background: black;
+    }
+    .alert-vote,
+    .badge-vote,
+    tr.table-vote td {
+      background: rebeccapurple;
+      color: white;
+    }
+    .alert-reboot,
+    .badge-reboot,
+    tr.table-reboot td {
+      background: #e8b575;
+    }
+
+  .table-murder td:first-child {
+    border-left: .3rem solid red;
+  }
+
+  .table-suicide td:first-child {
+    border-left: .3rem solid black;
+  }
+
+  thead tr th[data-toggle='tooltip'] {
+    position: relative;
+  }
+
+  thead tr th[data-toggle='tooltip']:after {
+    position: absolute;
+    float: left;
+    content: "\f129";
+    right: 20px;
+    top: 5px;
+  }
+
+  .say           {}
+  .deadsay       {color: #5c00e6;}
+  .radio         {color: #008000;}
+  .sciradio      {color: #993399;}
+  .comradio      {color: #948f02;}
+  .secradio      {color: #a30000;}
+  .medradio      {color: #337296;}
+  .engradio      {color: #fb5613;}
+  .suppradio     {color: #a8732b;}
+  .servradio     {color: #6eaa2c;}
+  .syndradio     {color: #6d3f40;}
+  .centcomradio  {color: #686868;}
+  .aiprivradio   {color: #ff00ff;}
+  .redteamradio  {color: #ff0000;}
+  .blueteamradio {color: #0000ff;}
+
+  .icon-thumb {
+    min-width: 64px;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid grey;
+  }
+
+  #poly {
+    /* text-align: right; */
+    /* float: right; */
+    /* clear: left; */
+    font-size: 1rem;
+    padding: 10px 0 0 50px;
+    margin: 0px 0 0 0;
+  }
+  #poly img {
+    /* margin: -42px 0 0 0; */
+    position: absolute;
+    /* right: 0; */
+    top: 55px;
+    left: 0;
+  }
+  .card-type {
+    display: inline-block;
+    float: left;
+    margin: -.75rem .75rem -.75rem -1.25rem;
+    padding: .75rem;
+    border-top-left-radius: .25rem;
+  }
+  .card-type.bg-dark,
+  .card-type.bg-danger,
+  .card-type.bg-success,
+  .card-type.bg-primary {
+    color: white;
+  }
+  .card-header .badge,
+  .card-footer .badge {
+    font-size: 100%;
+  }
+
+  .perma {
+    color: #cc46d2;
+  }
+  
+  .bg-perma,
+  .list-group-item-perma {
+    background: #ffdefe;
+    color: #cc46d2;
+    /*color: white;*/
+  }
+
+  .border-perma {
+    border-color: #cc46d2;
+  }
+  .list-group-flush.collapse {
+    display: none !important;
+  }
+  .list-group-flush.collapse.show {
+    display: flex !important;
+  }
+
+  .table-danger.censored td{
+    color: #333 !important;
+    background: #333 !important;
+  }
+  .table-danger.censored:hover td {
+    color: white !important;
+  }
+  .badge-dam {
+    min-width: 36px;
+    display: inline-block !important;
+  }
+
+  .badge-brute   {background: #fb264b; color: white;}
+  .badge-brain   {background: #5995ba; color: white;}
+  .badge-fire    {background: #e0a003; color: white;}
+  .badge-oxy     {background: #689bc3; color: white;}
+  .badge-tox     {background: #61af25; color: white;}
+  .badge-clone   {background: #ab63d8; color: white;}
+  .badge-stamina {background: #0e22aa; color: white;}
+
+  .roundLogs {
+    font-family: monospace;
+    font-size: 12px;
+  }
+
+  .roundLogs .timestamp, 
+  .roundLogs .area {
+    white-space: nowrap;
+  }
+
+  .log-OOC     , .log-OOC      td{ color: #002eb8; }
+  .log-ADMIN   , .log-ADMIN    td{ color: #b82e00; font-weight: bold; }
+  .log-SAY     , .log-SAY      td{ color: #008000; }
+  .log-ACCESS  , .log-ACCESS   td{ color: #ff5050; }
+  .log-WHISPER , .log-WHISPER  td{ font-style: italic; }
+  .log-EMOTE   , .log-EMOTE    td{ font-style: italic; }
+  .log-GAME    , .log-GAME     td{ color: #00c000; font-weight: bold; }
+  .log-PDA     , .log-PDA      td{ color: #800000; }
+  .log-GHOST   , .log-GHOST    td{ color: #5c00e6; }
+  .log-ATTACK  , .log-ATTACK   td{ color: red; font-weight: bold; }
+
+  span.badge.gh-badge {
+    text-shadow: 0 0 2px black;
+  }
+
+  .Sybil {
+    background: #eafdff;
+  }
+
+  .Basil {
+    background: #ffeaea;
+  }
+  .Terry {
+    background: #eaffea;
+  }
+  .list-group-item:target {
+    background: #fdffed;
+  }
+  .card > .table {
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    margin-bottom: 0;
+  }
+  .card > .table td:first-child,
+  .card > .table th:first-child {
+    border-left: 0;
+  }
+  .card > .table td:last-child,
+  .card > .table th:last-child {
+    border-right: 0;
+  }
+  .card > .table tr:first-child td,
+  .card > .table tr:first-child th {
+    border-top: 0;
+  }
+  .card > .table tr:last-child td {
+    border-bottom: 0;
+  }
+  .card .card-header + .table {
+    border-top: 0;
+  }
+
+  .leaflet-map {
+    height: 512px;
+  }
+  .nw {
+    white-space: nowrap;
+  }
+  .tlp {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    border-left: none;
+    font-size: .85rem;
+    font-weight: bold;
+    padding: 1px 4px;
+    position: relative;
+  }
+
+  .tlp:before{
+    font-size: .75rem;
+    padding: 2px 4px;
+    margin: 0 4px 0 -4px;
+    border-radius: 4px 0 0 4px;
+  }
+
+  .tlp-green {
+    border-color: green;
+  }
+  .tlp-green:before {
+    content: 'TLP://GREEN';
+    background: green;
+    color: white;
+  }
+
+  .tlp-amber {
+    border-color: #ff9800;
+  }
+  .tlp-amber:before {
+    content: 'TLP://AMBER';
+    background: #ff9800;
+    color: white;
+  }
+
+  .tlp-red {
+    border-color: red;
+  }
+  .tlp-red:before {
+    content: 'TLP://RED';
+    background: red;
+    color: white;
+  }
+  code.bg {
+    background: #eee;
+    border-radius: 5px;
+    padding: 3px;
+  }
+  .seclevel-green {
+    color: white;
+    background: green;
+  }
+  .seclevel-blue {
+    color: white;
+    background: blue;
+  }
+  .seclevel-red {
+    color: white;
+    background: red;
+  }
+  .seclevel-delta {
+    animation: panic 2s linear infinite;
+    color: black;
+    background: orange;
+  }
+  @keyframes panic {
+    50% {
+      box-shadow: 0px 0px 5px 2px #EB0012, inset 0px 0px 5px 2px #EB0012;
+      border-color: #EB0012; }
+    0%, 100% {
+      box-shadow: none; } }
+/*  .tlp-red:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: red;
+    content: 'TLP://RED - HOVER TO VIEW';
+    font-size: .6rem;
+    color: white;
+    padding: 2px 4px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .tlp-red:hover:after {
+    display: none;
+  }*/
