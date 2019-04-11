@@ -74,8 +74,15 @@ class DeathController Extends Controller{
     }
     if(isset($args['page'])) {
       $this->page = filter_var($args['page'], FILTER_VALIDATE_INT);
+    } $format = null;
+    if(isset($request->getQueryParams()['format'])) {
+      $format = filter_var($request->getQueryParams()['format'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
     }
+    if(!$format){
     $this->pages = ceil($this->DB->cell("SELECT count(tbl_death.id) FROM tbl_death WHERE tbl_death.round_id = ?", $round) / $this->per_page);
+    } else {
+        $this->per_page = 1000;
+    }
     $deaths = $this->DB->run("SELECT 
         tbl_death.id,
         tbl_death.pod,
@@ -113,6 +120,9 @@ class DeathController Extends Controller{
         );
     foreach ($deaths as &$death){
       $death = $this->deathModel->parseDeath($death);
+    }
+    if('json' === $format){
+        return $response->withJson($deaths);
     }
     $url = parent::getFullURL($this->router->pathFor('round.single',['id'=>$args['round']]));
     $this->ogdata['url'] = $url;
