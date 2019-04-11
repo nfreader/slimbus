@@ -34,7 +34,7 @@
   {% for key, stat in round.stats %}
   <li class="list-inline-item">
     <code>
-      <a href="{{path_for('round.single',{'id': round.id, 'stat':stat.key_name})}}">{{stat.key_name}}</a>
+      <a href="{{path_for('round.single',{'id': round.id, 'stat':key})}}">{{key}}</a>
     </code>
   </li>
 {% endfor %}

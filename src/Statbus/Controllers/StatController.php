@@ -42,6 +42,10 @@ class StatController {
       return $stats;
     } else {
       $stats = $this->DB->run("SELECT key_name FROM tbl_feedback WHERE round_id = ? ORDER BY key_name ASC", $round);
+      foreach($stats as $s){
+        $tmp[] = $s->key_name;
+      }
+      $stats = array_flip($tmp);
       return $stats;
     } 
   }
