@@ -43,7 +43,7 @@ class Round {
     $round = $this->mapStatus($round);
     $round->server_data = (object) $this->settings['servers'][array_search($round->port, array_column($this->settings['servers'], 'port'))];
    
-    if (!$round->server) {
+    if (!$round->port) {
       $round->server = 'Unknown';
     } else {
       $round->server = $round->server_data->name;
