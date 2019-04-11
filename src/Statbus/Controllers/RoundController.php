@@ -76,11 +76,11 @@ class RoundController Extends Controller {
         'linkText'=> 'Round Listing'
       ]);
     }
+    $format = null;
+    if(isset($request->getQueryParams()['format'])) {
+      $format = filter_var($request->getQueryParams()['format'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    }
     if(isset($args['stat'])){
-      if(isset($request->getQueryParams()['format'])) {
-        $format = filter_var($request->getQueryParams()['format'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-      }
-
       $this->stat($round, $args['stat'], $response);
 
       if('json' === $format){
@@ -95,6 +95,9 @@ class RoundController Extends Controller {
       'testmerged_prs',
       'newscaster_stories'
     ]);
+    if('json' === $format){
+      return $response->withJson($round);
+    }
     return $this->view->render($response, 'rounds/round.tpl',[
       'round'       => $round,
       'breadcrumbs' => $this->breadcrumbs,
