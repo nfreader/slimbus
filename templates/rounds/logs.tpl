@@ -28,7 +28,7 @@
     {% for file in logs %}
       {% if file.fileName in gameLogs %}
       {% else %}
-      <a class="list-group-item" href="{{path_for('round.log',{'id': round.id, 'file': file.fileName, 'raw':'raw'})}}">{{file.fileName}}</a>
+      <a class="list-group-item" href="{{path_for('round.log',{'id': round.id, 'file': file.fileName, 'format':'raw'})}}">{{file.fileName}}</a>
       {% endif %}
     {% endfor %}
     </ul>

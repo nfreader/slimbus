@@ -65,7 +65,7 @@ class LogsController Extends Controller {
     }
     return $this->listing;
   }
-  public function getFile($file, $raw = false){
+  public function getFile($file, $format = false){
     if (!in_array($file, [
       'atmos.html',
       // 'attack.txt',
@@ -101,11 +101,22 @@ class LogsController Extends Controller {
     } else {
     $this->file = filter_var($this->file, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_NO_ENCODE_QUOTES);
     }
-    if ($raw){
-      return $this->file;
+
+    switch($format){
+      default:
+        $this->parseLogFile($file);
+        return $this->file;
+      break;
+
+      case 'raw':
+        return $this->file;
+      break;
+
+      case 'json':
+        $this->parseLogFile($file);
+        return json_encode($this->file);
+      break;
     }
-    $this->parseLogFile($file);
-    return $this->file;
   }
 
   private function parseLogFile($file){

@@ -77,7 +77,17 @@ class RoundController Extends Controller {
       ]);
     }
     if(isset($args['stat'])){
-      return $this->stat($round, $args['stat'], $response);
+      if(isset($request->getQueryParams()['format'])) {
+        $format = filter_var($request->getQueryParams()['format'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+      }
+
+      $this->stat($round, $args['stat'], $response);
+
+      if('json' === $format){
+        unset($round->stat->json);
+        return $response->withJson($round->stat);
+      }
+      return $round->stat;
     }
     $round->stats = (new StatController($this->DB))->getStatsForRound($round->id);
     $round->data = (new StatController($this->DB))->getStatsForRound($round->id,[
@@ -157,7 +167,14 @@ class RoundController Extends Controller {
 
   public function listLogs($request, $response, $args){
     $round = $this->getRound($args['id']);
+    if(isset($request->getQueryParams()['format'])) {
+      $format = filter_var($request->getQueryParams()['format'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    }
     $logs = (new LogsController($this->container, $round))->listing();
+
+    if('json' === $format){
+      return $response->withJson($logs);
+    }
 
     $url = parent::getFullURL($this->router->pathFor('round.logs',['id'=>$round->id]));
 
@@ -177,14 +194,14 @@ class RoundController Extends Controller {
   public function getLogFile($request, $response, $args){
     $round = $this->getRound($args['id']);
     $file = filter_var($args['file'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-    $raw = false;
-    if(isset($args['raw'])) {
-      $raw = filter_var($args['raw'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-      if('raw' === $raw) {
-        $raw = true;
-      }
+    if(isset($args['format'])) {
+      $format = filter_var($args['format'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
     }
-    $logs = (new LogsController($this->container, $round))->getFile($file, $raw);
+    $logs = (new LogsController($this->container, $round))->getFile($file, $format);
+
+    if('json' === $format){
+      return $response->withJson($logs);
+    }
 
     $this->breadcrumbs['Logs'] = parent::getFullURL($this->router->pathFor('round.logs',[
       'id'   => $round->id,
@@ -200,13 +217,19 @@ class RoundController Extends Controller {
     $this->ogdata['url'] = $url;
     $this->ogdata['title'] = "$file logfile for Round #$round->id on $round->server";
     $this->ogdata['description'] = (($logs) ? count($logs) : 0)." lines found in $file.";
+    if(!$logs){
+      return $this->view->render($response, 'base/error.tpl',[
+        'code'    => 404,
+        'message' => "Logfile not found: $file",
+      ]);
+    }
     return $this->view->render($response, 'rounds/log.tpl',[
       'round'       => $round,
       'breadcrumbs' => $this->breadcrumbs,
       'ogdata'      => $this->ogdata,
       'file'        => $logs,
       'filename'    => $file,
-      'raw'         => $raw,
+      'format'      => $format,
       'wide'        => true
     ]);
   }

@@ -68,7 +68,7 @@ $app->group('', function () {
   $this->get('/rounds/{id:[0-9]+}/logs/game[/page/{page}]', \Statbus\Controllers\RoundController::class . ':getGameLogs')->setName('round.gamelogs');
 
   //Single log file
-  $this->get('/rounds/{id:[0-9]+}/logs/{file:[a-zA-Z.]+}[/{raw}]', \Statbus\Controllers\RoundController::class . ':getLogFile')->setName('round.log');
+  $this->get('/rounds/{id:[0-9]+}/logs/{file:[a-zA-Z.]+}[/{format}]', \Statbus\Controllers\RoundController::class . ':getLogFile')->setName('round.log');
 
   //Single - Also handles single stat views!
   $this->get('/rounds/{id:[0-9]+}[/{stat}]', \Statbus\Controllers\RoundController::class . ':single')->setName('round.single');
