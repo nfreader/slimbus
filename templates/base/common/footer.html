@@ -1,0 +1,103 @@
+<script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.1/js/jquery.tablesorter.min.js" integrity="sha256-uC1JMW5e1U5D28+mXFxzTz4SSMCywqhxQIodqLECnfU=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.js" integrity="sha256-2/3+Q1kMYR8MDaqFPNBgmLgiqWJjySkg1wqLx/iE5Zo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.14/moment-timezone-with-data.min.js" integrity="sha256-FJZOELgwnfQRdG8KZUSWCYgucECDf4w5kfQdQSGbVpI=" crossorigin="anonymous"></script>
+  <script>
+    function unpack(rows, key) {
+      return rows.map(function(row) { return row[key]; });
+    }
+    function formatDate (date) {
+        return date.getHours()+ ":" +date.getMinutes()+":"+date.getSeconds();
+    }
+
+    function timestamp(str){
+        return new Date(str).getTime();   
+    }
+
+    function date2unix(date){
+      return parseInt((new Date(date).getTime() / 100).toFixed(0))
+    }
+    function tg2leaf(x,y){
+      lat = (y-255)
+      lng = (x*1)
+      return [lat, lng]
+    }
+
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip();
+      $('.sort').tablesorter({
+        headerTemplate: '{content}{icon}',
+        cssIcon: 'tablesorter-icon fas',
+        cssIconAsc: 'fa-sort-up',
+        cssIconDesc: 'fa-sort-down',
+        cssIconNone: 'fa-sort'
+      });
+    });
+    moment.locale('en');
+    moment.tz.setDefault("Universal");
+    $('time').each(function(){
+      timestring = $(this).attr('datetime');
+      var mom = moment(timestring);
+      var now = moment();
+      $(this).text(mom.from(now));
+    });
+    var clock = document.querySelector('#clock');
+    if(clock){
+    setInterval(function() {
+        var date = new Date();
+        var month = ('0'+(date.getUTCMonth()+1)).slice(-2);
+        var days = ('0'+date.getUTCDate()+'').slice(-2);
+        var seconds = ('0'+date.getUTCSeconds()+'').slice(-2);
+        var minutes = ('0'+date.getUTCMinutes()+'').slice(-2);
+        var hours = ('0'+date.getUTCHours()+'').slice(-2);
+        var year = date.getUTCFullYear();
+        clock.textContent = hours+':'+minutes+':'+seconds+' '+days+'.'+month+'.'+year;
+      }, 1000);
+    }
+  </script>
+  {% if user.canAccessTGDB >= 2 %}
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.6/jquery.typeahead.min.js" integrity="sha256-W+Cxk9exgjON2p73M4RcoKvCpQUZ+IjXhEzZk6rlg9M=" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-typeahead/2.10.6/jquery.typeahead.min.css" integrity="sha256-CU0/rbxVB3Eixd3bbIuJxHJLDnXriJS9cwp/BfcgpLw=" crossorigin="anonymous" />
+      <script>
+      $("#tgdbsearch").submit(function(e){
+        e.preventDefault();
+      });
+      $.typeahead({
+        input: '#tgdbsearch',
+        minLength: 2,
+        order: 'desc',
+        source: {
+          ckey: {
+            ajax: {
+              url: "tgdb/suggest/",
+              method: "get",
+              data: {
+                ckey: function () { return $('#tgdbsearch').val()} 
+              }
+            }
+          }
+        },
+        dynamic: true,
+        debug: true,
+        hint: true,
+        mustSelectItem: true,
+        display: ['ckey'],
+        href: function (item) {
+          return "tgdb/player/" + item.ckey
+        },
+        callback: {
+          onClickAfter: function (node, a, item, event) {
+            event.preventDefault;
+            window.location.href = item.href;
+          }
+          }
+        }
+      })
+      </script>
+      {% endif %}
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">

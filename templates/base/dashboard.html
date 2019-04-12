@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{{statbus.app_name}} {% block pagetitle %}{% endblock %}</title>
+    {% include 'base/common/header.html' %}
+    <style>
+    {% include 'base/css/dashboard.css' %}
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{{path_for('round.single',{'id': round.id})}}"><i class="fas fa-arrow-left"></i> {% block dashtitle %}{{statbus.app_name}}{% endblock %}</a>
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="#">Sign out</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky">
+            {% block sidebar %} {% endblock %}
+          </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10">
+          {% block content %} {% endblock %}
+        </main>
+      </div>
+    </div>
+    {% include 'base/common/footer.html' %}
+    {% block js %}
+    {% endblock %}
+  </body>
+</html>

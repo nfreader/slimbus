@@ -170,6 +170,14 @@
   .badge-clone   {background: #ab63d8; color: white;}
   .badge-stamina {background: #0e22aa; color: white;}
 
+  .brute   {color: #fb264b;}
+  .brain   {color: #5995ba;}
+  .fire    {color: #e0a003;}
+  .oxy     {color: #689bc3;}
+  .tox     {color: #61af25;}
+  .clone   {color: #ab63d8;}
+  .stamina {color: #0e22aa;}
+
   .roundLogs {
     font-family: monospace;
     font-size: 12px;
@@ -231,10 +239,6 @@
   }
   .card .card-header + .table {
     border-top: 0;
-  }
-
-  .leaflet-map {
-    height: 512px;
   }
   .nw {
     white-space: nowrap;

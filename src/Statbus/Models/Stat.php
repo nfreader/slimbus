@@ -50,8 +50,6 @@ class Stat {
       break;
     }
 
-
-
     return $stat;
   }
 
