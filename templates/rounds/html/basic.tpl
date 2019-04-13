@@ -42,6 +42,7 @@
           {% if user.canAccessTGDB %}
             <a class="btn btn-primary btn-sm" href="{{round.admin_logs_dir}}" target="_blank" rel="noopener noreferrer">Original <i class="fas fa-external-link-alt"></i></a>
           {% endif %}
+          {% include 'rounds/html/extraLinks.tpl' ignore missing %}
         {% else %}
         <em>Not available</em>
         {% endif %}
