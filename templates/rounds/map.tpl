@@ -45,6 +45,7 @@ fetch('/rounds/'+roundID+'?format=json')
       maxZoom: 6,
       maxBounds: [[0,0],[-256,256]],
       crs: L.CRS.Simple,
+      preferCanvas: true,
     }).setView([-128,128], 2);
     L.tileLayer("https://renderbus.s3.amazonaws.com/tiles/"+data.map_url+"/{z}/tile_{x}-{y}.png", {
       minZoom: 1,

@@ -79,6 +79,7 @@ body {
 
  #map {
    height: 100%;
+   background: black; /*TODO: PARALLAX */
  }
 
 /*
@@ -128,4 +129,8 @@ body {
     color: #dc3545;
     background: transparent;
   }
+}
+
+.invisible{
+  display: none;
 }
