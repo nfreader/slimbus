@@ -9,6 +9,7 @@
 
 {% block sidebar %}
 
+<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"><span>Database</span></h6>
 <ul class="nav flex-column">
   <li class="nav-item">
     <a class="nav-link invisible" href="#" id="deaths">
@@ -20,6 +21,11 @@
       <i class="fas fa-bomb"></i> Explosions
     </a>
   </li>
+</ul>
+
+<h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"><span>Logfiles</span></h6>
+<ul class="nav flex-column" id="logfiles">
+
 </ul>
 
 {% endblock %}
@@ -61,6 +67,58 @@ fetch('/rounds/'+roundID+'?format=json')
     if(data.stats.explosion){
       $('#bombs').removeClass('invisible')
     }
+    fetch('/rounds/'+roundID+'/logs?format=json')
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data){
+      const logfiles = Object.keys(data)
+      let logLayers = [];
+      logfiles.forEach(function(log){
+        log = log.split('.zip/')[1]
+        var html = "<li class='nav-item'><a href='"+log+"' class='nav-link logfileLink'>"+log+"</a></li>";
+        $('#logfiles').append(html)
+        // logLayers.push(log)
+        logLayers[log] = L.layerGroup()
+        logLayers[log]['loaded'] = false
+      })
+      // return logLayers;
+      $('body').on('click','.logfileLink', function(e){
+        e.preventDefault();
+        $(this).toggleClass('active')
+        file = $(this).attr('href');
+        // var loaded = false;
+        console.log(logLayers[file])
+        if(logLayers[file]['loaded']){
+          if(map.hasLayer(logLayers[file])){
+            map.removeLayer(logLayers[file])
+            return
+          } else {
+            map.addLayer(logLayers[file])
+            return
+          }
+        }
+        fetch('/rounds/'+roundID+'/logs/'+file+'/json')
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data){
+            // lines = Object.values(data)
+            data.forEach(function(line){
+              if(line.z != 2) return;
+              marker = L.polygon([
+                tg2leaf(line.x,   line.y),
+                tg2leaf(line.x-1, line.y),
+                tg2leaf(line.x-1, line.y-1),
+                tg2leaf(line.x,   line.y-1)
+              ], {color: '#'+line.color})
+              .bindPopup(line.text).addTo(logLayers[file]);
+            })
+            logLayers[file]['loaded'] = true
+            logLayers[file].addTo(map)
+          })
+      });
+    })
     return map;
   })
   .then(function(map){
@@ -154,8 +212,8 @@ fetch('/rounds/'+roundID+'?format=json')
           })
         })
       bombs.addTo(map);
+      return map;
     })
   })
-
 </script>
 {% endblock %}

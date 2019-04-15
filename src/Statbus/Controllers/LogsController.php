@@ -114,7 +114,7 @@ class LogsController Extends Controller {
 
       case 'json':
         $this->parseLogFile($file);
-        return json_encode($this->file);
+        return $this->file;
       break;
     }
   }
