@@ -25,6 +25,9 @@
             Library
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{path_for('poll.index')}}"><i class="fas fa-vote-yea"></i> Polls</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="" role="button" aria-haspopup="true" aria-expanded="farlse"><i class="fas fa-info-circle"></i> Info</a>
           <div class="dropdown-menu">

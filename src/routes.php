@@ -123,6 +123,17 @@ $app->group('', function () {
   $this->post('/library/{id:[0-9]+}/delete', \Statbus\Controllers\LibraryController::class . ':deleteBook')->setName('library.delete');
 });
 
+//Polls
+$app->group('', function () {
+
+  //Index
+  $this->get('/polls[/page/{page}]', \Statbus\Controllers\PollController::class . ':index')->setName('poll.index');
+
+  //Single Poll
+  $this->get('/polls/{id:[0-9]+}', \Statbus\Controllers\PollController::class . ':single')->setName('poll.single');
+
+});
+
 //TGDB
 $app->group('', function () {
 
