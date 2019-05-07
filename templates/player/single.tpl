@@ -1,7 +1,7 @@
 {% extends "index.tpl"%}
 {% block content %}
-<h2>{{player.label|raw}} | 
-  <small class="text-muted"><a href="http://www.byond.com/members/{{player.ckey}}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> Byond</a> | <a href="https://tgstation13.org/tgdb/playerdetails.php?ckey={{player.ckey}}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> tgdb</a></small>
+<h2>{{player.label|raw}} 
+  <small class="text-muted"> | <a href="http://www.byond.com/members/{{player.ckey}}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> Byond</a> | <a href="https://tgstation13.org/tgdb/playerdetails.php?ckey={{player.ckey}}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> tgdb</a></small>
 </h2>
 <hr>
 <div class="row">
@@ -190,25 +190,4 @@
   </div>
 </div>
 
-{% endblock %}
-{% block js %}
-<script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-<script>
-var data = {{player.role_time|raw}};
-var jobs = unpack(data,'job');
-var minutes = unpack(data,'minutes');
-var trace1 = {
-  x: jobs,
-  y: minutes,
-  type: 'bar',
-  name: 'Minutes'
-}
-
-var layout = {
-  title: 'Role Time (Minutes)',
-};
-var data = [trace1]
-Plotly.newPlot('roletime',data, layout)
-</script>
 {% endblock %}
