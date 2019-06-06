@@ -21,8 +21,8 @@ class Controller {
 
   public function __construct(ContainerInterface $container) {
     $this->container = $container;
-    $this->view = $this->container->get('view');
     $this->DB = $this->container->get('DB');
+    $this->view = $this->container->get('view');
     $this->router = $this->container->get('router');
     $this->request = $this->container->get('request');
     $this->response = $this->container->get('response');
@@ -33,6 +33,12 @@ class Controller {
     ];
     $this->view->getEnvironment()->addGlobal('ogdata', $this->ogdata);
     $this->view->getEnvironment()->addGlobal('settings', $this->container->get('settings')['statbus']);
+    if(!$this->DB){
+      return $this->view->render($this->response, 'base/error.tpl',[
+        
+      ]);
+    }
+
   }
 
   public function getFullURL($path){

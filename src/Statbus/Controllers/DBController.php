@@ -11,9 +11,9 @@ class DBController {
   private $password;
   private $port;
   private $host;
-  public $prefix;
+  private $prefix;
 
-  public  $db = null;
+  public $db = null;
 
   public function __construct(array $conn){
 
@@ -46,7 +46,7 @@ class DBController {
         $this->db = false;
       }
       else {
-        var_dump($e->getMessage());
+        return $e->getMessage();
       }
     }
     
