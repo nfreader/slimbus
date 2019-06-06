@@ -108,6 +108,10 @@ $app->group('', function () {
   $this->get('/info/population', \Statbus\Controllers\StatbusController::class . ':popGraph')->setName('population');
 
 
+  //Win-Loss Ratios
+  $this->get('/info/winloss', \Statbus\Controllers\RoundController::class . ':winLoss')->setName('winloss');
+
+
 });
 
 //Library

@@ -358,4 +358,66 @@ class RoundController Extends Controller {
       'ckey'        => $ckey
     ]);
   }
+
+  public function getActiveRounds($request, $response, $args){
+    if(!$this->userCanAccessTGDB){
+      return false;
+    }
+    $rounds = $this->DB->run("SELECT DISTINCT(*) FROM tbl_round WHERE `shutdown_datetime` IS NULL LIMIT 0, 4 ORDER BY id DESC");
+    return $request->withJson($rounds);
+  }
+
+  public function winLoss($request, $response, $args){
+    $p = $request->getQueryParams();
+    $start = null;
+    $end = null;
+    if(isset($p['start']) && isset($p['end'])){
+      $start = filter_var($p['start'], FILTER_SANITIZE_STRING, 
+       FILTER_FLAG_STRIP_HIGH);
+      $end = filter_var($p['end'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    }
+    $minmax = $this->DB->row("SELECT 
+      min(STR_TO_DATE(R.initialize_datetime, '%Y-%m-%d')) AS min,
+      max(STR_TO_DATE(R.shutdown_datetime, '%Y-%m-%d')) AS max
+      FROM tbl_round AS R
+      WHERE R.shutdown_datetime != '0000-00-00 00:00:00'
+      AND R.initialize_datetime != '0000-00-00 00:00:00'");
+    if(!$start) {
+      $start = $minmax->min;
+      $end = $minmax->max;
+    } else {
+      $startDate = new \dateTime($start);
+      $start = $startDate->format('Y-m-d');
+      $endDate = new \dateTime($end);
+      $end = $endDate->format('Y-m-d');
+    }
+    $data = $this->getWinLossRatios($start, $end);
+    return $this->view->render($response, 'info/winloss.tpl',[
+        'modes'  => $data,
+        'start'  => $start,
+        'end'    => $end,
+        'min'    => $minmax->min,
+        'max'    => $minmax->max
+      ]);
+  }
+
+  public function getWinLossRatios($start = null, $end = null){
+    $data = $this->DB->run("SELECT count(ss13round.id) AS rounds,
+        ss13round.game_mode,
+        ss13round.game_mode_result,
+        FLOOR(AVG(TIMESTAMPDIFF(MINUTE, ss13round.start_datetime, ss13round.end_datetime))) AS duration
+        FROM ss13round
+        WHERE ss13round.game_mode IS NOT NULL
+        AND ss13round.game_mode != 'undefined'
+        AND ss13round.game_mode_result IS NOT NULL
+        AND ss13round.game_mode_result != 'undefined'
+        AND ss13round.initialize_datetime BETWEEN ? AND ?
+        AND ss13round.shutdown_datetime IS NOT NULL
+        GROUP BY ss13round.game_mode, ss13round.game_mode_result
+        ORDER BY ss13round.game_mode ASC, rounds DESC;", $start, $end);
+      usort($data, function($a, $b){
+        return strcmp($a->game_mode, $b->game_mode);
+      });
+      return $data;
+  }
 }
