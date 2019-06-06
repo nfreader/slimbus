@@ -11,8 +11,8 @@
     <i class="fas fa-fw fa-{{round.icons.mode}}"></i> {{round.mode}}</td>
   <td><i class="fas fa-fw fa-{{round.icons.result}}"></i> {{round.result}}</td>
   <td>{{round.map}}</td>
-  <td>{{round.duration}}</td>
   <td>{{round.start_datetime}}</td>
+  <td>{{round.duration}}</td>
   <td>{{round.end_datetime}}</td>
   <td>{{round.server}}</td>
 </tr>

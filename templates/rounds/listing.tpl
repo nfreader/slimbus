@@ -24,8 +24,8 @@
         <th>Mode</th>   
         <th>Result</th>   
         <th>Map</th>    
-        <th>Duration</th>   
-        <th>Start</th>    
+        <th>Start</th>
+        <th>Duration</th>
         <th>End</th>    
         <th>Server</th>   
       </tr>   
