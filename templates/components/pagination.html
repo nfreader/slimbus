@@ -6,6 +6,9 @@
         ex: list/page-5?q=myFilter (5 = page and query = myFilter)
 #}
 {% set param = '' %}
+{% if not query %}
+    {% set query = '' %}
+{% endif %}
 {% spaceless %}
 {% if nbPages > 1 %}
 
@@ -16,7 +19,7 @@
         <ul class="pagination">
             {% if currentPage != 1 %}
             <li class="page-item">
-                <a class="page-link" href="{{url}}">First</a>
+                <a class="page-link" href="{{url}}{{query}}">First</a>
             </li>
             {% endif %}
             {% for i in 1..nbPages %}
@@ -26,13 +29,13 @@
                 {% elseif 0 > (currentPage + nearbyPagesLimit) - loop.index %} {# hide all after #}
                 {% else %}
                     <li {% if currentPage == loop.index  %} class="page-item active" {% else %} class="page-item" {% endif %}>
-                        <a class="page-link" href="{{url}}{{param}}/page/{{loop.index}}">{{ loop.index }}</a>
+                        <a class="page-link" href="{{url}}{{param}}/page/{{loop.index}}{{query}}">{{ loop.index }}</a>
                     </li>
                 {% endif %}
             {% endfor %}
             {% if currentPage != nbPages %}
             <li class="page-item">
-                <a class="page-link" href="{{url}}{{param}}/page/{{nbPages}}">Last</a>
+                <a class="page-link" href="{{url}}{{param}}/page/{{nbPages}}{{query}}">Last</a>
             </li>
             {% endif %}
         </ul>

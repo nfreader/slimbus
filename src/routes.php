@@ -125,7 +125,8 @@ $app->group('', function () {
 
   //Delete Book (admin only)
   $this->post('/library/{id:[0-9]+}/delete', \Statbus\Controllers\LibraryController::class . ':deleteBook')->setName('library.delete');
-});
+  
+})->add(new \Statbus\Middleware\UserGuard($container, 1));
 
 //Polls
 $app->group('', function () {

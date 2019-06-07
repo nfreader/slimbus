@@ -1,16 +1,25 @@
 {% extends "base/index.html"%}
 {% block pagetitle %}Library Catalog{% endblock %}
 {% block content %}
+<h1>Library</h1>
+<hr>
 <div class="row">
   <div class="col">
   {% set vars = {
     'nbPages': library.pages,
     'currentPage': library.page,
-    'url': path_for('library.index')
+    'url': library.url,
+    'query': library.query
     } 
   %}
   {% include 'components/pagination.html' with vars %}
   </div>
+  <div class="col">
+    <form class="form-inline float-right" action="{{path_for('library.index')}}" method="GET">
+       <input name="query" class="form-control mr-2" type="text" value="{{library.search}}">
+       <button class="btn btn-primary">Search</button>
+     </form>
+   </div>
 </div>
 <table class="table table-sm table-bordered">
     <thead>

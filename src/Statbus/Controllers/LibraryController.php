@@ -17,29 +17,56 @@ class LibraryController Extends Controller {
     $this->libraryModel = new Library();
 
     $this->breadcrumbs['Library'] = $this->router->pathFor('library.index');
+    $this->url = $this->router->pathFor('library.index');
+    $this->query = false;
   }
 
   public function index($request, $response, $args) {
     if(isset($args['page'])) {
       $this->page = filter_var($args['page'], FILTER_VALIDATE_INT);
     }
-    $books = $this->DB->run("SELECT 
-      tbl_library.id,
-      tbl_library.author,
-      tbl_library.title,
-      tbl_library.category,
-      IF('Adult' = tbl_library.category, 1, 0) AS nsfw
-      FROM tbl_library
-      WHERE tbl_library.content != ''
-      AND (tbl_library.deleted IS NULL OR tbl_library.deleted = 0)
-      ORDER BY tbl_library.datetime DESC
-      LIMIT ?,?", ($this->page * $this->per_page) - $this->per_page, $this->per_page);
+    $this->query = filter_var($request->getQueryParams()['query'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    if($this->query) {
+      $statement = \ParagonIE\EasyDB\EasyStatement::open()->andWith('AND tbl_library.content like ?', '%'.$this->DB->escapeLikeValue($this->query).'%');
+      $this->pages = ceil($this->DB->cell("SELECT
+        count(tbl_library.id) 
+        FROM tbl_library 
+        WHERE tbl_library.content != ''
+        AND (tbl_library.deleted IS NULL OR tbl_library.deleted = 0) 
+        $statement", $statement->values()[0]) / $this->per_page);
+      $books = $this->DB->run("SELECT 
+        tbl_library.id,
+        tbl_library.author,
+        tbl_library.title,
+        tbl_library.category,
+        IF('Adult' = tbl_library.category, 1, 0) AS nsfw
+        FROM tbl_library
+        WHERE tbl_library.content != ''
+        AND (tbl_library.deleted IS NULL OR tbl_library.deleted = 0)
+        $statement
+        ORDER BY tbl_library.datetime DESC
+        LIMIT ?,?", $statement->values()[0], ($this->page * $this->per_page) - $this->per_page, $this->per_page);
+      $this->search = $this->query;
+      $this->query = "?query=$this->query";
+    } else {
+      $books = $this->DB->run("SELECT 
+        tbl_library.id,
+        tbl_library.author,
+        tbl_library.title,
+        tbl_library.category,
+        IF('Adult' = tbl_library.category, 1, 0) AS nsfw
+        FROM tbl_library
+        WHERE tbl_library.content != ''
+        AND (tbl_library.deleted IS NULL OR tbl_library.deleted = 0)
+        ORDER BY tbl_library.datetime DESC
+        LIMIT ?,?", ($this->page * $this->per_page) - $this->per_page, $this->per_page);
+      }
     foreach ($books as &$book) {
       $book = $this->libraryModel->parseBook($book);
     }
     return $this->view->render($response, 'library/listing.tpl',[
-      'books'      => $books,
-      'library'       => $this,
+      'books'       => $books,
+      'library'     => $this,
       'breadcrumbs' => $this->breadcrumbs
     ]);
   }
