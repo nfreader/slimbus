@@ -7,7 +7,7 @@ return [
         'debug'                  => (bool) getenv('DEBUG') ?: FALSE,
         'twig' => [
             'template_path'  => __DIR__ . '/../templates/',
-            'template_cache' => __DIR__ . '/../tmp/twig/',
+            'template_cache' => __DIR__ . '/../../tmp/twig/',
             'twig_debug'     => (bool) getenv('DEBUG') ?: FALSE,
             'date_format'    => 'Y-m-d H:i:s',
             'auto_reload'    => FALSE

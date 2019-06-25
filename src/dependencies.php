@@ -88,7 +88,7 @@ use Doctrine\Common\Cache\FilesystemCache;
 $container['guzzle'] = function ($container) {
   $stack = HandlerStack::create();
   $stack->push(
-      new CacheMiddleware(new GreedyCacheStrategy(new DoctrineCacheStorage(new FilesystemCache(__DIR__.'/../tmp/guzzle')),3600)),'greedy-cache'
+      new CacheMiddleware(new GreedyCacheStrategy(new DoctrineCacheStorage(new FilesystemCache('/tmp/guzzle')),3600)),'greedy-cache'
     );
   $client = new Client([
     'handler'        => $stack,
