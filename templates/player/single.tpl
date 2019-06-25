@@ -178,19 +178,4 @@
     </div>
   </div>
 </div>
-<hr>
-<div class="card mb-4">
-  {% if player.messages|length > 3 %}
-    <h3 class="card-header" data-target="#msglist" data-toggle="collapse">Messages <small>({{player.messages|length}})</small></h3>
-    <div class="card-body collapse" id="msglist">
-  {% else %}
-    <h3 class="card-header">Messages</h3>
-    <div class="card-body" id="msglist">
-  {% endif %}
-    {% for message in player.messages %}
-      {% include 'messages/html/single.html' %}
-    {% endfor %}
-  </div>
-</div>
-
 {% endblock %}

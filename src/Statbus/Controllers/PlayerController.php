@@ -220,8 +220,6 @@ class PlayerController Extends Controller {
   }
 
   public function gatherAdditionalData(&$player){
-    // $player->role_time = $this->getRoleData($player->ckey);
-    $player->messages = (new MessageController($this->container))->getMessagesForCkey($player->ckey);
     $player->names = $this->getPlayerNames($player->ckey);
     $player->standing = (new BanController($this->container))->getPlayerStanding($player->ckey);
     $player->ips = $this->getIPs('ckey', $player->ckey);

@@ -177,4 +177,4 @@ $app->group('', function () {
 
   $this->post('/tgdb/feedback', \Statbus\Controllers\UserController::class . ':addFeedback')->setName('admin.feedback');
 
-})->add(new \Statbus\Middleware\UserGuard($container));
+})->add(new \Statbus\Middleware\UserGuard($container, 2));
