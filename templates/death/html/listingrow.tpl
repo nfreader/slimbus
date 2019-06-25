@@ -1,7 +1,7 @@
 <tr class="table-{{death.class}}" data-id="{{death.id}}">
   <td class="align-middle">
     <a href="{{path_for('death.single',{'id': death.id})}}">
-      <i class="fas fa-user-times"></i> {{death.id}}
+      <i class="fas fa-skull-crossbones"></i> {{death.id}}
     </a>
   </td>
   <td class="align-middle">{{death.name}} - {{death.job}} {% if death.special %}<span class='badge badge-danger'>{{death.special}}</span> {% endif %}<br>
