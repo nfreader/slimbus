@@ -26,6 +26,9 @@
   </div>
   <div class="col">
     <ul class="list-group">
+      <a class="list-group-item" href="{{path_for('player.messages',{'ckey': player.ckey})}}">
+        <strong>Messages</strong> {{player.messageCount}}
+      </a>
       <li class="list-group-item list-group-item-{{player.standing.class}}">
         <strong>Account Standing</strong> {{player.standing.text}}<br>
         <ul class="list-unstyled">

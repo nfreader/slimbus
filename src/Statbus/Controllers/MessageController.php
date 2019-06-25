@@ -14,6 +14,7 @@ class MessageController extends Controller {
     $this->pm = new Player($this->container->get('settings')['statbus']);
     $this->pages = ceil($this->DB->cell("SELECT count(tbl_messages.id) FROM tbl_messages WHERE tbl_messages.deleted = 0
       AND (tbl_messages.expire_timestamp > NOW() OR tbl_messages.expire_timestamp IS NULL)") / $this->per_page);
+    $this->url = $this->router->pathFor('message.index');
   }
 
   public function getAdminMemos(){
@@ -96,7 +97,17 @@ class MessageController extends Controller {
     ]);
   }
 
-  public function getMessagesForCkey($ckey){
+  public function getMessagesForCkey($ckey, $hide_secret = false, $page = 1){
+    $secret = "";
+    if($hide_secret){
+      $secret = "AND M.SECRET = 0";
+    }
+    $this->page = filter_var($page, FILTER_VALIDATE_INT);
+    $this->pages = ceil($this->DB->cell("SELECT count(M.id) FROM tbl_messages M WHERE M.deleted = 0
+      AND (M.expire_timestamp > NOW() OR M.expire_timestamp IS NULL)
+      AND M.targetckey = ?
+      $secret", $ckey) / $this->per_page);
+    $this->url = $this->router->pathFor('player.messages',['ckey'=>$ckey]);
     $messages = $this->DB->run("SELECT
       M.id,
       M.type,
@@ -121,8 +132,11 @@ class MessageController extends Controller {
       WHERE M.deleted = 0
       AND (M.expire_timestamp > NOW() OR M.expire_timestamp IS NULL)
       AND M.targetckey = ?
+      $secret
       ORDER BY M.timestamp DESC
-      LIMIT 0, $this->per_page", $ckey);
+      LIMIT ?,?", $ckey,
+        ($this->page * $this->per_page) - $this->per_page,
+        $this->per_page);
     foreach ($messages as $m) {
       $m = $this->messageModel->parseMessage($m);
       $m->admin = new \stdclass;

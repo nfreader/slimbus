@@ -212,15 +212,23 @@ class PlayerController Extends Controller {
       AND tbl_round.shutdown_datetime IS NOT NULL", $ckey);
   }
 
+  public function countMessages($ckey){
+    return $this->DB->cell("SELECT count(M.id) FROM tbl_messages M
+      WHERE M.deleted = 0
+      AND (M.expire_timestamp > NOW() OR M.expire_timestamp IS NULL)
+      AND M.targetckey = ?", $ckey);
+  }
+
   public function gatherAdditionalData(&$player){
     // $player->role_time = $this->getRoleData($player->ckey);
-    $player->messages = (new MessageController($this->container))->getMessagesForCkey($player->ckey, TRUE);
+    $player->messages = (new MessageController($this->container))->getMessagesForCkey($player->ckey);
     $player->names = $this->getPlayerNames($player->ckey);
     $player->standing = (new BanController($this->container))->getPlayerStanding($player->ckey);
     $player->ips = $this->getIPs('ckey', $player->ckey);
     $player->cids = $this->getCIDs('ckey', $player->ckey);
     $player->alts = $this->findAlts($player->ckey);
     $player->roundCount = $this->countRounds($player->ckey);
+    $player->messageCount = $this->countMessages($player->ckey);
     return $player;
   }
 
@@ -238,5 +246,57 @@ class PlayerController Extends Controller {
         LIMIT 0, 15", '%'.$this->DB->escapeLikeValue($ckey).'%');
       return $response->withJson($results);
     }
+  }
+
+  public function getPlayerMessages($request, $response, $args) {
+    $page = 1;
+    if(isset($args['page'])) {
+      $page = filter_var($args['page'], FILTER_VALIDATE_INT);
+    }
+    if(isset($args['ckey'])){
+    $ckey = filter_var($args['ckey'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+    }
+    $player = $this->getPlayerByCkey($ckey);
+    if (!$player->ckey) {
+      return $this->view->render($this->response, 'base/error.tpl', [
+        'message' => "Ckey not found",
+        'code'    => 404,
+      ]);
+    }
+    $mc = new MessageController($this->container);
+    $messages = $mc->getMessagesForCkey($player->ckey, FALSE, $page);
+    $breadcrumbs[$player->ckey] = $this->router->pathFor('player.single',['ckey'=>$player->ckey]);
+    $breadcrumbs["Messages"] = $this->router->pathFor('player.messages',['ckey'=>$player->ckey]);
+    return $this->view->render($response, 'messages/player.tpl',[
+      'player' => $player,
+      'messages'  => $messages,
+      'message' => $mc,
+      'breadcrumbs' => $breadcrumbs
+    ]);
+  }
+
+  public function getMyMessages($request, $response, $args) {
+    $page = 1;
+    if(isset($args['page'])) {
+      $page = filter_var($args['page'], FILTER_VALIDATE_INT);
+    }
+    $player = $this->getPlayerByCkey($this->container->user->ckey);
+    if (!$player->ckey) {
+      return $this->view->render($this->response, 'base/error.tpl', [
+        'message' => "Ckey not found",
+        'code'    => 404,
+      ]);
+    }
+    $mc = new MessageController($this->container);
+    $messages = $mc->getMessagesForCkey($player->ckey, TRUE, $page);
+    $mc->url = $this->router->pathFor('me.messages');
+    $breadcrumbs[$player->ckey] = $this->router->pathFor('me');
+    $breadcrumbs["Messages"] = $this->router->pathFor('me.messages');
+    return $this->view->render($response, 'messages/player.tpl',[
+      'player' => $player,
+      'messages'  => $messages,
+      'message' => $mc,
+      'breadcrumbs' => $breadcrumbs
+    ]);
   }
 }

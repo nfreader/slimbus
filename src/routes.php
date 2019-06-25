@@ -45,6 +45,9 @@ $app->group('', function () {
   //My role time
   $this->get('/me/roles', \Statbus\Controllers\PlayerController::class . ':getPlayerRoleTime')->setName('me.roles');
 
+  //My notes/messages
+  $this->get('/me/messages[/page/{page}]', \Statbus\Controllers\PlayerController::class . ':getMyMessages')->setName('me.messages');
+
   //My rounds
   $this->get('/me/rounds[/page/{page}]', \Statbus\Controllers\RoundController::class . ':getMyRounds')->setName('me.rounds');
 });
@@ -159,6 +162,9 @@ $app->group('', function () {
 
   //Player rounds
   $this->get('/tgdb/player/{ckey:[a-z0-9]+}/rounds[/page/{page}]', \Statbus\Controllers\RoundController::class . ':getPlayerRounds')->setName('player.rounds');
+
+  //Player messages
+  $this->get('/tgdb/player/{ckey:[a-z0-9]+}/messages[/page/{page}]', \Statbus\Controllers\PlayerController::class . ':getPlayerMessages')->setName('player.messages');
 
   //Typeahead
   $this->get('/tgdb/suggest', \Statbus\Controllers\PlayerController::class . ':findCkeys')->setName('player.suggest');

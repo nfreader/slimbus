@@ -1,11 +1,12 @@
 {% extends "base/index.html"%}
-{% block pagetitle %}Message Index{% endblock %}
+{% block pagetitle %}Messages for {{player.ckey}}{% endblock %}
 {% block content %}
-{% include 'tgdb/html/nav.html' %}
+<h2>Messages for <code>{{player.ckey}}</code></h2>
+<hr>
   {% set vars = {
     'nbPages': message.pages,
     'currentPage': message.page,
-    'url': path_for('message.index')
+    'url': message.url
     } 
   %}
   {% include 'components/pagination.html' with vars %}
