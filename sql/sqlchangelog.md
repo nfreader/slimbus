@@ -1,3 +1,16 @@
+##3.0 - 12-06-2019
+
+Removes unused tables and updates the DB version: 
+
+```DROP TABLE `tracked_rounds`;
+DROP TABLE `tracked_round_details`;
+DROP TABLE `session`;
+DROP TABLE `explosions`;
+DROP TABLE `audit`;
+```
+
+```UPDATE `version` SET `major` = '3', `minor` = '0' WHERE `major` = '1' AND `minor` = '6' AND `patch` = '0' AND `updated` = '2018-11-17 20:57:01' LIMIT 1;```
+
 ##2.0 - 17-12-2018
 Adds a new table to track voting on character names.
 
