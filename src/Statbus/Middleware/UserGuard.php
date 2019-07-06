@@ -10,10 +10,17 @@ class UserGuard {
     $this->user = $container->get('user');
     $this->view = $container->get('view');
     $this->request = $container->get('request');
+    $this->settings = $container->get('settings');
     $this->level = $level;
   }
 
   public function __invoke($request, $response, $next) {
+    if(!$this->settings['statbus']['auth']['remote_auth'] && !$this->settings['statbus']['ip_auth']){
+      return $this->view->render($response, 'base/error.tpl',[
+          'message' => "No authentication mechanisms specified.",
+          'code'    => 403
+        ]);
+    }
     if(!$this->user) {
       $_SESSION['return_uri'] = (string) $this->request->getUri();
       $args = null;
