@@ -402,19 +402,19 @@ class RoundController Extends Controller {
   }
 
   public function getWinLossRatios($start = null, $end = null){
-    $data = $this->DB->run("SELECT count(ss13round.id) AS rounds,
-        ss13round.game_mode,
-        ss13round.game_mode_result,
-        FLOOR(AVG(TIMESTAMPDIFF(MINUTE, ss13round.start_datetime, ss13round.end_datetime))) AS duration
-        FROM ss13round
-        WHERE ss13round.game_mode IS NOT NULL
-        AND ss13round.game_mode != 'undefined'
-        AND ss13round.game_mode_result IS NOT NULL
-        AND ss13round.game_mode_result != 'undefined'
-        AND ss13round.initialize_datetime BETWEEN ? AND ?
-        AND ss13round.shutdown_datetime IS NOT NULL
-        GROUP BY ss13round.game_mode, ss13round.game_mode_result
-        ORDER BY ss13round.game_mode ASC, rounds DESC;", $start, $end);
+    $data = $this->DB->run("SELECT count(tbl_round.id) AS rounds,
+        tbl_round.game_mode,
+        tbl_round.game_mode_result,
+        FLOOR(AVG(TIMESTAMPDIFF(MINUTE, tbl_round.start_datetime, tbl_round.end_datetime))) AS duration
+        FROM tbl_round
+        WHERE tbl_round.game_mode IS NOT NULL
+        AND tbl_round.game_mode != 'undefined'
+        AND tbl_round.game_mode_result IS NOT NULL
+        AND tbl_round.game_mode_result != 'undefined'
+        AND tbl_round.initialize_datetime BETWEEN ? AND ?
+        AND tbl_round.shutdown_datetime IS NOT NULL
+        GROUP BY tbl_round.game_mode, tbl_round.game_mode_result
+        ORDER BY tbl_round.game_mode ASC, rounds DESC;", $start, $end);
       usort($data, function($a, $b){
         return strcmp($a->game_mode, $b->game_mode);
       });
