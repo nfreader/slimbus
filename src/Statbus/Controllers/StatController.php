@@ -2,15 +2,14 @@
 
 namespace Statbus\Controllers;
 
-use ParagonIE\EasyDB\EasyDB;
+use Psr\Container\ContainerInterface;
+use Statbus\Controllers\Controller as Controller;
 use Statbus\Models\Stat as Stat;
 
-class StatController {
+class StatController Extends Controller {
 
-  protected $DB;
-
-  public function __construct(EasyDB $db) {
-    $this->DB = $db;
+  public function __construct(ContainerInterface $container) {
+    parent::__construct($container);
     $this->statModel = (new Stat());
   }
 
@@ -49,5 +48,53 @@ class StatController {
       $stats = array_flip($tmp);
       return $stats;
     } 
+  }
+
+  public function list($request, $response, $args){
+    $stats = $this->DB->run("SELECT R.key_name, R.key_type, R.version, count(R.round_id) AS rounds FROM ss13feedback R GROUP BY R.key_name, R.version ORDER BY R.key_name ASC;");
+    return $this->view->render($response, 'stats/listing.tpl',[
+      'stats' => $stats
+    ]);
+  }
+
+  public function collate($request, $response, $args){
+      $version = 1;
+    if(isset($args['version'])){
+      $version = filter_var($args['version'], FILTER_VALIDATE_INT);
+    }
+    if(isset($args['stat'])){
+      $stat = filter_var($args['stat'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+      $p = $request->getQueryParams();
+      $start = null;
+      $end = null;
+      if(isset($p['start']) && isset($p['end'])){
+        $start = filter_var($p['start'], FILTER_SANITIZE_STRING, 
+         FILTER_FLAG_STRIP_HIGH);
+        $end = filter_var($p['end'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+      }
+    }
+    $minmax = $this->DB->row("SELECT 
+      min(STR_TO_DATE(R.datetime, '%Y-%m-%d')) AS min,
+      max(STR_TO_DATE(R.datetime, '%Y-%m-%d')) AS max
+      FROM ss13feedback AS R
+      WHERE R.key_name = ? AND R.version = ?;", $stat, $version);
+    if(!$start) {
+      $start = $minmax->min;
+      $end = $minmax->max;
+    } else {
+      $startDate = new \dateTime($start);
+      $start = $startDate->format('Y-m-d');
+      $endDate = new \dateTime($end);
+      $end = $endDate->format('Y-m-d');
+    }
+    $stat = $this->DB->run("SELECT R.key_name, R.key_type, R.json, R.round_id, R.version, R.datetime FROM ss13feedback R WHERE R.key_name = ? AND R.version = ? AND R.datetime >= ? < ? ORDER BY R.datetime ASC", $stat, $version, $start, $end);
+    $stat = $this->statModel->parseStat($stat, TRUE);
+    return $this->view->render($response, 'stats/collated.tpl',[
+      'stat'  => $stat,
+      'start' => $start,
+      'end'   => $end,
+      'min'   => $minmax->min,
+      'max'   => $minmax->max
+    ]);
   }
 }

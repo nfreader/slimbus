@@ -79,6 +79,17 @@ $app->group('', function () {
 
 //Stat Pages
 $app->group('', function () {
+
+  //List Stats
+  $this->get('/stats', \Statbus\Controllers\StatController::class . ':list')->setName('stat.list');
+
+  //Collated data
+  $this->get('/stats/{stat}[/{version}]', \Statbus\Controllers\StatController::class . ':collate')->setName('stat.collate');
+
+  //Collated data charted
+  $this->get('/stats/{stat}/chart', \Statbus\Controllers\StatController::class . ':chart')->setName('stat.chart');
+
+  //Round Listing
   $this->get('/stats/{stat}/rounds[/page/{page}]', \Statbus\Controllers\RoundController::class . ':getRoundsWithStat')->setName('stat.rounds');
 });
 
@@ -129,7 +140,7 @@ $app->group('', function () {
   //Delete Book (admin only)
   $this->post('/library/{id:[0-9]+}/delete', \Statbus\Controllers\LibraryController::class . ':deleteBook')->setName('library.delete');
   
-})->add(new \Statbus\Middleware\UserGuard($container, 1));
+})->add(new \Statbus\Middleware\UserGuard($container, 0));
 
 //Polls
 $app->group('', function () {
