@@ -42,7 +42,7 @@ if(file_exists(__DIR__ . '/tmp/candidates.json')){
 }
 
 if ($settings['settings']['refresh_key'] == filter_input(INPUT_GET,'refresh', FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH)){
-  exec("rm -rf ".__DIR__."/tmp/twig");
+  exec("rm -rf ".$settings['template_cache']);
   print("Twig cache has been cleared");
 }
 $app = new \Slim\App($settings);

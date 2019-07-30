@@ -3,7 +3,6 @@
 
 {% if stat.collated %}
 <div id="chart"></div>
-{% endif %}
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 var json = {{stat.js|json_encode|raw}}
@@ -25,3 +24,4 @@ var chart = new ApexCharts(document.querySelector("#chart"), options);
 
 chart.render();
 </script>
+{% endif %}
