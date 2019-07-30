@@ -58,7 +58,7 @@ class StatController Extends Controller {
   }
 
   public function collate($request, $response, $args){
-      $version = 1;
+    $version = 1;
     if(isset($args['version'])){
       $version = filter_var($args['version'], FILTER_VALIDATE_INT);
     }
@@ -87,7 +87,7 @@ class StatController Extends Controller {
       $endDate = new \dateTime($end);
       $end = $endDate->format('Y-m-d');
     }
-    $stat = $this->DB->run("SELECT R.key_name, R.key_type, R.json, R.round_id, R.version, R.datetime FROM ss13feedback R WHERE R.key_name = ? AND R.version = ? AND R.datetime >= ? < ? ORDER BY R.datetime ASC", $stat, $version, $start, $end);
+    $stat = $this->DB->run("SELECT R.key_name, R.key_type, R.json, R.round_id, R.version, R.datetime FROM ss13feedback R WHERE R.key_name = ? AND R.version = ? AND R.datetime BETWEEN ? AND ? ORDER BY R.datetime ASC", $stat, $version, $start, $end);
     $stat = $this->statModel->parseStat($stat, TRUE);
     return $this->view->render($response, 'stats/collated.tpl',[
       'stat'  => $stat,

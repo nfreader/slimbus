@@ -6,7 +6,6 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 var json = {{stat.js|json_encode|raw}}
-console.log(json)
 var options = {
   chart: {
     type: 'line'
