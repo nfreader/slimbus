@@ -14,9 +14,9 @@ var options = {
     name: '{{stat.key_name}}',
     data: json
   }],
-  // xaxis: {
-  //   type: "datetime"
-  // }
+  xaxis: {
+    type: "datetime"
+  }
 }
 
 var chart = new ApexCharts(document.querySelector("#chart"), options);

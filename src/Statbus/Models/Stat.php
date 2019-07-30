@@ -64,6 +64,16 @@ class Stat {
     $tmp->dates = [];
     $tmp->js = [];
 
+    $a = new \DatePeriod(
+      new \DateTime($stat[0]->datetime),
+      new \DateInterval('P1D'),
+      new \DateTime(end($stat)->datetime)
+    );
+
+    foreach ($a as $key => $value) {
+      $tmp->dates[$value->format('Y-m-d')] = 0;     
+    }
+
     switch($tmp->key_type){
       case 'associative':
 
@@ -74,10 +84,13 @@ class Stat {
         foreach($stat as $s){
           $tmp->output += $s->data;
           $tmp->rounds[$s->round_id] = $s->data;
-          $tmp->dates[$s->datetime] = $s->data;
-          $arr['x'] = $s->datetime;
-          $arr['y'] = $s->data;
-          $tmp->js[] = $arr;
+          $tmp->dates[(new \dateTime($s->datetime))->format('Y-m-d')] += $s->data;
+        }
+        foreach ($tmp->dates as $k => $v){
+          $tmp->js[] = [
+            'x' => $k,
+            'y' => $v
+          ];
         }
       break;
 
