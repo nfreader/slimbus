@@ -63,6 +63,7 @@ return [
     'Devil'=>'handshake',
     'Devil Agents'=>'handshake',
     'Double Agents'=>'user-ninja',
+    'Dynamic Mode'=>'dumpster-fire',
     'Everyone Is The Traitor And Also'=>'',
     'Extended'=>'running',
     'Extended Events'=>'',
