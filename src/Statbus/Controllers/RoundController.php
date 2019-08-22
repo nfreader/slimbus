@@ -89,8 +89,8 @@ class RoundController Extends Controller {
       }
       return $round->stat;
     }
-    $round->stats = (new StatController($this->DB))->getStatsForRound($round->id);
-    $round->data = (new StatController($this->DB))->getStatsForRound($round->id,[
+    $round->stats = (new StatController($this->container))->getStatsForRound($round->id);
+    $round->data = (new StatController($this->container))->getStatsForRound($round->id,[
       'nuclear_challenge_mode',
       'testmerged_prs',
       'newscaster_stories'
@@ -107,7 +107,7 @@ class RoundController Extends Controller {
 
   public function stat(object $round, string $stat, $response){
     $stat = filter_var($stat, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
-    $round->stat = (new StatController($this->DB))->getRoundStat($round->id, $stat);
+    $round->stat = (new StatController($this->container))->getRoundStat($round->id, $stat);
     $url = parent::getFullURL($this->router->pathFor('round.single',[
       'id'   =>$round->id,
       'stat' =>$stat
