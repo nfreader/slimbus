@@ -63,7 +63,11 @@ class Round {
     $logs = isset($this->settings['remote_log_src']) ? $this->settings['remote_log_src'] : FALSE;
     if($logs){
       $server = strtolower($round->server->name);
-      $date = new \DateTime($round->start_datetime);
+      if($round->start_datetime){
+        $date = new \DateTime($round->start_datetime);
+      } else {
+        $date = new \DateTime($round->initalize_datetime);
+      }
       $year = $date->format('Y');
       $month = $date->format('m');
       $day = $date->format('d');

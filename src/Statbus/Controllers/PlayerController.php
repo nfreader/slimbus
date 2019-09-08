@@ -297,4 +297,23 @@ class PlayerController Extends Controller {
       'breadcrumbs' => $breadcrumbs
     ]);
   }
+
+  public function name2ckey($request, $response, $args){
+    if($request->isPost()){
+      $name = filter_var($request->getParam('name'), FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
+      if ($name){
+        $results = $this->DB->run("SELECT count(D.id) AS count,
+          D.byondkey,
+          D.name
+          FROM tbl_death D
+          WHERE D.name LIKE ?
+          GROUP BY `name`
+          LIMIT 0, 15", '%'.$this->DB->escapeLikeValue($name).'%');
+      }
+    }
+    return $this->view->render($response, 'tgdb/name2ckey.tpl',[
+      'results' => $results,
+      'name' => $name
+    ]);
+  }
 }

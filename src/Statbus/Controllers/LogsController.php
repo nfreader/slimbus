@@ -47,7 +47,7 @@ class LogsController Extends Controller {
       return false;
     }
     try{
-      $handle = fopen($this->zip, 'w+');
+      $handle = fopen($this->zip, 'w');
       fwrite($handle, $logs);
       fclose($handle);
     } catch(Excention $e){

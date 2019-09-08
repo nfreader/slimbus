@@ -188,4 +188,9 @@ $app->group('', function () {
 
   $this->post('/tgdb/feedback', \Statbus\Controllers\UserController::class . ':addFeedback')->setName('admin.feedback');
 
+  //Character Name Search
+  $this->get('/tgdb/name2ckey', \Statbus\Controllers\PlayerController::class . ':name2ckey')->setName('name2ckey');
+
+  $this->post('/tgdb/name2ckey', \Statbus\Controllers\PlayerController::class . ':name2ckey')->setName('name2ckey');
+
 })->add(new \Statbus\Middleware\UserGuard($container, 2));
