@@ -59,15 +59,10 @@ class Round {
     $round->commit_hash = substr($round->commit_hash, 0,7);
 
     //Remote Log Links
-    $round->logs = FALSE;
-    $logs = isset($this->settings['remote_log_src']) ? $this->settings['remote_log_src'] : FALSE;
-    if($logs){
-      $server = strtolower($round->server->name);
-      if($round->start_datetime){
-        $date = new \DateTime($round->start_datetime);
-      } else {
-        $date = new \DateTime($round->initalize_datetime);
-      }
+    $round->logs = FALSE; //No logs by default
+    if(isset($round->server_data->public_logs)){
+      $round->logs = TRUE;
+      $date = new \DateTime($round->initialize_datetime);
       $year = $date->format('Y');
       $month = $date->format('m');
       $day = $date->format('d');
@@ -75,7 +70,6 @@ class Round {
       $round->remote_logs.= "$year/$month/$day/round-$round->id.zip";
       $round->remote_logs_dir = str_replace('.zip', '', $round->remote_logs);
       $round->admin_logs_dir = str_replace($round->server_data->public_logs, $round->server_data->raw_logs, $round->remote_logs_dir);
-      $round->logs = TRUE;
     }
 
     $round->map_url = str_replace(' ', '', $round->map);
