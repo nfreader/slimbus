@@ -202,7 +202,8 @@ class StatbusController extends Controller {
     ORDER BY `time` DESC;";
     $data = $this->DB->run($query);
     return $this->view->render($this->response, 'info/heatmap.tpl',[
-      'data' => json_encode($data)
+      'data' => json_encode($data),
+      'wide' => TRUE
     ]);
   }
 

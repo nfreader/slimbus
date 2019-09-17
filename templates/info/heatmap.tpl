@@ -16,7 +16,11 @@ var json = {{data|raw}}
 console.log(json)
 var options = {
   chart: {
-    type: 'line'
+    type: 'line',
+    height: 512,
+    animations: {
+      enabled: false
+    }
   },
   series: [{
     name: 'Players',
