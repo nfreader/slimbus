@@ -193,41 +193,16 @@ class StatbusController extends Controller {
   public function popGraph(){
     $query = "SELECT
     FLOOR(AVG(admincount)) AS admins,
-    FLOOR(AVG(playercount)) AS players,
-    server_port,
-    HOUR(`time`) AS `hour`,
+    FLOOR(AVG(playercount)) AS `players`,
     DATE_FORMAT(`time`, '%Y-%m-%e %H:00:00') as `date`,
     count(round_id) AS rounds
     FROM tbl_legacy_population
-    WHERE `time` > DATE_FORMAT(CURDATE(), '%Y-%m-01') - INTERVAL 2 YEAR
-    GROUP BY HOUR (`time`), DAY(`TIME`), MONTH(`TIME`), YEAR(`TIME`), server_port
+    WHERE `time` > DATE_FORMAT(CURDATE(), '%Y-%m-01') - INTERVAL 30 DAY
+    GROUP BY HOUR (`time`), DAY(`TIME`), MONTH(`TIME`), YEAR(`TIME`)
     ORDER BY `time` DESC;";
-    $hash = hash('sha512',$query);
-    if(file_exists(ROOTDIR."/tmp/db/$hash")){
-      $data = file_get_contents(ROOTDIR."/tmp/db/$hash");
-      $data = json_decode($data);
-      if($data->timestamp > time()){
-        return $this->view->render($this->response, 'info/heatmap.tpl',[
-          'data'      => json_encode($data->data),
-          'fromCache' => TRUE,
-          'hash'      => $hash,
-          'wide'      =>TRUE
-        ]);
-      }
-    }
     $data = $this->DB->run($query);
-
-    $tmp = new \stdclass;
-    $tmp->timestamp = time() + 86400;
-    $tmp->data = $data;
-    $tmp = json_encode($tmp);
-    $file = fopen(ROOTDIR."/tmp/db/$hash", "w+");
-    fwrite($file, $tmp);
-    fclose($file);
     return $this->view->render($this->response, 'info/heatmap.tpl',[
-      'data' => json_encode($data),
-      'hash' => $hash,
-      'wide' => TRUE
+      'data' => json_encode($data)
     ]);
   }
 
