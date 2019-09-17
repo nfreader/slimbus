@@ -30,7 +30,12 @@ var options = {
   }],
   xaxis: {
     type: "datetime",
-    categories: unpack(json, 'date')
+    categories: unpack(json, 'date'),
+  },
+  tooltip: {
+    x: {
+      format: 'dd MMM yyyy HH:00'
+    }
   }
 }
 
