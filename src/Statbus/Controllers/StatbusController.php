@@ -82,7 +82,8 @@ class StatbusController extends Controller {
       if(isset($args['json'])) continue;
       $a = $pm->parsePlayer($a);
     }
-    if(isset($args['wiki'])) {
+    $format = $request->getQueryParam('format');
+    if('wiki' === $format) {
       $return = '';
       foreach ($admins as $a){
         $return.= "{{Admin<br>";
@@ -95,7 +96,6 @@ class StatbusController extends Controller {
         'dump' => $return,
         'wide' => true
       ]);
-      return $this->admins2wiki($admins,$this->container->get('settings')['statbus']['ranks']);
     }
     return $this->view->render($response, 'info/admins.tpl',[
       'admins'   => $admins,
