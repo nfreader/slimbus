@@ -18,7 +18,7 @@ services:
       - .:/usr/src/myapp
     ports: 
       - "8000:8000"
-    command: ["php", "-S", "0.0.0.0:8000", "-t", "/usr/src/myapp", "index.php"]
+    command: ["php", "-S", "0.0.0.0:8000", "-t", "/usr/src/myapp/public"]
     build: 
-      context: .
+      context: docker
       dockerfile: Dockerfile

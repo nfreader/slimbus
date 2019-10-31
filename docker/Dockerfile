@@ -7,5 +7,3 @@ RUN apt-get -y install libbz2-dev
 RUN pecl install xdebug
 RUN docker-php-ext-enable xdebug
 RUN docker-php-ext-install pdo pdo_mysql bz2
-
-CMD ["php", "-S", "0.0.0.0:8000", "-t", "/usr/src/myapp"]
