@@ -32,7 +32,7 @@
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="" role="button" aria-haspopup="true" aria-expanded="farlse"><i class="fas fa-info-circle"></i> Info</a>
           <div class="dropdown-menu">
             <a class="dropdown-item" href="{{path_for('population')}}"><i class="fas fa-users"></i> Server Population</a>
-            <a class="dropdown-item" href="{{path_for('playtime')}}"><i class="fas fa-users"></i> Playtime</a>
+            <a class="dropdown-item" href="{{path_for('playtime')}}"><i class="fas fa-chart-line"></i> Playtime</a>
             <a class="dropdown-item" href="{{path_for('winloss')}}"><i class="fas fa-percent"></i> Gamemode Win Loss Ratios</a>
             <a class="dropdown-item" href="{{path_for('admin_connections')}}"><i class="fas fa-user-clock"></i> Admin Activity</a>
             <a class="dropdown-item" href="{{path_for('admin_logs')}}"><i class="fas fa-user-times"></i> Admin Rank Activity</a>
