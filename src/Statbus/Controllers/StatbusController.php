@@ -197,7 +197,7 @@ class StatbusController extends Controller {
     DATE_FORMAT(`time`, '%Y-%m-%e %H:00:00') as `date`,
     count(round_id) AS rounds
     FROM tbl_legacy_population
-    WHERE `time` > DATE_FORMAT(CURDATE(), '%Y-%m-01') - INTERVAL 30 DAY
+    WHERE `time` > CURDATE() - INTERVAL 30 DAY
     GROUP BY HOUR (`time`), DAY(`TIME`), MONTH(`TIME`), YEAR(`TIME`)
     ORDER BY `time` DESC;";
     $data = $this->DB->run($query);
