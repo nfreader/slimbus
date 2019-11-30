@@ -113,13 +113,16 @@ $app->group('', function () {
 $app->group('', function () {
 
   //Admin Activity
-  $this->get('/info/admins[/wiki]', \Statbus\Controllers\StatbusController::class . ':DoAdminsPlay')->setName('admin_connections');
+  $this->get('/info/admins', \Statbus\Controllers\StatbusController::class . ':DoAdminsPlay')->setName('admin_connections');
 
   //Admin Activity
   $this->get('/info/adminlogs[/page/{page}]', \Statbus\Controllers\StatbusController::class . ':adminLogs')->setName('admin_logs');
 
   //Population Data
   $this->get('/info/population', \Statbus\Controllers\StatbusController::class . ':popGraph')->setName('population');
+
+  //Playtime graphs
+  $this->get('/info/playtime', \Statbus\Controllers\StatbusController::class . ':last30Days')->setName('playtime');
 
 
   //Win-Loss Ratios

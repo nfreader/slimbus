@@ -6,14 +6,15 @@
 {% endif %}
 
 <div id="population"></div>
-
+<p class="lead">
+  This chart shows the average number of players, admins, and completed rounds, by hour, across all servers, for the last 30 days.
+</p>
 {% endblock %}
 
 {% block js %}
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
 var json = {{data|raw}}
-console.log(json)
 var options = {
   chart: {
     type: 'line',
@@ -42,9 +43,7 @@ var options = {
     }
   }
 }
-
 var chart = new ApexCharts(document.querySelector("#population"), options);
-
 chart.render();
 </script>
 {% endblock %}

@@ -207,6 +207,22 @@ class StatbusController extends Controller {
     ]);
   }
 
+  public function last30Days(){
+    $query = "SELECT SUM(`delta`) AS `minutes`,
+      DATE_FORMAT(`datetime`, '%Y-%m-%d %H:00:00') AS `date`, 
+      `job`
+      FROM tbl_role_time_log
+      WHERE `job` IN ('Living','Ghost')
+      AND `DATETIME` > CURDATE() - INTERVAL 30 DAY
+      GROUP BY `job`, DAY(`DATETIME`), MONTH(`DATETIME`), YEAR(`DATETIME`)
+      ORDER BY `date` ASC;";
+      $minutes = $this->DB->run($query);
+      return $this->view->render($this->response, 'info/30days.tpl',[
+        'minutes' => json_encode($minutes),
+        'wide' => TRUE
+      ]);
+  }
+
   public function submitToAuditLog($action, $text){
     //Check if the audit log exists
     try {
