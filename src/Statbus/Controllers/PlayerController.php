@@ -32,6 +32,50 @@ class PlayerController Extends Controller {
     ]);
   }
 
+  public function getPlayerPublic($request, $response, $args) {
+    $player = $this->getPlayerByCkey(filter_var($args['ckey'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH),TRUE);
+    if (!$player->ckey) {
+      return $this->view->render($this->response, 'base/error.tpl', [
+        'message' => "Ckey not found",
+        'code'    => 404,
+      ]);
+    }
+    $player->achievements = (new AchievementController($this->container))->getPlayerAchievements($player->ckey);
+    return $this->view->render($response, 'player/public.tpl',[
+      'player' => $player
+    ]);
+  }
+
+  public function getPlayerByCkey($ckey, $public = false){
+    if($public){
+      return $this->DB->row("SELECT tbl_player.ckey
+        FROM tbl_player
+        WHERE tbl_player.ckey = ?", $ckey);
+    }
+    return $this->DB->row("SELECT tbl_player.ckey,
+      tbl_player.firstseen,
+      tbl_player.firstseen_round_id,
+      tbl_player.lastseen,
+      tbl_player.lastseen_round_id,
+      tbl_player.ip,
+      tbl_player.computerid,
+      tbl_admin.rank,
+      tbl_player.accountjoindate,
+      tbl_player.flags,
+      count(DISTINCT tbl_connection_log.id) AS connections,
+      G.minutes as ghost,
+      L.minutes as living,
+      floor((G.minutes + L.minutes) / 60) AS hours,
+      DATEDIFF(CURDATE(),tbl_player.lastseen) AS days
+      FROM tbl_player
+      LEFT JOIN tbl_connection_log ON tbl_connection_log.ckey = tbl_player.ckey
+      LEFT JOIN tbl_role_time AS G ON G.ckey = tbl_player.ckey AND G.job = 'Ghost'
+      LEFT JOIN tbl_role_time AS L ON L.ckey = tbl_player.ckey AND L.job = 'Living'
+      LEFT JOIN tbl_admin ON tbl_player.ckey = tbl_admin.ckey
+      WHERE tbl_player.ckey = ?", $ckey);
+  }
+
+
   public function getPlayerRoleTime($request, $response, $args) {
     if(isset($args['ckey'])){
     $ckey = filter_var($args['ckey'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
@@ -81,31 +125,6 @@ class PlayerController Extends Controller {
       'max'    => $minmax->max
     ]);
   }
-
-  public function getPlayerByCkey($ckey){
-    return $this->DB->row("SELECT tbl_player.ckey,
-      tbl_player.firstseen,
-      tbl_player.firstseen_round_id,
-      tbl_player.lastseen,
-      tbl_player.lastseen_round_id,
-      tbl_player.ip,
-      tbl_player.computerid,
-      tbl_admin.rank,
-      tbl_player.accountjoindate,
-      tbl_player.flags,
-      count(DISTINCT tbl_connection_log.id) AS connections,
-      G.minutes as ghost,
-      L.minutes as living,
-      floor((G.minutes + L.minutes) / 60) AS hours,
-      DATEDIFF(CURDATE(),tbl_player.lastseen) AS days
-      FROM tbl_player
-      LEFT JOIN tbl_connection_log ON tbl_connection_log.ckey = tbl_player.ckey
-      LEFT JOIN tbl_role_time AS G ON G.ckey = tbl_player.ckey AND G.job = 'Ghost'
-      LEFT JOIN tbl_role_time AS L ON L.ckey = tbl_player.ckey AND L.job = 'Living'
-      LEFT JOIN tbl_admin ON tbl_player.ckey = tbl_admin.ckey
-      WHERE tbl_player.ckey = ?", $ckey);
-  }
-
 
   public function getPlayerByIP(int $IP){
     return $this->DB->row("SELECT tbl_player.ckey,

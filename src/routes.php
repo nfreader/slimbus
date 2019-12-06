@@ -52,6 +52,11 @@ $app->group('', function () {
   $this->get('/me/rounds[/page/{page}]', \Statbus\Controllers\RoundController::class . ':getMyRounds')->setName('me.rounds');
 });
 
+//Public player pages
+$app->group('', function () {
+  //CHEEVOS
+  $this->get('/player/{ckey:[a-z0-9]+}', \Statbus\Controllers\PlayerController::class . ':getPlayerPublic')->setName('player.public');
+});
 //Rounds
 $app->group('', function () {
 
