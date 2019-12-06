@@ -7,5 +7,7 @@
 <h3>Achievements</h3>
 {% for a in player.achievements %}
   <div class='alert alert{% if a.type == 'achievement' %}-warning text-center {% else%}-primary{% endif %}'><strong>{{a.key}}</strong>{% if a.type == 'score' %} - {{a.value}}{% endif %}</div>
+  {% else %}
+  <p class="lead text-center">No achievements yet</p>
 {% endfor %}
 {% endblock %}
