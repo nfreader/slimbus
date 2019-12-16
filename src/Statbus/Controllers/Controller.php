@@ -34,11 +34,12 @@ class Controller {
     $this->view->getEnvironment()->addGlobal('ogdata', $this->ogdata);
     $this->view->getEnvironment()->addGlobal('settings', $this->container->get('settings')['statbus']);
     if(!$this->DB){
-      return $this->view->render($this->response, 'base/error.tpl',[
-        
+      $error = $this->view->render($this->response, 'base/error.tpl',[
+        'message' => "Unable to establish a connection to the statistics database.",
+        'code' => 500
       ]);
+      die($this->response->getBody());
     }
-
   }
 
   public function getFullURL($path){
@@ -46,4 +47,3 @@ class Controller {
     return $base.$path;
   }
 }
-
