@@ -17,8 +17,9 @@
         "kevinrob/guzzle-cache-middleware": "^3.2",
         "league/flysystem": "^1.0",
         "doctrine/cache": "^1.7",
-        "slim/csrf": "^0.8.3",
-        "sensiolabs/security-checker": "^5.0"
+        "slim/csrf": "0.8.3",
+        "sensiolabs/security-checker": "^5.0",
+        "twig/extensions": "*"
     },
     "autoload": {
         "psr-4": {

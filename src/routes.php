@@ -65,7 +65,7 @@ $app->group('', function () {
 
   //Station Names
   $this->get('/rounds/stations', \Statbus\Controllers\RoundController::class . ':stationNames')->setName('round.stations');
-  
+
   //Map view
   $this->get('/rounds/{id:[0-9]+}/map', \Statbus\Controllers\RoundController::class . ':mapView')->setName('round.map');
 
@@ -147,7 +147,7 @@ $app->group('', function () {
 
   //Delete Book (admin only)
   $this->post('/library/{id:[0-9]+}/delete', \Statbus\Controllers\LibraryController::class . ':deleteBook')->setName('library.delete');
-  
+
 })->add(new \Statbus\Middleware\UserGuard($container, 0));
 
 //Polls
