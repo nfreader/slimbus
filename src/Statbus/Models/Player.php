@@ -26,7 +26,6 @@ class Player {
       'backColor' => '#eee',
       'foreColor' => '#000'
     ];
-
     if (isset($this->settings['ranks'][$rank])) {
       $player->design = $this->settings['ranks'][$rank];
     }

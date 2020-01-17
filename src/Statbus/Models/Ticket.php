@@ -17,6 +17,7 @@ class Ticket {
       $ticket->interval = date('i:s', $interval);
     }
     $ticket->class = 'danger';
+    $ticket->status_class = 'success';
     $ticket->type = 'text';
     $ticket->message = strip_tags($ticket->message);
     $ticket->server_data = (object) $this->settings['servers'][array_search($ticket->port, array_column($this->settings['servers'], 'port'))];
@@ -91,8 +92,23 @@ class Ticket {
         $ticket->icon = "network-wired";
       break;
     }
-    if('Reply' === $ticket->action){
-      $ticket->class = "success";
+
+    switch ($ticket->status){
+      case 'Reply':
+      case 'Ticket Opened':
+      case 'Reconnected':
+        $ticket->status_class = 'warning';
+        // $ticket->status = "Open";
+      break;
+
+      case 'Disconnected':
+        $ticket->status_class = 'secondary';
+        // $ticket->status = "Open";
+      break;
+
+      default:
+        $ticket->status_class = 'success';
+        // $ticket->status = "Resolved";
     }
 
     $this->lastDate = $ticket->timestamp;

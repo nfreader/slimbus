@@ -21,11 +21,12 @@
           <th>From</th>
           <th>Message</th>
           <th>Timestamp</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
         {% for t in tickets %}
-          <tr class="table-{{t.class}}">
+          <tr class="table-{{t.status_class}}">
             <td class="align-middle text-center"><a href="{{path_for('ticket.single',{'round': t.round, 'ticket':t.ticket})}}">{{t.ticket}}</a></td>
             <td class="align-middle">{{t.server_data.name}}<br><small><a href="{{path_for('round.single',{'id': t.round})}}"><i class="far fa-circle"></i> {{t.round}}</a></small></td>
             <td class="align-middle">
@@ -42,10 +43,11 @@
             </td>
             <td class="align-middle table-wrap">{{t.message|raw}}</td>
             <td class="align-middle">{{t.timestamp|timestamp}}</td>
+            <td class="align-middle">{{t.status}}<br><small>{{t.replies}} replies</small></td>
           </tr>
         {% else %}
         {% endfor %}
       </tbody>
     </table>
-
+  {% include 'components/pagination.html' with vars %}
   {% endblock %}

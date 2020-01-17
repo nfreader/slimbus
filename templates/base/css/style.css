@@ -61,6 +61,10 @@
     border-left: .3rem solid black;
   }
 
+ table .Ticket.Opened {
+    border-left: .3rem solid #7c7cd6;
+  }
+
   thead tr th[data-toggle='tooltip'] {
     position: relative;
   }
