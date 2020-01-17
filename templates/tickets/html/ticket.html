@@ -1,0 +1,19 @@
+{% if ticket.type == 'text' %}
+<div class="card card-ticket {{ticket.action}} mb-4">
+  <div class="card-header border-{{ticket.class}} d-flex justify-content-between">
+    <span>{{ticket.action_label}} <a href="{{path_for('player.single',{'ckey': ticket.sender.ckey})}}">{{ticket.sender.label|raw}}</a>
+    {% if ticket.recipient %} to <a href="{{path_for('player.single',{'ckey': ticket.recipient.ckey})}}">{{ticket.recipient.label|raw}}</a>
+  {% endif %}</span><span>{{ticket.timestamp|timestamp}}</span>
+
+  </div>
+  {% if ticket.message %}
+  <div class="card-body">
+    {{ticket.message|raw}}
+  </div>
+  {% endif %}
+</div>
+{% else %}
+<div class="action-ticket position-relative">
+  <h1 class="d-inline pr-2"><span class="badge badge-pill badge-{{ticket.class}}"><i class="fas fa-fw fa-{{ticket.icon}}"></i></span></h1> <h4 class="d-inline">{{ticket.action_label}} <a href="{{path_for('player.single',{'ckey': ticket.sender.ckey})}}">{{ticket.sender.label|raw}}</a> {{ticket.timestamp|timestamp}}</h4>
+</div>
+{% endif %}

@@ -331,3 +331,26 @@
   .tlp-red:hover:after {
     display: none;
   }*/
+  .table-nowrap {
+    white-space:nowrap;
+  }
+  .table-wrap {
+    white-space: pre-wrap;
+  }
+  .ticket-diff {
+    margin-top: -20px;
+    padding: 10px 0;
+  }
+  .card-ticket::after,
+  .action-ticket::after {
+    content: '';
+    border-left: 3px solid #C8C8C8;
+    position: absolute;
+    height: 70px;
+    bottom: -70px;
+    left: 34px;
+  }
+  .card-ticket:last-child::after,
+  .action-ticket:last-child::after {
+    border: none;
+  }
