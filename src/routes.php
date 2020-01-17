@@ -196,6 +196,11 @@ $app->group('', function () {
 
   $this->post('/tgdb/feedback', \Statbus\Controllers\UserController::class . ':addFeedback')->setName('admin.feedback');
 
+  //Tickets!
+  $this->get('/tgdb/tickets[/page/{page}]', \Statbus\Controllers\TicketController::class . ':index')->setName('ticket.index');
+
+  $this->get('/tgdb/tickets/{round}/{ticket}', \Statbus\Controllers\TicketController::class . ':single')->setName('ticket.single');
+
   //Character Name Search
   $this->get('/tgdb/name2ckey', \Statbus\Controllers\PlayerController::class . ':name2ckey')->setName('name2ckey');
 
