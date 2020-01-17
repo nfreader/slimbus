@@ -46,12 +46,12 @@ class TicketController extends Controller {
     foreach ($tickets as &$t){
       $t->sender = new \stdclass;
       $t->sender->ckey = $t->sender_ckey;
-      $t->sender->rank = $s->s_rank;
+      $t->sender->rank = $t->s_rank;
       $t->sender = $this->pm->parsePlayer($t->sender);
 
       $t->recipient = new \stdclass;
       $t->recipient->ckey = $t->recipient_ckey;
-      $t->recipient->rank = $s->r_rank;
+      $t->recipient->rank = $t->r_rank;
       $t->recipient = $this->pm->parsePlayer($t->recipient);
 
       $t = $this->tm->parseTicket($t);
@@ -82,12 +82,12 @@ class TicketController extends Controller {
     foreach ($tickets as &$t){
       $t->sender = new \stdclass;
       $t->sender->ckey = $t->sender_ckey;
-      $t->sender->rank = $s->s_rank;
+      $t->sender->rank = $t->s_rank;
       $t->sender = $this->pm->parsePlayer($t->sender);
 
       $t->recipient = new \stdclass;
       $t->recipient->ckey = $t->recipient_ckey;
-      $t->recipient->rank = $s->r_rank;
+      $t->recipient->rank = $t->r_rank;
       $t->recipient = $this->pm->parsePlayer($t->recipient);
 
       $t = $this->tm->parseTicket($t);

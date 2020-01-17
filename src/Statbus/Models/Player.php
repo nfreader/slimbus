@@ -11,7 +11,6 @@ class Player {
   }
 
   public function parsePlayer(&$player, $extended=false) {
-
     if(is_string($player->rank)) {
       $rank = $player->rank;
     } elseif (is_object($player->rank)) {
