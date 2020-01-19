@@ -2,6 +2,8 @@
 
 namespace Statbus\Models;
 
+use Statbus\Models\Player as Player;
+
 class Ticket {
 
   private $settings;
@@ -9,9 +11,25 @@ class Ticket {
   public function __construct(array $settings){
     $this->settings = $settings;
     $this->lastDate = null;
+    $this->pm = new Player($settings);
   }
 
   public function parseTicket(&$ticket){
+
+    $ticket->sender = new \stdclass;
+    $ticket->sender->ckey = $ticket->sender_ckey;
+    $ticket->sender->rank = $ticket->s_rank;
+    $ticket->sender = $this->pm->parsePlayer($ticket->sender);
+
+    $ticket->recipient = new \stdclass;
+    $ticket->recipient->ckey = $ticket->recipient_ckey;
+    $ticket->recipient->rank = $ticket->r_rank;
+    $ticket->recipient = $this->pm->parsePlayer($ticket->recipient);
+    
+    if(($ticket->sender->ckey && $ticket->recipient->ckey) && 'Ticket Opened' === $ticket->action){
+      $ticket->bwoink = TRUE;
+    }
+
     if($this->lastDate){
       $interval = date('U',strtotime($ticket->timestamp)) - date('U',strtotime($this->lastDate));
       $ticket->interval = date('i:s', $interval);

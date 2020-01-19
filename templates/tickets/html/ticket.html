@@ -1,7 +1,7 @@
 {% if ticket.type == 'text' %}
 <div class="card card-ticket {{ticket.action}} mb-4">
   <div class="card-header border-{{ticket.class}} d-flex justify-content-between">
-    <span>{{ticket.action_label}} <a href="{{path_for('player.single',{'ckey': ticket.sender.ckey})}}">{{ticket.sender.label|raw}}</a>
+    <span>{% if ticket.bwoink %}<span class='badge badge-danger'>*BWOINK*</span> {% endif %}{{ticket.action_label}} <a href="{{path_for('player.single',{'ckey': ticket.sender.ckey})}}">{{ticket.sender.label|raw}}</a>
     {% if ticket.recipient %} to <a href="{{path_for('player.single',{'ckey': ticket.recipient.ckey})}}">{{ticket.recipient.label|raw}}</a>
   {% endif %}</span><span>{{ticket.timestamp|timestamp}}</span>
 
