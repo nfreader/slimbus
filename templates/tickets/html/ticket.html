@@ -1,9 +1,9 @@
 {% if ticket.type == 'text' %}
-<div class="card card-ticket {{ticket.action}} mb-4">
+<div class="card card-ticket {{ticket.action}} mb-4" id="{{ticket.id}}">
   <div class="card-header border-{{ticket.class}} d-flex justify-content-between">
     <span>{% if ticket.bwoink %}<span class='badge badge-danger'>*BWOINK*</span> {% endif %}{{ticket.action_label}} <a href="{{path_for('player.single',{'ckey': ticket.sender.ckey})}}">{{ticket.sender.label|raw}}</a>
     {% if ticket.recipient %} to <a href="{{path_for('player.single',{'ckey': ticket.recipient.ckey})}}">{{ticket.recipient.label|raw}}</a>
-  {% endif %}</span><span>{{ticket.timestamp|timestamp}}</span>
+  {% endif %}</span><span><a href="#{{ticket.id}}">{{ticket.timestamp|timestamp}}</a></span>
 
   </div>
   {% if ticket.message %}
@@ -13,7 +13,7 @@
   {% endif %}
 </div>
 {% else %}
-<div class="action-ticket position-relative">
-  <h1 class="d-inline pr-2"><span class="badge badge-pill badge-{{ticket.class}}"><i class="fas fa-fw fa-{{ticket.icon}}"></i></span></h1> <h4 class="d-inline">{{ticket.action_label}} <a href="{{path_for('player.single',{'ckey': ticket.sender.ckey})}}">{{ticket.sender.label|raw}}</a> {{ticket.timestamp|timestamp}}</h4>
+<div class="action-ticket position-relative" id="{{ticket.id}}">
+  <h1 class="d-inline pr-2"><a href="#{{ticket.id}}"><span class="badge badge-pill badge-{{ticket.class}}"><i class="fas fa-fw fa-{{ticket.icon}}"></i></span></a></h1> <h4 class="d-inline">{{ticket.action_label}} <a href="{{path_for('player.single',{'ckey': ticket.sender.ckey})}}">{{ticket.sender.label|raw}}</a> {{ticket.timestamp|timestamp}}</h4>
 </div>
 {% endif %}

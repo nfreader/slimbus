@@ -358,3 +358,12 @@
   .action-ticket:last-child::after {
     border: none;
   }
+
+  .card:target
+  .action-ticket:target .badge-pill {
+     box-shadow: 0 0 0 2px rgba(34, 135, 254, 1);
+  }
+
+  .card:target {
+    box-shadow: 0 0 0 2px rgba(34, 135, 254, 1);
+}
