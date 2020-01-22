@@ -12,42 +12,24 @@
     {% include 'components/pagination.html' with vars %}
     </div>
   </div>
-    <table class="table table-sm table-bordered table-nowrap">
-      <thead>
-        <tr>
-          <th>Round/Ticket #</th>
-          <th>Server</th>
-          <th>To</th>
-          <th>From</th>
-          <th>Message</th>
-          <th>Timestamp</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for t in tickets %}
-          <tr class="table-{{t.status_class}}">
-            <td class="align-middle text-center"><a href="{{path_for('ticket.single',{'round': t.round, 'ticket':t.ticket})}}">{{t.round}}-{{t.ticket}}</a>{% if t.bwoink %}<br><span class='badge badge-danger'>*BWOINK*</span>{% endif %}</td>
-            <td class="align-middle">{{t.server_data.name}}<br><small><a href="{{path_for('round.single',{'id': t.round})}}"><i class="far fa-circle"></i> {{t.round}}</a></small></td>
-            <td class="align-middle">
-              {% if t.recipient %}
-              <a href="{{path_for('player.single',{'ckey': t.recipient.ckey})}}">
-                {{t.recipient.label|raw}}
-              </a>
+  <div class="list-group">
+    {% for t in tickets %}
+      <a class="list-group-item list-group-item-action list-group-item-{{t.status_class}}" href="{{path_for('ticket.single',{'round': t.round, 'ticket':t.ticket})}}">
+        <div class="d-flex w-100 justify-content-between">
+          <span><h5>{% if t.bwoink %}<i class="fa-fw fas fa-ticket-alt text-danger" title="*BWOINK*" data-toggle="tooltip"></i>{% else %}<i class="fa-fw fas fa-ticket-alt"></i>{% endif %} {{t.round}}-{{t.ticket}} <small>{% if t.recipient %}
+              {{t.recipient.label|raw}} to 
             {% endif %}
-            </td>
-            <td class="align-middle">
-              <a href="{{path_for('player.single',{'ckey': t.sender.ckey})}}">
-                {{t.sender.label|raw}}
-              </a>
-            </td>
-            <td class="align-middle table-wrap"> {{t.message|raw}}</td>
-            <td class="align-middle">{{t.timestamp|timestamp}}</td>
-            <td class="align-middle">{{t.status}}<br><small>{{t.replies}} replies</small></td>
-          </tr>
-        {% else %}
-        {% endfor %}
-      </tbody>
-    </table>
+            {{t.sender.label|raw}}</small></h5></span>
+          <small>{{t.timestamp|timestamp}}<br>{{t.replies}} replies</small>
+        </div>
+        <div class="d-flex w-100 justify-content-between">
+          <span class="flex-grow-1">{{t.message|raw}}</span>
+          <span><strong>Last Status: </strong> {{t.status}}</span>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+  <br>
+
   {% include 'components/pagination.html' with vars %}
   {% endblock %}
