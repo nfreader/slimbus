@@ -61,7 +61,8 @@ class TicketController extends Controller {
 
   public function getSingleTicket(int $round, int $ticket){
     $tickets = $this->DB->run("
-      SELECT 
+      SELECT
+        t.id,
         t.server_ip,
         t.server_port as port,
         t.round_id as round,
