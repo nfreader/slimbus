@@ -16,6 +16,8 @@ class Ticket {
 
   public function parseTicket(&$ticket){
 
+    $ticket->icon = "fa-ticket";
+
     $ticket->sender = new \stdclass;
     $ticket->sender->ckey = $ticket->sender_ckey;
     $ticket->sender->rank = $ticket->s_rank;
@@ -39,10 +41,12 @@ class Ticket {
     $ticket->type = 'text';
     $ticket->message = strip_tags($ticket->message);
     $ticket->server_data = (object) $this->settings['servers'][array_search($ticket->port, array_column($this->settings['servers'], 'port'))];
+    
+    //This is for parsing individual ticket views
     switch ($ticket->action) {
       case 'Reply':
       default:
-        $ticket->class = "success";
+        $ticket->class = "secondary";
         $ticket->action_label = "Reply from ";
       break;
 
@@ -101,7 +105,7 @@ class Ticket {
       break;
 
       case 'Reconnected':
-        $ticket->class = "success";
+        $ticket->class = "info";
         $ticket->action_label = "Client reconnected";
         $ticket->sender = $ticket->recipient;
         $ticket->recipient = false;
@@ -112,16 +116,45 @@ class Ticket {
     }
 
     switch ($ticket->status){
-      case 'Reply':
       case 'Ticket Opened':
-      case 'Reconnected':
-        $ticket->status_class = 'warning';
+        $ticket->status_class = 'info';
+        $ticket->icon = 'ticket-alt';
         // $ticket->status = "Open";
       break;
 
+      case 'Reply':
+        $ticket->status_class = 'warning';
+        $ticket->icon = "reply";
+      break;
+
+      case 'Resolved':
+        $ticket->icon = 'thumbs-up';
+        $ticket->status_class = 'success';
+      break;
+
+      case 'Closed':
+        $ticket->icon = 'times-circle';
+        $ticket->status_class = 'danger';
+      break;
+
+      case 'IC Issue':
+        $ticket->status_class = "dark";
+        $ticket->icon = "gavel";
+      break;
+
       case 'Disconnected':
-        $ticket->status_class = 'secondary';
-        // $ticket->status = "Open";
+        $ticket->status_class = "dark";
+        $ticket->icon = "window-close";
+      break;
+
+      case 'Reconnected':
+        $ticket->status_class = "info";
+        $ticket->icon = "network-wired";
+      break;
+
+      case 'Rejected':
+        $ticket->status_class = "danger";
+        $ticket->icon = "undo";
       break;
 
       default:
