@@ -107,6 +107,8 @@ class TicketController extends Controller {
     return $this->view->render($this->response, 'tickets/index.tpl',[
         'tickets' => $this->getActiveTickets(),
         'ticket' => $this,
+      ]);
+  }
         'wide' => TRUE
       ]);
   }
