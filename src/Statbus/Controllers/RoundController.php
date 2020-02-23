@@ -148,11 +148,13 @@ class RoundController Extends Controller {
     $round = $this->DB->row("SELECT $this->columns,
       MAX(next.id) AS next,
       MAX(prev.id) AS prev,
-      COUNT(D.id) AS deaths
+      COUNT(D.id) AS deaths,
+      COUNT(T.id) as tickets
       FROM tbl_round
       LEFT JOIN tbl_round AS next ON next.id = tbl_round.id + 1
       LEFT JOIN tbl_round AS prev ON prev.id = tbl_round.id - 1 
       LEFT JOIN tbl_death AS D ON D.round_id = tbl_round.id
+      LEFT JOIN tbl_ticket AS T ON T.round_id = tbl_round.id AND T.action = 'Ticket Opened'
       WHERE tbl_round.id = ?
       AND tbl_round.shutdown_datetime IS NOT NULL", $id);
     $round = $this->roundModel->parseRound($round);

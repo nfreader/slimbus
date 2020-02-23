@@ -1,6 +1,8 @@
 {% extends ('base/index.html') %}
   {% block content %}
   {% include 'tgdb/html/nav.html' %}
+  <h2>Tickets for round <a href="{{path_for('round.single', {'id': round})}}">{{round}}</a></h2>
+  <hr>
   <div class="row">
     <div class="col">
     </div>
