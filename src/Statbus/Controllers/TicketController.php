@@ -31,6 +31,8 @@ class TicketController extends Controller {
         t.timestamp,
         t.recipient as recipient_ckey,
         t.sender as sender_ckey,
+        'player' as r_rank,
+        'player' as s_rank,
         (SELECT `action` FROM tbl_ticket WHERE t.ticket = ticket AND t.round_id = round_id ORDER BY id DESC LIMIT 1) as `status`,
         (SELECT COUNT(id) FROM tbl_ticket WHERE t.ticket = ticket AND t.round_id = round_id) as `replies`
       FROM ss13ticket t
