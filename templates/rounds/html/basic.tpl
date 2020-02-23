@@ -59,6 +59,12 @@
       </td>
     </tr>
     {% endif %}
+    {% if user.canAccessTGDB %}
+      <tr>
+        <th class="align-middle text-right" colspan="2">Tickets</th>
+        <td colspan="2"><a href="{{path_for('ticket.round', {'round': round.id})}}">{{round.tickets}}</a></td>
+      </tr>
+    {% endif %}
   </tbody>
 </table>
 

@@ -50,6 +50,10 @@ $app->group('', function () {
 
   //My rounds
   $this->get('/me/rounds[/page/{page}]', \Statbus\Controllers\RoundController::class . ':getMyRounds')->setName('me.rounds');
+
+  $this->get('/me/tickets[/page/{page}]', \Statbus\Controllers\TicketController::class . ':myTickets')->setName('me.tickets');
+
+  $this->get('/me/tickets/{round}/{ticket}', \Statbus\Controllers\TicketController::class . ':singlePlayerTicket')->setName('me.tickets.single');
 });
 
 //Public player pages
@@ -198,6 +202,8 @@ $app->group('', function () {
 
   //Tickets!
   $this->get('/tgdb/tickets[/page/{page}]', \Statbus\Controllers\TicketController::class . ':index')->setName('ticket.index');
+
+  $this->get('/tgdb/tickets/{round}', \Statbus\Controllers\TicketController::class . ':roundTickets')->setName('ticket.round');
 
   $this->get('/tgdb/tickets/{round}/{ticket}', \Statbus\Controllers\TicketController::class . ':single')->setName('ticket.single');
 
