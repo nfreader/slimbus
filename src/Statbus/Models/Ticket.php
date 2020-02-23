@@ -16,9 +16,10 @@ class Ticket {
 
   public function parseTicket(&$ticket){
     $ticket->icon = "fa-ticket";
-
-    $ticket->s_rank = 'player';
-    $ticket->r_rank = 'player';
+    if (!isset($ticket->s_rank)){
+      $ticket->s_rank = 'player';
+      $ticket->r_rank = 'player';
+    }
 
     $ticket->sender = new \stdclass;
     $ticket->sender->ckey = $ticket->sender_ckey;
