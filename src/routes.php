@@ -53,7 +53,7 @@ $app->group('', function () {
 
   $this->get('/me/tickets[/page/{page}]', \Statbus\Controllers\TicketController::class . ':myTickets')->setName('me.tickets');
 
-  $this->get('/me/tickets/{round}/{ticket}', \Statbus\Controllers\TicketController::class . ':singlePlayerTicket')->setName('me.tickets.single');
+  $this->get('/me/tickets/{round}/{ticket}', \Statbus\Controllers\TicketController::class . ':myTicket')->setName('me.tickets.single');
 });
 
 //Public player pages
