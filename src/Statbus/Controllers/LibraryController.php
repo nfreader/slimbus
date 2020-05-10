@@ -15,6 +15,7 @@ class LibraryController Extends Controller {
       AND (tbl_library.deleted IS NULL OR tbl_library.deleted = 0)") / $this->per_page);
 
     $this->libraryModel = new Library();
+    $this->guzzle = $this->container->get('guzzle');
 
     $this->breadcrumbs['Library'] = $this->router->pathFor('library.index');
     $this->url = $this->router->pathFor('library.index');
@@ -143,6 +144,34 @@ class LibraryController Extends Controller {
       'book'        => $book,
       'breadcrumbs' => $this->breadcrumbs,
       'ogdata'      => $this->ogdata
+    ]);
+  }
+
+  public function artGallery($request, $response, $args){
+    $servers = $this->container->get('settings')['statbus']['servers'];
+    if(isset($args['server'])){
+      $server = ucfirst($args['server']);
+      if($server = $servers[array_search($server, array_column($servers,'name'))]){
+        $json_url = str_replace('data/logs', 'data', $server['public_logs'].'paintings.json');
+        try{
+          $res = $this->guzzle->request('GET',$json_url);
+        } catch (GCeption $e){
+          return false;
+        }
+        $art = $res->getBody()->getContents();
+        if(!$art){
+          return false;
+        }
+        $art = json_decode($art);
+        return $this->view->render($response, 'gallery/gallery.tpl',[
+          'art' => $art,
+          'url' => str_replace('data/logs/', 'data/paintings', $server['public_logs']),
+          'server' => $server
+        ]);
+      }
+    }
+    return $this->view->render($response, 'gallery/index.tpl',[
+      'servers' => $servers
     ]);
   }
 }

@@ -140,7 +140,7 @@ $app->group('', function () {
 
 });
 
-//Library
+//Library & Art Gallery
 $app->group('', function () {
 
   //Index
@@ -151,6 +151,9 @@ $app->group('', function () {
 
   //Delete Book (admin only)
   $this->post('/library/{id:[0-9]+}/delete', \Statbus\Controllers\LibraryController::class . ':deleteBook')->setName('library.delete');
+
+  //Gallery Index
+  $this->get('/library/gallery[/{server}]', \Statbus\Controllers\LibraryController::class . ':artGallery')->setName('gallery.index');
 
 })->add(new \Statbus\Middleware\UserGuard($container, 0));
 

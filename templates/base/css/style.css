@@ -17,11 +17,11 @@
   }
   thead tr th .tablesorter-header-inner i {
     display: inline;
-    float: right;
     margin: 4px 0 0 0;
   }
   tr:target
-  tr.targeted {
+  tr.targeted,
+  .media:target {
     background: #ffffd9;
   }
 
