@@ -298,13 +298,14 @@ class StatbusController extends Controller {
         FROM tbl_round r
         WHERE r.initialize_datetime > '2017-02-29'
         GROUP BY map_name, MONTH(r.initialize_datetime), YEAR(r.initialize_datetime)
+        HAVING rounds > 1
         ORDER BY r.initialize_datetime DESC");
     $tmp = [];
     foreach($mapularity as $row){
       $tmp[$row->date][$row->map_name] = $row->rounds;
     }
     return $this->view->render($response, 'info/mapularity.tpl',[
-      'maps' => $this->DB->run("SELECT DISTINCT(IF(ISNULL(map_name), 'Undefiend', map_name)) as map FROM tbl_round;"),
+      'maps' => $this->DB->run("SELECT DISTINCT(IF(ISNULL(map_name), 'Undefiend', replace(map_name,'_',' '))) as map FROM tbl_round"),
       'mapularity' => $tmp
     ]);
   }
