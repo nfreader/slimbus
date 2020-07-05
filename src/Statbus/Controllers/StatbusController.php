@@ -294,8 +294,8 @@ class StatbusController extends Controller {
     $mapularity = $this->DB->run("SELECT 
     date_format(r.initialize_datetime,'%M %Y') as `date`,
         count(r.id) as rounds, 
-        IF(ISNULL(r.map_name), 'Undefiend', r.map_name) as `map_name`
-        FROM tbl_round r
+        IF(ISNULL(r.map_name), 'Undefined', replace(replace(r.map_name, '_', ' '),' ', '')) as `map_name`
+        FROM round r
         WHERE r.initialize_datetime > '2017-02-29'
         GROUP BY map_name, MONTH(r.initialize_datetime), YEAR(r.initialize_datetime)
         HAVING rounds > 1
