@@ -137,6 +137,9 @@ $app->group('', function () {
   //Win-Loss Ratios
   $this->get('/info/winloss', \Statbus\Controllers\RoundController::class . ':winLoss')->setName('winloss');
 
+  //Win-Loss Ratios
+  $this->get('/info/mapularity', \Statbus\Controllers\StatbusController::class . ':mapularity')->setName('mapularity');
+
 
 });
 
