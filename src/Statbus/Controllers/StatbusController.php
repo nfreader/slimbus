@@ -301,11 +301,14 @@ class StatbusController extends Controller {
         HAVING rounds > 1
         ORDER BY r.initialize_datetime DESC");
     $tmp = [];
+    $maps = [];
     foreach($mapularity as $row){
       $tmp[$row->date][$row->map_name] = $row->rounds;
+      $maps[] = $row->map_name;
     }
+    $maps = array_unique($maps);
     return $this->view->render($response, 'info/mapularity.tpl',[
-      'maps' => $this->DB->run("SELECT DISTINCT(IF(ISNULL(map_name), 'Undefiend', replace(map_name,'_',' '))) as map FROM tbl_round"),
+      'maps' => $maps,
       'mapularity' => $tmp
     ]);
   }

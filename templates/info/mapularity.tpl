@@ -7,7 +7,7 @@
     <tr>
       <th>Month</th>
       {% for map in maps %}
-        <th>{{map.map}}</th>
+        <th>{{map}}</th>
       {% endfor %}
     </tr>
   </thead>
@@ -16,7 +16,7 @@
       <tr>
         <th>{{month}}</th>
         {% for m in maps %}
-          <td>{{data[m.map]}}</td>
+          <td>{{data[m]}}</td>
         {% endfor %}
       </tr>
     {% endfor %}
