@@ -51,7 +51,7 @@ class StatbusController extends Controller {
     } else {
       $interval = 20;
     }
-    $admins = $this->DB->run("SELECT A.ckey, 
+    $admins = $this->DB->run("SELECT A.ckey,
       A.rank,
       A.feedback,
       R.flags,
@@ -113,8 +113,8 @@ class StatbusController extends Controller {
     $this->pages = ceil($this->DB->cell("SELECT count(tbl_admin_log.id) FROM tbl_admin_log") / $this->per_page);
     $logs = $this->DB->run("SELECT
       L.id,
-      L.datetime, 
-      L.adminckey, 
+      L.datetime,
+      L.adminckey,
       L.operation,
       L.target,
       L.log,
@@ -209,12 +209,12 @@ class StatbusController extends Controller {
 
   public function last30Days(){
     $query = "SELECT SUM(`delta`) AS `minutes`,
-      DATE_FORMAT(`datetime`, '%Y-%m-%d %H:00:00') AS `date`, 
+      DATE_FORMAT(`datetime`, '%Y-%m-%d %H:00:00') AS `date`,
       `job`
       FROM tbl_role_time_log
       WHERE `job` IN ('Living','Ghost')
       AND `DATETIME` > CURDATE() - INTERVAL 30 DAY
-      GROUP BY `job`, DAY(`DATETIME`), MONTH(`DATETIME`), YEAR(`DATETIME`)
+      GROUP BY `job`, HOUR(`datetime`), DAY(`DATETIME`), MONTH(`DATETIME`), YEAR(`DATETIME`)
       ORDER BY `date` ASC;";
       $minutes = $this->DB->run($query);
       return $this->view->render($this->response, 'info/30days.tpl',[
@@ -288,6 +288,24 @@ class StatbusController extends Controller {
       'interval' => $interval,
       'admins' => $candidates,
       'list' => str_replace(['(',')',"'"], '', $list)
+    ]);
+  }
+  public function mapularity ($request, $response, $args) {
+    $mapularity = $this->DB->run("SELECT 
+    date_format(r.initialize_datetime,'%M %Y') as `date`,
+        count(r.id) as rounds, 
+        IF(ISNULL(r.map_name), 'Undefiend', r.map_name) as `map_name`
+        FROM tbl_round r
+        WHERE r.initialize_datetime > '2017-02-29'
+        GROUP BY map_name, MONTH(r.initialize_datetime), YEAR(r.initialize_datetime)
+        ORDER BY r.initialize_datetime DESC");
+    $tmp = [];
+    foreach($mapularity as $row){
+      $tmp[$row->date][$row->map_name] = $row->rounds;
+    }
+    return $this->view->render($response, 'info/mapularity.tpl',[
+      'maps' => $this->DB->run("SELECT DISTINCT(IF(ISNULL(map_name), 'Undefiend', map_name)) as map FROM tbl_round;"),
+      'mapularity' => $tmp
     ]);
   }
 }

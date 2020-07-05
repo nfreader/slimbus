@@ -33,6 +33,7 @@
             <a class="dropdown-item" href="{{path_for('population')}}"><i class="fas fa-users"></i> Server Population</a>
             <a class="dropdown-item" href="{{path_for('playtime')}}"><i class="fas fa-chart-line"></i> Playtime</a>
             <a class="dropdown-item" href="{{path_for('winloss')}}"><i class="fas fa-percent"></i> Gamemode Win Loss Ratios</a>
+            <a class="dropdown-item" href="{{path_for('mapularity')}}"><i class="fas fa-map-marked-alt"></i> Mapularity</a>
             <a class="dropdown-item" href="{{path_for('admin_connections')}}"><i class="fas fa-user-clock"></i> Admin Activity</a>
             <a class="dropdown-item" href="{{path_for('admin_logs')}}"><i class="fas fa-user-times"></i> Admin Rank Activity</a>
           </div>
