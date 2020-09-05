@@ -19,6 +19,8 @@ class TicketController extends Controller {
     $this->url = $this->router->pathFor('ticket.index');
     $this->path = 'ticket.single';
     $this->permaLink = 'ticket.single';
+    $settings = $this->container->get('settings');
+    $this->alt_db = (new DBController($settings['database']['alt']))->db;
   }
 
   public function getActiveTickets(){
@@ -64,8 +66,7 @@ class TicketController extends Controller {
 
   public function getTicketsForRound(int $round) {
     $round = filter_var($round, FILTER_VALIDATE_INT);
-    $tickets = $this->DB->run("
-      SELECT
+    $tickets = $this->DB->run("SELECT
         t.id,
         t.server_ip,
         t.server_port as port,
@@ -105,8 +106,7 @@ class TicketController extends Controller {
   public function getSingleTicket(int $round, int $ticket){
     $round = filter_var($round, FILTER_VALIDATE_INT);
     $ticket = filter_var($ticket, FILTER_VALIDATE_INT);
-    $tickets = $this->DB->run("
-      SELECT
+    $tickets = $this->DB->run("SELECT
         t.id,
         t.server_ip,
         t.server_port as port,
@@ -221,8 +221,16 @@ class TicketController extends Controller {
     ]);
   }
   public function myTicket($request, $response, $args){
-    return $this->view->render($this->response, 'tickets/single.me.tpl',[
-        'tickets' => $this->getSingleTicket($args['round'],$args['ticket']),
+    $this->user = $this->container->get('user');
+    $tickets = $this->getSingleTicket($args['round'], $args['ticket']);
+    if(!in_array($this->user->ckey, [$tickets[0]->sender_ckey, $tickets[0]->recipient_ckey])) {
+      return $this->view->render($this->response, 'base/error.tpl',[
+        'message' => 'You do not have permission to view this',
+        'code' => 403
       ]);
+    }
+    return $this->view->render($this->response, 'tickets/single.me.tpl',[
+      'tickets' => $tickets,
+    ]);
   }
 }
