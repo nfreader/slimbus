@@ -146,8 +146,7 @@ class TicketController extends Controller {
       count(t.id) 
       FROM tbl_ticket t
       WHERE t.action = 'Ticket Opened' AND (t.recipient = ? OR t.sender = ?);", $ckey, $ckey) / $this->per_page);
-    $tickets = $this->DB->run("
-      SELECT 
+    $tickets = $this->DB->run("SELECT 
         t.server_ip,
         t.server_port as port,
         t.round_id as round,
@@ -166,7 +165,7 @@ class TicketController extends Controller {
       AND (t.recipient = ? OR t.sender = ?)
       GROUP BY t.id
       ORDER BY `timestamp` DESC
-      LIMIT ?, ?;", $ckey, $ckey, ($this->page * $this->per_page) - $this->per_page, $this->pages);
+      LIMIT ?, ?;", $ckey, $ckey, ($this->page * $this->per_page) - $this->per_page, $this->pages * $this->per_page);
     foreach ($tickets as &$t){
       $t->sender = new \stdclass;
       $t->sender->ckey = $t->sender_ckey;
@@ -215,9 +214,9 @@ class TicketController extends Controller {
     $this->path = "me.tickets";
     $this->permaLink = "me.tickets.single";
     return $this->view->render($this->response, 'tickets/me.tpl',[
-        'tickets' => $this->getTicketsForCkey($user->ckey),
-        'ticket' => $this,
-      ]);
+      'tickets' => $this->getTicketsForCkey($user->ckey),
+      'ticket' => $this,
+    ]);
   }
   public function myTicket($request, $response, $args){
     return $this->view->render($this->response, 'tickets/single.me.tpl',[
