@@ -28,6 +28,7 @@ class UserGuard {
     }
     switch ($this->level){
       case 1:
+      default:
       if (!$this->user) {
         return $this->view->render($response, 'base/error.tpl',[
           'message' => "You must be logged in to access this page",

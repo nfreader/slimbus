@@ -165,7 +165,9 @@ class TicketController extends Controller {
       AND (t.recipient = ? OR t.sender = ?)
       GROUP BY t.id
       ORDER BY `timestamp` DESC
-      LIMIT ?, ?;", $ckey, $ckey, ($this->page * $this->per_page) - $this->per_page, $this->pages * $this->per_page);
+      LIMIT ?, ?;", $ckey, $ckey, ($this->page * $this->per_page) - $this->per_page, $this->page * $this->per_page);
+      // var_dump(($this->page * $this->per_page) - $this->per_page);
+      // var_dump($this->page * $this->per_page);
     foreach ($tickets as &$t){
       $t->sender = new \stdclass;
       $t->sender->ckey = $t->sender_ckey;

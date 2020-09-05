@@ -54,7 +54,7 @@ $app->group('', function () {
   $this->get('/me/tickets[/page/{page}]', \Statbus\Controllers\TicketController::class . ':myTickets')->setName('me.tickets');
 
   $this->get('/me/tickets/{round}/{ticket}', \Statbus\Controllers\TicketController::class . ':myTicket')->setName('me.tickets.single');
-});
+})->add(new \Statbus\Middleware\UserGuard($container, 1));
 
 //Public player pages
 $app->group('', function () {
