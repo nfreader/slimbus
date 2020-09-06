@@ -254,7 +254,6 @@ class TicketController extends Controller {
     $this->alt_db = $this->container->get('ALT_DB');
     $id = $this->getTicketIDFromIdentifier($args['identifier']);
     $status = $this->ticketPublicityStatus($id);
-    var_dump($status);
     if($status && 1 !== $status->status){
       return $this->view->render($this->response, 'base/error.tpl',[
         'message' => 'You do not have permission to view this',
@@ -275,7 +274,7 @@ class TicketController extends Controller {
   }
 
   private function getTicketIDFromIdentifier($identifier) {
-    return $this->alt_db->cell("SELECT ticket FROM public_tickets WHERE identifier = ?", $identifier);
+    return $this->alt_db->cell("SELECT * FROM public_tickets WHERE identifier = ?", $identifier);
   }
 
   private function ticketPublicityStatus($id){
