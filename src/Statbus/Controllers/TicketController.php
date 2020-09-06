@@ -274,7 +274,7 @@ class TicketController extends Controller {
   }
 
   private function getTicketIDFromIdentifier($identifier) {
-    return $this->alt_db->cell("SELECT * FROM public_tickets WHERE identifier = ?", $identifier);
+    return $this->alt_db->cell("SELECT ticket FROM public_tickets WHERE identifier = ?", $identifier);
   }
 
   private function ticketPublicityStatus($id){
@@ -289,8 +289,9 @@ class TicketController extends Controller {
       $this->alt_db->insert("public_tickets", [
         'ticket' =>  $id,
         'status' => 1,
-        'identifier' => substr(base64_encode(random_bytes(32)), 0, 16)
-      ]);
+        'identifier' => substr(hash('SHA512',base64_encode(random_bytes(32))),0,16)
+        ]
+      );
     } else if(1 === $status->status) {
       $this->alt_db->run("UPDATE public_tickets SET `status` = 0 WHERE ticket = ?", $id);
     } else {
