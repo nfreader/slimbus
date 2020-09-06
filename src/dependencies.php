@@ -10,6 +10,11 @@ $container['DB'] = function ($c) {
   return (new Statbus\Controllers\DBController($settings))->db;
 };
 
+$container['ALT_DB'] = function ($c) {
+  $settings = $c->get('settings')['database']['alt'];
+  return (new Statbus\Controllers\DBController($settings))->db;
+};
+
 // User
 $container['user'] = function ($container) {
   $user = (new Statbus\Controllers\UserController($container))->fetchUser();
