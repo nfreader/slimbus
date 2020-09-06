@@ -11,16 +11,14 @@ use Statbus\Models\Player as Player;
 class TicketController extends Controller {
   public function __construct(ContainerInterface $container) {
     parent::__construct($container);
-    $settings = $this->container->get('settings')['statbus'];
-    $this->tm = new Ticket($settings);
-    $this->pm = new Player($settings);
+    $this->settings = $this->container->get('settings')['statbus'];
+    $this->tm = new Ticket($this->settings);
+    $this->pm = new Player($this->settings);
     // $this->pages = ceil($this->DB->cell("SELECT count(tbl_messages.id) FROM tbl_messages WHERE tbl_messages.deleted = 0
     //   AND (tbl_messages.expire_timestamp > NOW() OR tbl_messages.expire_timestamp IS NULL)") / $this->per_page);
     $this->url = $this->router->pathFor('ticket.index');
     $this->path = 'ticket.single';
     $this->permaLink = 'ticket.single';
-    $settings = $this->container->get('settings');
-    $this->alt_db = (new DBController($settings['database']['alt']))->db;
   }
 
   public function getActiveTickets(){
@@ -222,6 +220,7 @@ class TicketController extends Controller {
   }
   public function myTicket($request, $response, $args){
     $this->user = $this->container->get('user');
+
     $tickets = $this->getSingleTicket($args['round'], $args['ticket']);
     if(!in_array($this->user->ckey, [$tickets[0]->sender_ckey, $tickets[0]->recipient_ckey])) {
       return $this->view->render($this->response, 'base/error.tpl',[
@@ -229,8 +228,74 @@ class TicketController extends Controller {
         'code' => 403
       ]);
     }
+
+    $canPublicize = false;
+
+    if(!$tickets[0]->recipient && $this->user->ckey === $tickets[0]->sender_ckey){
+      $canPublicize = TRUE; //Ahelps sent by anyone regardless of rank
+    }
+
+    if($this->user->ckey === $tickets[0]->recipient_ckey) {
+      $canPublicize = TRUE; //Ahelps sent from admin to player
+    }
+    if('POST' === $this->request->getMethod() && TRUE === $canPublicize){
+      $this->setTicketStatus($tickets[0]->id);
+    }
+    $status = $this->ticketPublicityStatus($tickets[0]->id);
+    @$status->canPublicize = $canPublicize;
+
     return $this->view->render($this->response, 'tickets/single.me.tpl',[
       'tickets' => $tickets,
+      'status' => $status
     ]);
+  }
+
+  public function publicTicket($request, $response, $args){
+    $this->alt_db = $this->container->get('ALT_DB');
+    $id = $this->getTicketIDFromIdentifier($args['identifier']);
+    $status = $this->ticketPublicityStatus($id);
+    var_dump($status);
+    if($status && 1 !== $status->status){
+      return $this->view->render($this->response, 'base/error.tpl',[
+        'message' => 'You do not have permission to view this',
+        'code' => 403
+      ]);
+    }
+    $ticket = $this->getFullTicketFromID($id);
+    $tickets = $this->getSingleTicket($ticket->round_id, $ticket->ticket);
+
+    return $this->view->render($this->response, 'tickets/single.me.tpl',[
+      'tickets' => $tickets,
+      'status' => $status
+    ]);
+  }
+
+  private function getFullTicketFromID($id){
+    return($this->DB->row("SELECT round_id, ticket FROM tbl_ticket WHERE id = ?", $id));
+  }
+
+  private function getTicketIDFromIdentifier($identifier) {
+    return $this->alt_db->cell("SELECT ticket FROM public_tickets WHERE identifier = ?", $identifier);
+  }
+
+  private function ticketPublicityStatus($id){
+    $this->alt_db = $this->container->get('ALT_DB');
+    $status = $this->alt_db->row("SELECT * FROM public_tickets WHERE ticket = ?", $id);
+    return $status;
+  }
+
+  private function setTicketStatus($id){
+    $status = $this->ticketPublicityStatus($id);
+    if(!$status){
+      $this->alt_db->insert("public_tickets", [
+        'ticket' =>  $id,
+        'status' => 1,
+        'identifier' => substr(base64_encode(random_bytes(32)), 0, 16)
+      ]);
+    } else if(1 === $status->status) {
+      $this->alt_db->run("UPDATE public_tickets SET `status` = 0 WHERE ticket = ?", $id);
+    } else {
+      $this->alt_db->run("UPDATE public_tickets SET `status` = 1 WHERE ticket = ?", $id);
+    }
   }
 }

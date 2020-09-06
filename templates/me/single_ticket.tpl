@@ -1,6 +1,6 @@
 {% extends ('base/index.html') %}
   {% block content %}
-
+  
   <h1>Ticket #{{tickets[0].ticket}}</h1><small>Round {{tickets[0].round}} on {{tickets[0].server_data.name}}</small>
   <hr>
   <div class="row">
