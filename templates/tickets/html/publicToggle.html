@@ -1,0 +1,10 @@
+<form action="{{path_for('me.tickets.public',{'round': tickets[0].round, 'ticket': tickets[0].ticket})}}" method="POST">
+  <input type="hidden" name="{{csrf.keys.name}}" value="{{csrf.name}}">
+  <input type="hidden" name="{{csrf.keys.value}}" value="{{csrf.value}}">
+{% if status.status == 1 %}
+  <button class="btn btn-danger"><i class="fas fa-times"></i> Make Private</button>
+</form>
+{% else %}
+  <button class="btn btn-success"><i class="fas fa-check"></i> Make Public</button>
+{% endif %}
+</form>
