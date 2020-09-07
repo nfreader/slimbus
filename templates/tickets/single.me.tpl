@@ -31,7 +31,7 @@
       <hr>
       <h3><small class="text-muted">Public</small></h3>
         {% if 1 == status.status %}
-          Link: <a href="{{path_for('publicTicket',{'identifier':status.identifier})}}">{{status.identifier}}</a>
+          Link: <a href="{{path_for('publicTicket',{'identifier':status.identifier})}}" target="_blank" rel="noopener noreferrer">{{status.identifier}}</a>
         {% endif %}
         {% if status.canPublicize %}
           {% include 'tickets/html/publicToggle.html' %}
