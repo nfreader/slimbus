@@ -34,10 +34,13 @@ class Controller {
     $this->view->getEnvironment()->addGlobal('ogdata', $this->ogdata);
     $this->view->getEnvironment()->addGlobal('settings', $this->container->get('settings')['statbus']);
     if(!$this->DB){
-      $error = $this->view->render($this->response, 'base/error.tpl',[
+      $error = $this->view->render($this->response, 'base/error_critical.tpl',[
         'message' => "Unable to establish a connection to the statistics database.",
-        'code' => 500
+        'text' => 'This means that the game server database is down, or otherwise unreachable. This error has been logged and your Statbus administrators have been made aware of the issue.',
+        'code' => 500,
+        'skip' => true
       ]);
+      $this->response = $this->response->withStatus(500);
       die($this->response->getBody());
     }
   }

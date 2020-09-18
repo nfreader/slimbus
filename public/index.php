@@ -3,10 +3,10 @@ if (PHP_SAPI == 'cli-server') {
   if(strpos($_SERVER['SCRIPT_NAME'], '/tmp') !== FALSE){
     return false;
   }
-  $_SERVER['SCRIPT_NAME'] = '/index.php';
+  // $_SERVER['SCRIPT_NAME'] = '/index.php';
 }
 
-//Configure session settings 
+//Configure session settings
 require __DIR__ . '/../src/session.php';
 
 //Load up on libs
@@ -24,6 +24,7 @@ if(getenv('DEBUG')){
 // Instantiate the app
 $settings = require __DIR__ . '/../src/settings.php';
 $settings['settings']['statbus'] = require __DIR__ . '/../src/conf/Statbus.php';
+
 if(file_exists(__DIR__ . '/../src/conf/servers.json')){
   $settings['settings']['statbus']['servers'] = json_decode(file_get_contents(__DIR__ . '/../src/conf/servers.json'), true);
 }
@@ -38,18 +39,18 @@ if ($refresh = filter_input(INPUT_GET,'refresh', FILTER_SANITIZE_STRING, FILTER_
   }
 }
 
+// Instantiate the app
 $app = new \Slim\App($settings);
 
 // Set up dependencies
-require __DIR__ . '/../src/dependencies.php';
+$dependencies = require __DIR__ . '/../src/dependencies.php';
+$dependencies($app);
 
 // Remove trailing slashes
 require __DIR__ . '/../src/trailingSlash.php';
 
-// Register routes
-require __DIR__ . '/../src/routes.php';
+$routes = require __DIR__ . '/../src/routes.php';
+$routes($app);
 
 // Run app
 $app->run();
-
-

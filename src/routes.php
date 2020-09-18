@@ -1,10 +1,11 @@
 <?php
 
+use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-// $app->add(new \Statbus\Middleware\OpenGraph($container));
-$container = $app->getContainer();
+return function (App $app) {
+    $container = $app->getContainer();
 $app->add($container->get('csrf'));
 
 //Index URL
@@ -161,7 +162,7 @@ $app->group('', function () {
   $this->post('/library/{id:[0-9]+}/delete', \Statbus\Controllers\LibraryController::class . ':deleteBook')->setName('library.delete');
 
   //Gallery Index
-  $this->get('/library/gallery[/{server}]', \Statbus\Controllers\LibraryController::class . ':artGallery')->setName('gallery.index');
+  $this->map(['GET','POST'], '/library/gallery[/{server}]', \Statbus\Controllers\LibraryController::class . ':artGallery')->setName('gallery.index');
 
 })->add(new \Statbus\Middleware\UserGuard($container, 0));
 
@@ -224,3 +225,5 @@ $app->group('', function () {
   $this->post('/tgdb/name2ckey', \Statbus\Controllers\PlayerController::class . ':name2ckey')->setName('name2ckey');
 
 })->add(new \Statbus\Middleware\UserGuard($container, 2));
+
+};
