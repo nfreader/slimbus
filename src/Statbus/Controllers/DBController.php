@@ -31,16 +31,16 @@ class DBController {
       \PDO::ATTR_STRINGIFY_FETCHES        => FALSE,
       \PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => TRUE,
       \PDO::MYSQL_ATTR_COMPRESS           => TRUE,
+      \PDO::ATTR_TIMEOUT                  => 5,
       'TABLE_PREFIX'                      => $this->prefix
     ];
     try{
-      $db = \ParagonIE\EasyDB\Factory::create(
+      $this->db = \ParagonIE\EasyDB\Factory::create(
           "mysql:host=$this->host;port=$this->port;dbname=$this->database",
           $this->username,
           $this->password,
           $options
       );
-      $this->db = $db;
     } catch (CFException $e){
       if(isset($conn['canFail']) && $conn['canFail']){
         $this->db = false;
