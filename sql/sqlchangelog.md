@@ -1,4 +1,38 @@
-##3.0 - 12-06-2019
+## 4.0 - 18-09-2020
+
+Adds a table for tracking ahelp tickets marked as public.
+
+Adds a table for tracking votes on paintings in the library.
+
+```
+CREATE TABLE `art_vote` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `artwork` varchar(32) NOT NULL DEFAULT '',
+  `ckey` varchar(32) NOT NULL DEFAULT '',
+  `rating` int(1) unsigned NOT NULL DEFAULT 1,
+  `server` varchar(16) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `artwork` (`artwork`,`ckey`),
+  KEY `id` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3070 DEFAULT CHARSET=utf8mb4;
+```
+
+```
+CREATE TABLE `public_tickets` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `ticket` int(11) unsigned NOT NULL,
+  `status` int(1) NOT NULL DEFAULT 1 COMMENT 'Not public, Public, Forced Private',
+  `identifier` varchar(16) DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+```
+
+```
+UPDATE `version` SET `major` = '4' WHERE `major` = '3' AND `minor` = '0' AND `patch` = '0' AND `updated` = '2019-11-10 20:36:06' LIMIT 1;
+```
+
+
+## 3.0 - 12-06-2019
 
 Removes unused tables and updates the DB version: 
 
