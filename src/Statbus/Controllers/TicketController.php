@@ -41,7 +41,7 @@ class TicketController extends Controller {
         'player' as s_rank,
         (SELECT `action` FROM tbl_ticket WHERE t.ticket = ticket AND t.round_id = round_id ORDER BY id DESC LIMIT 1) as `status`,
         (SELECT COUNT(id) FROM tbl_ticket WHERE t.ticket = ticket AND t.round_id = round_id) as `replies`
-      FROM ss13ticket t
+      FROM tbl_ticket t
       WHERE t.action = 'Ticket Opened' 
       GROUP BY t.id
       ORDER BY `timestamp` DESC
@@ -158,7 +158,7 @@ class TicketController extends Controller {
         'player' as s_rank,
         (SELECT `action` FROM tbl_ticket WHERE t.ticket = ticket AND t.round_id = round_id ORDER BY id DESC LIMIT 1) as `status`,
         (SELECT COUNT(id) FROM tbl_ticket WHERE t.ticket = ticket AND t.round_id = round_id) as `replies`
-      FROM ss13ticket t
+      FROM tbl_ticket t
       WHERE t.action = 'Ticket Opened'
       AND (t.recipient = ? OR t.sender = ?)
       GROUP BY t.id

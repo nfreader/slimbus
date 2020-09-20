@@ -86,14 +86,14 @@ class PollController Extends Controller {
         $poll->results = $this->DB->run("SELECT
         COUNT(o.id) AS votes,
         o.text AS `option`
-        FROM ss13poll_vote AS v
-        LEFT JOIN ss13poll_option AS o ON (v.optionid = o.id)
-        LEFT JOIN ss13player AS p ON (v.ckey = p.ckey)
-        LEFT JOIN ss13poll_question AS q ON (v.pollid = q.id) 
+        FROM tbl_poll_vote AS v
+        LEFT JOIN tbl_poll_option AS o ON (v.optionid = o.id)
+        LEFT JOIN tbl_player AS p ON (v.ckey = p.ckey)
+        LEFT JOIN tbl_poll_question AS q ON (v.pollid = q.id) 
         WHERE v.pollid = ?
         AND
           (SELECT SUM(j.delta)
-          FROM ss13role_time_log AS j
+          FROM tbl_role_time_log AS j
           WHERE j.job IN ('Living')
           AND j.datetime BETWEEN q.starttime - INTERVAL 30 DAY AND q.starttime
           AND j.ckey = v.ckey) >= 60
